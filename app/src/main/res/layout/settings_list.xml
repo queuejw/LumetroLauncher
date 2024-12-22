@@ -16,8 +16,8 @@
             android:id="@+id/themeSetting"
             style="@style/Settings.Card"
             android:layout_width="match_parent"
-            android:layout_marginEnd="24dp"
-            android:layout_height="64dp">
+            android:layout_height="64dp"
+            android:layout_marginEnd="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

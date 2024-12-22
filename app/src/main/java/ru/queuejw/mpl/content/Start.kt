@@ -864,7 +864,7 @@ class Start : Fragment() {
                         setImageDrawable(
                             ContextCompat.getDrawable(
                                 requireContext(),
-                                R.drawable.ic_arrow_right
+                                R.drawable.ic_arrow
                             )
                         )
                     }
@@ -874,17 +874,17 @@ class Start : Fragment() {
                         setImageDrawable(
                             ContextCompat.getDrawable(
                                 requireContext(),
-                                R.drawable.ic_arrow_right
+                                R.drawable.ic_arrow
                             )
                         )
                     }
 
                     "big" -> {
-                        rotation = 45f
+                        rotation = -135f
                         setImageDrawable(
                             ContextCompat.getDrawable(
                                 requireContext(),
-                                R.drawable.ic_arrow_up
+                                R.drawable.ic_arrow
                             )
                         )
                     }
@@ -892,7 +892,7 @@ class Start : Fragment() {
                     else -> setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            R.drawable.ic_arrow_right
+                            R.drawable.ic_arrow
                         )
                     )
                 }

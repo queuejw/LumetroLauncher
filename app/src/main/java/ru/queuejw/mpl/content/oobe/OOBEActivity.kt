@@ -63,7 +63,7 @@ class OOBEActivity : AppCompatActivity() {
     fun setFragment(value: Int) {
         lifecycleScope.launch {
             binding.oobeView.animate().translationX(-1000f).alpha(0f).setDuration(animationDuration).setInterpolator(DecelerateInterpolator()).start()
-            delay(animationDuration / 2)
+            delay(250)
             supportFragmentManager.commit {
                 replace(binding.fragmentContainerView.id, getCurrentFragment(value), "oobe")
             }

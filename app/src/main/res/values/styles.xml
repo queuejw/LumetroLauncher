@@ -58,6 +58,9 @@
         <item name="cardCornerRadius">0dp</item>
         <item name="strokeWidth">0dp</item>
         <item name="cardBackgroundColor">?android:attr/colorBackground</item>
+        <item name="android:transformPivotX">5dp</item>
+        <item name="android:transformPivotY">0dp</item>
+        <item name="android:paddingStart">16dp</item>
     </style>
     <style name="Metro.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="track">@drawable/switch_track</item>

@@ -300,7 +300,9 @@ class Main : AppCompatActivity() {
                 PREFS.prefs.edit().putBoolean("tip1Enabled", false).apply()
             }
         }
-        crashCheck()
+        lifecycleScope.launch {
+            crashCheck()
+        }
     }
 
     private fun showTipDialog() {
@@ -316,14 +318,16 @@ class Main : AppCompatActivity() {
     // If 5 seconds after the crash is successful, display an error message
     private suspend fun crashCheck() {
         if (PREFS.prefs.getBoolean("app_crashed", false)) {
-            delay(5000)
-            PREFS.prefs.edit().apply {
-                putBoolean("app_crashed", false)
-                putInt("crashCounter", 0)
-                apply()
-            }
-            if (PREFS.isFeedbackEnabled) {
-                handleCrashFeedback()
+            withContext(Dispatchers.IO) {
+                delay(5000)
+                PREFS.prefs.edit().apply {
+                    putBoolean("app_crashed", false)
+                    putInt("crashCounter", 0)
+                    apply()
+                }
+                if (PREFS.isFeedbackEnabled) {
+                    handleCrashFeedback()
+                }
             }
         }
     }

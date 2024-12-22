@@ -35,7 +35,7 @@ interface TileDao {
     fun getTileFromPosition(pos: Int): Tile
 
     @Query("SELECT * FROM tiles WHERE id = :id")
-    fun getTileByID(id: Int): Tile
+    fun getTileByID(id: Long): Tile
 
     @Query("DELETE FROM tiles")
     fun deleteAllTiles()
