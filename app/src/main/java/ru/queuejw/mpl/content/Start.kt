@@ -22,7 +22,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -857,45 +856,11 @@ class Start : Fragment() {
         }
 
         private fun applyResizeIcon(view: ImageView, item: Tile) {
-            view.apply {
-                when (item.tileSize) {
-                    "small" -> {
-                        rotation = 45f
-                        setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_arrow
-                            )
-                        )
-                    }
-
-                    "medium" -> {
-                        rotation = 0f
-                        setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_arrow
-                            )
-                        )
-                    }
-
-                    "big" -> {
-                        rotation = -135f
-                        setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_arrow
-                            )
-                        )
-                    }
-
-                    else -> setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_arrow
-                        )
-                    )
-                }
+            view.rotation = when (item.tileSize) {
+                "small" -> 45f
+                "medium" -> 0f
+                "big" -> -135f
+                else -> 0f
             }
         }
 

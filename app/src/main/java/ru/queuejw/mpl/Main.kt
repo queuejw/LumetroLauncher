@@ -124,7 +124,7 @@ class Main : AppCompatActivity() {
      */
     private fun setupUI() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBottomBar.navigationFrame) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainBottomBar.navigationMain) { view, insets ->
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
                 bottom = systemBarInsets.bottom,
@@ -352,7 +352,7 @@ class Main : AppCompatActivity() {
     }
 
     private fun setupNavigationBar() {
-        binding.mainBottomBar.navigationFrame.setBackgroundColor(getNavBarColor())
+        binding.mainBottomBar.navigationMain.setBackgroundColor(getNavBarColor())
         configureBottomBar()
     }
 
@@ -362,7 +362,7 @@ class Main : AppCompatActivity() {
             1 -> ContextCompat.getColor(this, android.R.color.background_light)
             2 -> Utils.accentColorFromPrefs(this)
             3 -> {
-                binding.mainBottomBar.navigationFrame.visibility = View.GONE
+                binding.mainBottomBar.navigationMain.visibility = View.GONE
                 return ContextCompat.getColor(this, android.R.color.transparent)
             }
 
