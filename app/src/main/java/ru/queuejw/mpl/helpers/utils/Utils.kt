@@ -209,7 +209,7 @@ class Utils {
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             request.setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                "MPL_update.apk"
+                "MPL_V80.apk"
             )
             val manager =
                 context.getSystemService(android.app.Application.DOWNLOAD_SERVICE) as DownloadManager
@@ -292,7 +292,6 @@ class Utils {
             val int = if (!genBigTiles) Random.nextInt(0, 2) else Random.nextInt(0, 3)
             return when (int) {
                 0 -> "small"
-                1 -> "medium"
                 2 -> "big"
                 else -> "medium"
             }

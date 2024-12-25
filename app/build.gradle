@@ -19,7 +19,7 @@ android {
         targetSdk 35
         // 80xxxx ; 81xxxx ; 100xxxx
         versionCode 800000
-        var name = "MPL 8 Build $versionCode"
+            var name = "MPL 8 Build $versionCode"
         versionName name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

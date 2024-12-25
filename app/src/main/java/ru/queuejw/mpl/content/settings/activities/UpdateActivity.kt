@@ -383,21 +383,6 @@ class UpdateActivity : AppCompatActivity() {
                 binding.settingsInclude.cancelButton.visibility = View.VISIBLE
             }
 
-            7 -> {
-                // BETA is ready for download
-                binding.settingsInclude.checkingUpdatesSub.apply {
-                    visibility = View.VISIBLE
-                    text = getString(R.string.ready_to_download_beta)
-                }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
-                    visibility = View.VISIBLE
-                    text = getString(R.string.download_beta)
-                }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.VISIBLE
-                binding.settingsInclude.cancelButton.visibility = View.VISIBLE
-            }
-
             8 -> {
                 // current version is newer
                 binding.settingsInclude.checkingUpdatesSub.apply {
@@ -464,11 +449,7 @@ class UpdateActivity : AppCompatActivity() {
             } else if (Utils.VERSION_CODE > UpdateDataParser.verCode!!) {
                 PREFS.updateState = 8
             } else if (UpdateDataParser.verCode!! > Utils.VERSION_CODE) {
-                if (UpdateDataParser.isBeta == true) {
-                    PREFS.updateState = 7
-                } else {
-                    PREFS.updateState = 6
-                }
+                PREFS.updateState = 6
             }
             withContext(mainDispatcher) {
                 binding.settingsInclude.progress.isIndeterminate = false
@@ -479,13 +460,8 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun checkDownload() {
-        if (UpdateDataParser.isBeta == true) {
-            Log.i("CheckForUpdates", "download beta")
-            downloadFile("MPL Beta", URL_BETA_FILE)
-        } else {
-            Log.i("CheckForUpdates", "download release")
-            downloadFile("MPL", URL_RELEASE_FILE)
-        }
+        Log.i("CheckForUpdates", "download release")
+        downloadFile("MPL", URL_RELEASE_FILE)
     }
 
     @SuppressLint("Range")
@@ -513,7 +489,7 @@ class UpdateActivity : AppCompatActivity() {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                 request.setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_DOWNLOADS,
-                    "MPL_update.apk"
+                    "MPL_V80.apk"
                 )
                 manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 downloadId = manager?.enqueue(request)
@@ -525,7 +501,6 @@ class UpdateActivity : AppCompatActivity() {
                 val q = DownloadManager.Query()
                 q.setFilterById(downloadId!!)
                 var cursor: Cursor?
-                val isGreaterThanN = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 while (isUpdateDownloading) {
                     cursor = manager!!.query(q)
                     if (cursor != null && cursor.moveToFirst()) {
@@ -539,11 +514,7 @@ class UpdateActivity : AppCompatActivity() {
                         PREFS.updateProgressLevel = progress
                         withContext(mainDispatcher) {
                             binding.settingsInclude.progessText.text = progressString
-                            if (isGreaterThanN) {
-                                binding.settingsInclude.progress.setProgress(progress, true)
-                            } else {
-                                binding.settingsInclude.progress.progress = progress
-                            }
+                            binding.settingsInclude.progress.setProgress(progress, true)
                         }
                         if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                             isUpdateDownloading = false
@@ -614,10 +585,8 @@ class UpdateActivity : AppCompatActivity() {
     companion object {
         const val URL: String =
             "https://github.com/queuejw/mpl_updates/releases/download/release/update.xml"
-        const val URL_BETA_FILE: String =
-            "https://github.com/queuejw/mpl_updates/releases/download/release/MPL-beta.apk"
         const val URL_RELEASE_FILE: String =
-            "https://github.com/queuejw/mpl_updates/releases/download/release/MPL.apk"
+            "https://github.com/queuejw/mpl_updates/releases/download/release/MPL_V80.apk"
 
         fun downloadXml(link: String) {
             Log.i("CheckForUpdates", "download xml")
@@ -664,7 +633,7 @@ class UpdateActivity : AppCompatActivity() {
             try {
                 val file = File(
                     Environment.getExternalStorageDirectory().toString() + "/Download/",
-                    "MPL_update.apk"
+                    "MPL_V80.apk"
                 )
                 val uri =
                     FileProvider.getUriForFile(context, context.packageName + ".provider", file)

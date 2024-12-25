@@ -251,7 +251,6 @@ class Start : Fragment() {
             itemOrderIsStable = true
             spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
                 when (tiles!![position].tileSize) {
-                    "small" -> SpanSize(1, 1)
                     "medium" -> SpanSize(2, 2)
                     "big" -> SpanSize(4, 2)
                     else -> SpanSize(1, 1)
@@ -270,7 +269,10 @@ class Start : Fragment() {
     }
 
     override fun onResume() {
-        if (screenLoaded) observe()
+        if (screenLoaded) {
+            observe()
+            tryToFixTiles()
+        }
         if (Application.isAppOpened) {
             viewLifecycleOwner.lifecycleScope.launch {
                 animateTiles(false, null, null)
@@ -279,6 +281,19 @@ class Start : Fragment() {
         }
         Application.isStartMenuOpened = true
         super.onResume()
+    }
+
+    private fun tryToFixTiles() {
+        for (i in 0..binding.startTiles.childCount) {
+            val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
+            if (holder.itemViewType == -1) continue
+            holder.itemView.apply {
+                scaleX = 1f
+                scaleY = 1f
+                translationY = 0f
+                translationX = 0f
+            }
+        }
     }
 
     override fun onPause() {
@@ -677,10 +692,10 @@ class Start : Fragment() {
             if (isEditMode) {
                 animateItemEditMode(view, pos)
             } else {
-                if (view.scaleX != 1f) view.scaleX = 1f
-                if (view.scaleY != 1f) view.scaleY = 1f
-                if (view.translationY != 0f) view.translationY = 0f
-                if (view.translationX != 0f) view.translationX = 0f
+                view.scaleX = 1f
+                view.scaleY = 1f
+                view.translationY = 0f
+                view.translationX = 0f
             }
         }
 

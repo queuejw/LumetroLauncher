@@ -49,27 +49,24 @@ class UpdateDataParser {
             val valueKey = parser.getAttributeValue(null, "name")
             val name = readTextName(parser)
             parser.require(XmlPullParser.END_TAG, ns, "string")
-            if (valueKey == "versionName") {
+            if (valueKey == "versionName_V80") {
                 verName = name
             }
             when (getDefaultLocale().language) {
                 "ru" -> {
-                    if (valueKey == "message_ru") {
+                    if (valueKey == "message_V80_ru") {
                         updateMsg = name
                         PREFS.updateMessage = name
                     }
                 }
 
                 else -> {
-                    if (valueKey == "message") {
+                    if (valueKey == "message_V80") {
                         updateMsg = name
                         PREFS.updateMessage = name
                     }
                 }
 
-            }
-            if (valueKey == "tag") {
-                tag = name
             }
             Log.i("parserText", "key: $valueKey value: $name")
         } catch (exception: Exception) {
@@ -92,9 +89,6 @@ class UpdateDataParser {
             parser.require(XmlPullParser.START_TAG, ns, "boolean")
             val valueData = parser.getAttributeValue(null, "value")
             val valueKey = parser.getAttributeValue(null, "name")
-            if (valueKey == "beta") {
-                isBeta = valueData.toBoolean()
-            }
             parser.nextTag()
             Log.i("parserBool", "key: $valueKey value: $valueData")
         } catch (exception: Exception) {
@@ -107,7 +101,7 @@ class UpdateDataParser {
             parser.require(XmlPullParser.START_TAG, ns, "int")
             val valueData = parser.getAttributeValue(null, "value")
             val valueKey = parser.getAttributeValue(null, "name")
-            if (valueKey == "versionCode") {
+            if (valueKey == "versionCode_V80") {
                 verCode = valueData.toInt()
                 PREFS.versionCode = valueData.toInt()
             }
@@ -134,8 +128,6 @@ class UpdateDataParser {
         private val ns: String? = null
         var verCode: Int? = null
         var verName: String? = null
-        var isBeta: Boolean? = null
         var updateMsg: String? = null
-        var tag: String? = null
     }
 }

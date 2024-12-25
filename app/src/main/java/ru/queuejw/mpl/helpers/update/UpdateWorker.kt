@@ -86,9 +86,8 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
             UpdateActivity.downloadXml(UpdateActivity.URL)
             if (UpdateActivity.isUpdateAvailable()) {
                 if (PREFS.isAutoUpdateEnabled) {
-                    val name = if (UpdateDataParser.isBeta == true) "MPL BETA" else "MPL"
-                    val link =
-                        if (UpdateDataParser.isBeta == true) UpdateActivity.URL_BETA_FILE else UpdateActivity.URL_RELEASE_FILE
+                    val name = "MPL"
+                    val link = UpdateActivity.URL_RELEASE_FILE
                     downloadFile(name, link, context)
                 } else {
                     prefs.updateState = 6
@@ -131,7 +130,7 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                 request.setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_DOWNLOADS,
-                    "MPL_update.apk"
+                    "MPL_V80.apk"
                 )
                 val manager = context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 val downloadId = manager.enqueue(request)
