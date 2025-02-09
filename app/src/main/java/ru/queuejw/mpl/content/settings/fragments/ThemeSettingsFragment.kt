@@ -205,11 +205,8 @@ class ThemeSettingsFragment : Fragment() {
             visibility = View.VISIBLE
         }
         binding.chooseThemeMenu.visibility = View.GONE
-        when (PREFS.appTheme) {
-            0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+        PREFS.prefs.edit { putBoolean("themeChanged", true) }
+        requireActivity().recreate()
     }
 
     private fun setOrientationButtons() {
