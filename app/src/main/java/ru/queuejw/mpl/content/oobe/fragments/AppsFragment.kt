@@ -28,6 +28,7 @@ import ru.queuejw.mpl.helpers.utils.Utils
 import ru.queuejw.mpl.helpers.utils.Utils.Companion.generatePlaceholder
 import ru.queuejw.mpl.helpers.utils.Utils.Companion.setUpApps
 import kotlin.random.Random
+import androidx.core.content.edit
 
 class AppsFragment : Fragment() {
 
@@ -44,7 +45,7 @@ class AppsFragment : Fragment() {
         _binding = OobeFragmentAppsBinding.inflate(inflater, container, false)
         binding.oobeAppsLoadingBar.showProgressBar()
         lifecycleScope.launch(Dispatchers.IO) {
-            PREFS.prefs.edit().putBoolean("placeholdersGenerated", true).apply()
+            PREFS.prefs.edit() { putBoolean("placeholdersGenerated", true) }
             generatePlaceholder(TileData.getTileData(requireContext()).getTileDao(), 64)
         }
         return binding.root
@@ -110,7 +111,7 @@ class AppsFragment : Fragment() {
 
     private fun addApps() {
         selectedItems ?: return
-        if(selectedItems!!.isEmpty()) return
+        if (selectedItems!!.isEmpty()) return
         saveAppsCoroutine.launch {
             val call = TileData.getTileData(requireContext()).getTileDao()
             var pos = 0

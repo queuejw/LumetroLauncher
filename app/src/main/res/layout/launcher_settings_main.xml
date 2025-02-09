@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="4dp">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarSettings"
@@ -29,20 +34,14 @@
                     android:layout_marginStart="4dp"
                     android:ellipsize="none"
                     android:singleLine="true"
-                    android:text="@string/launcher"
                     android:textColor="@color/textColor"
                     android:textSize="52sp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <include
-                    android:id="@+id/settings_include"
-                    layout="@layout/settings_list"/>
-        </androidx.core.widget.NestedScrollView>
-
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

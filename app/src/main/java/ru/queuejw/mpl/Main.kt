@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -37,6 +38,7 @@ import ru.queuejw.mpl.helpers.iconpack.IconPackManager
 import ru.queuejw.mpl.helpers.receivers.PackageChangesReceiver
 import ru.queuejw.mpl.helpers.ui.WPDialog
 import ru.queuejw.mpl.helpers.utils.Utils
+import kotlin.system.exitProcess
 
 /**
  * Main application screen (tiles, apps)
@@ -207,7 +209,7 @@ class Main : AppCompatActivity() {
         val componentName = Intent(this, this::class.java).component
         val intent = Intent.makeRestartActivityTask(componentName)
         startActivity(intent)
-        Runtime.getRuntime().exit(0)
+        exitProcess(0)
     }
 
     override fun onDestroy() {
@@ -297,7 +299,7 @@ class Main : AppCompatActivity() {
         withContext(Dispatchers.Main) {
             if (PREFS.prefs.getBoolean("tip1Enabled", true)) {
                 showTipDialog()
-                PREFS.prefs.edit().putBoolean("tip1Enabled", false).apply()
+                PREFS.prefs.edit { putBoolean("tip1Enabled", false) }
             }
         }
         lifecycleScope.launch {

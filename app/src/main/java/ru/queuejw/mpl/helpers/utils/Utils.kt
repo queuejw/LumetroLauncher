@@ -9,9 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Rect
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
@@ -21,11 +19,10 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +36,7 @@ import ru.queuejw.mpl.content.data.bsod.BSOD
 import ru.queuejw.mpl.content.data.bsod.BSODEntity
 import ru.queuejw.mpl.content.data.tile.Tile
 import ru.queuejw.mpl.content.data.tile.TileDao
-import ru.queuejw.mpl.content.settings.activities.UpdateActivity
+import ru.queuejw.mpl.content.settings.fragments.UpdateSettingsFragment
 import ru.queuejw.mpl.helpers.receivers.PackageChangesReceiver
 import java.io.File
 import java.util.Calendar
@@ -52,16 +49,6 @@ class Utils {
 
         const val VERSION_CODE: Int = BuildConfig.VERSION_CODE
         const val VERSION_NAME: String = BuildConfig.VERSION_NAME
-
-        val ANDROID_VERSION: Int = Build.VERSION.SDK_INT
-        val MODEL: String = Build.MODEL
-        val BUILD: String = Build.DISPLAY
-        val PRODUCT: String = Build.PRODUCT
-        val BRAND: String = Build.BRAND
-        val DEVICE: String = Build.DEVICE
-        val HARDWARE: String = Build.HARDWARE
-        val MANUFACTURER: String = Build.MANUFACTURER
-        val TIME: Long = Build.TIME
 
         fun applyWindowInsets(target: View) {
             ViewCompat.setOnApplyWindowInsetsListener(target) { view, insets ->
@@ -203,7 +190,7 @@ class Utils {
         }
 
         fun downloadUpdate(context: Context) {
-            val request = DownloadManager.Request(Uri.parse(UpdateActivity.URL_RELEASE_FILE))
+            val request = DownloadManager.Request(UpdateSettingsFragment.URL_RELEASE_FILE.toUri())
             request.setDescription(context.getString(R.string.update_notification))
             request.setTitle("MPL")
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
@@ -299,7 +286,7 @@ class Utils {
 
         fun sendCrash(text: String, activity: Activity) {
             val intent = Intent(Intent.ACTION_SENDTO)
-            intent.setData(Uri.parse("mailto:dimon6018t@gmail.com"))
+            intent.setData("mailto:dimon6018t@gmail.com".toUri())
             intent.putExtra(Intent.EXTRA_SUBJECT, "MPL Crash report")
             intent.putExtra(Intent.EXTRA_TEXT, text)
             if (intent.resolveActivity(activity.packageManager) != null) {
@@ -459,34 +446,6 @@ class Utils {
 
         fun getDefaultLocale(): Locale {
             return Locale.getDefault()
-        }
-    }
-
-    class MarginItemDecoration(private val spaceSize: Int) : ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect, view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            with(outRect) {
-                top = spaceSize
-                left = spaceSize
-                right = spaceSize
-                bottom = spaceSize
-            }
-        }
-    }
-
-    class BottomOffsetDecoration(private val bottomOffset: Int) : ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) {
-                outRect.bottom = bottomOffset
-            }
         }
     }
 }

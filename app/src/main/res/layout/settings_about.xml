@@ -4,16 +4,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:animateLayoutChanges="true"
-            android:layout_height="wrap_content">
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="32dp"
             android:id="@+id/phoneinfo_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="@string/phone_information"
             android:textSize="24sp" />
         <com.google.android.material.textview.MaterialTextView
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/manrope_light"
-            android:text="2023-2024 queuejw"
+            android:text="2023-2025 queuejw"
             android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton

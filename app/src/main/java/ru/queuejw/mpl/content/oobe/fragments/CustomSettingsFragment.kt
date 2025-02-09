@@ -34,6 +34,7 @@ class CustomSettingsFragment : Fragment() {
             setText(getString(R.string.configureCustomPhone))
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

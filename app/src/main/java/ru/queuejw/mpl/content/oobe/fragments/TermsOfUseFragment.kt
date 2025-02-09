@@ -9,7 +9,7 @@ import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.oobe.OOBEActivity
 import ru.queuejw.mpl.databinding.OobeFragmentTermsofuseBinding
 
-class TermsOfUseFragment: Fragment() {
+class TermsOfUseFragment : Fragment() {
 
     private var _binding: OobeFragmentTermsofuseBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +35,7 @@ class TermsOfUseFragment: Fragment() {
             animateBottomBarFromFragment()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

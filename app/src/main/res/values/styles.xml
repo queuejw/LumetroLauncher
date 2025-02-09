@@ -61,6 +61,7 @@
         <item name="android:transformPivotX">5dp</item>
         <item name="android:transformPivotY">0dp</item>
         <item name="android:paddingStart">16dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
     <style name="Metro.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="track">@drawable/switch_track</item>

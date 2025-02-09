@@ -1,15 +1,17 @@
-package ru.queuejw.mpl.content.settings.activities
+package ru.queuejw.mpl.content.settings.fragments
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Application.Companion.customBoldFont
 import ru.queuejw.mpl.Application.Companion.customFont
@@ -18,29 +20,39 @@ import ru.queuejw.mpl.Application.Companion.setupCustomBoldFont
 import ru.queuejw.mpl.Application.Companion.setupCustomFont
 import ru.queuejw.mpl.Application.Companion.setupCustomLightFont
 import ru.queuejw.mpl.R
-import ru.queuejw.mpl.databinding.LauncherSettingsFontsBinding
-import ru.queuejw.mpl.helpers.utils.Utils.Companion.applyWindowInsets
+import ru.queuejw.mpl.content.data.bsod.BSOD
+import ru.queuejw.mpl.content.settings.SettingsActivity
+import ru.queuejw.mpl.databinding.SettingsFontsBinding
+import ru.queuejw.mpl.helpers.ui.WPDialog
+import ru.queuejw.mpl.helpers.utils.Utils
 import java.io.File
 
-class FontsSettingsActivity : AppCompatActivity() {
+class FontSettingsFragment : Fragment() {
 
-    private lateinit var binding: LauncherSettingsFontsBinding
+    private var _binding: SettingsFontsBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var regularFontPickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var lightFontPickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var boldFontPickerLauncher: ActivityResultLauncher<Intent>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = LauncherSettingsFontsBinding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        applyWindowInsets(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SettingsFontsBinding.inflate(inflater, container, false)
+        (requireActivity() as SettingsActivity).setText(getString(R.string.fonts))
+        prepareResultLaunchers()
+        return binding.root
+    }
+
+    private fun prepareResultLaunchers() {
         regularFontPickerLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     PREFS.customFontInstalled = true
                     result.data?.data?.let { uri ->
-                        applyFontFromUri(uri, "regular")
+                        applyFontFromUri(uri, "regular", requireActivity())
                     }
                 }
             }
@@ -48,7 +60,7 @@ class FontsSettingsActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     result.data?.data?.let { uri ->
-                        applyFontFromUri(uri, "light")
+                        applyFontFromUri(uri, "light", requireActivity())
                     }
                 }
             }
@@ -56,35 +68,17 @@ class FontsSettingsActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     result.data?.data?.let { uri ->
-                        applyFontFromUri(uri, "bold")
+                        applyFontFromUri(uri, "bold", requireActivity())
                     }
                 }
             }
-        binding.settingsInclude.chooseFont.setOnClickListener {
-            if (!PREFS.customFontInstalled) selectCustomFont("regular") else removeCustomFont("regular")
-            PREFS.isPrefsChanged = true
-        }
-        binding.settingsInclude.chooseLightFont.setOnClickListener {
-            if (PREFS.customLightFontPath == null) selectCustomFont("light") else removeCustomFont("light")
-            PREFS.isPrefsChanged = true
-        }
-        binding.settingsInclude.chooseBoldFont.setOnClickListener {
-            if (PREFS.customBoldFontPath == null) selectCustomFont("bold") else removeCustomFont("bold")
-            PREFS.isPrefsChanged = true
-        }
-        setupUi()
     }
 
-    private fun applyFontFromUri(uri: Uri, fontType: String) {
+    private fun applyFontFromUri(uri: Uri, fontType: String, context: Context) {
         runCatching {
             val file = File(uri.path!!)
             val fileName: String
             when (fontType) {
-                "regular" -> {
-                    PREFS.customFontName = file.name
-                    fileName = "custom_regular." + file.extension
-                }
-
                 "light" -> {
                     PREFS.customLightFontName = file.name
                     fileName = "custom_light." + file.extension
@@ -100,8 +94,8 @@ class FontsSettingsActivity : AppCompatActivity() {
                     fileName = "custom_regular." + file.extension
                 }
             }
-            val fontFile = File(ContextCompat.getDataDir(this), fileName)
-            contentResolver.openInputStream(uri)?.use { inputStream ->
+            val fontFile = File(ContextCompat.getDataDir(context), fileName)
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
                 fontFile.outputStream().use { output ->
                     inputStream.copyTo(output)
                 }
@@ -109,69 +103,106 @@ class FontsSettingsActivity : AppCompatActivity() {
             saveFontPath(fontFile.absolutePath, fontType)
             activateNewFont()
         }.getOrElse {
+            Utils.saveError(it.toString(), BSOD.getData(context))
+            WPDialog(context).apply {
+                setTopDialog(true)
+                setTitle(getString(R.string.error))
+                setMessage(
+                    getString(
+                        R.string.apply_font_error
+                    )
+                )
+                setPositiveButton(getString(android.R.string.ok)) {
+                    dismiss()
+                }
+                show()
+            }
             it.printStackTrace()
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setFont()
+        setOnClickers()
+        setUi()
+    }
+
+    private fun setOnClickers() {
+        binding.chooseFont.setOnClickListener {
+            if (!PREFS.customFontInstalled) selectCustomFont("regular") else removeCustomFont("regular")
+            PREFS.isPrefsChanged = true
+        }
+        binding.chooseLightFont.setOnClickListener {
+            if (PREFS.customLightFontPath == null) selectCustomFont("light") else removeCustomFont("light")
+            PREFS.isPrefsChanged = true
+        }
+        binding.chooseBoldFont.setOnClickListener {
+            if (PREFS.customBoldFontPath == null) selectCustomFont("bold") else removeCustomFont("bold")
+            PREFS.isPrefsChanged = true
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun activateNewFont() {
         setupCustomFont()
         setupCustomLightFont()
         setupCustomBoldFont()
-        setupUi()
+        setUi()
     }
 
     private fun saveFontPath(path: String, fontType: String) {
         when (fontType) {
-            "regular" -> PREFS.customFontPath = path
             "light" -> PREFS.customLightFontPath = path
             "bold" -> PREFS.customBoldFontPath = path
             else -> PREFS.customFontPath = path
         }
     }
 
-    private fun setupUi() {
-        binding.settingsInclude.chooseFont.text =
+    private fun setUi() {
+        binding.chooseFont.text =
             getString(if (!PREFS.customFontInstalled) R.string.choose_font else R.string.remove_font)
-        binding.settingsInclude.chooseLightFont.text =
+        binding.chooseLightFont.text =
             getString(if (PREFS.customLightFontPath == null) R.string.choose_light_font else R.string.remove_light_font)
-        binding.settingsInclude.chooseBoldFont.text =
+        binding.chooseBoldFont.text =
             getString(if (PREFS.customBoldFontPath == null) R.string.choose_bold_font else R.string.remove_bold_font)
-        binding.settingsInclude.currentFont.visibility =
+        binding.currentFont.visibility =
             if (!PREFS.customFontInstalled) View.GONE else View.VISIBLE
-        binding.settingsInclude.currentLightFont.visibility =
+        binding.currentLightFont.visibility =
             if (PREFS.customLightFontPath == null) View.GONE else View.VISIBLE
-        binding.settingsInclude.currentBoldFont.visibility =
+        binding.currentBoldFont.visibility =
             if (PREFS.customBoldFontPath == null) View.GONE else View.VISIBLE
-        if (PREFS.customFontInstalled) binding.settingsInclude.currentFont.text =
+        if (PREFS.customFontInstalled) binding.currentFont.text =
             getString(R.string.current_font, PREFS.customFontName)
-        if (PREFS.customLightFontPath != null) binding.settingsInclude.currentLightFont.text =
+        if (PREFS.customLightFontPath != null) binding.currentLightFont.text =
             getString(R.string.current_light_font, PREFS.customLightFontName)
-        if (PREFS.customBoldFontPath != null) binding.settingsInclude.currentBoldFont.text =
+        if (PREFS.customBoldFontPath != null) binding.currentBoldFont.text =
             getString(R.string.current_bold_font, PREFS.customBoldFontName)
         setFont()
     }
 
     private fun setFont() {
         customFont?.let {
-            binding.settingsInclude.currentFont.typeface = it
-            binding.settingsInclude.chooseFont.typeface = it
-            binding.settingsInclude.testFontText.typeface = it
-            binding.settingsInclude.fontsTip.typeface = it
-            binding.settingsSectionLabel.typeface = it
-            binding.settingsLabel.typeface = it
-            binding.settingsInclude.additionalOptions.typeface = it
-            binding.settingsInclude.additionalFontsTip.typeface = it
+            binding.currentFont.typeface = it
+            binding.chooseFont.typeface = it
+            binding.testFontText.typeface = it
+            binding.fontsTip.typeface = it
+            binding.additionalOptions.typeface = it
+            binding.additionalFontsTip.typeface = it
         }
         customLightFont?.let {
-            binding.settingsInclude.currentLightFont.typeface = it
-            binding.settingsInclude.chooseLightFont.typeface = it
-            binding.settingsInclude.testLightFontText.typeface = it
+            binding.currentLightFont.typeface = it
+            binding.chooseLightFont.typeface = it
+            binding.testLightFontText.typeface = it
         }
         customBoldFont?.let {
-            binding.settingsLabel.typeface = it
-            binding.settingsInclude.chooseBoldFont.typeface = it
-            binding.settingsInclude.currentBoldFont.typeface = it
-            binding.settingsInclude.testBoldFontText.typeface = it
+            binding.chooseBoldFont.typeface = it
+            binding.currentBoldFont.typeface = it
+            binding.testBoldFontText.typeface = it
         }
     }
 
@@ -181,7 +212,6 @@ class FontsSettingsActivity : AppCompatActivity() {
             type = "font/*"
         }
         when (fontType) {
-            "regular" -> regularFontPickerLauncher.launch(intent)
             "light" -> lightFontPickerLauncher.launch(intent)
             "bold" -> boldFontPickerLauncher.launch(intent)
             else -> regularFontPickerLauncher.launch(intent)
@@ -213,56 +243,6 @@ class FontsSettingsActivity : AppCompatActivity() {
             }
         }
         activateNewFont()
-        recreate()
-    }
-
-    private fun enterAnimation(exit: Boolean) {
-        if (!PREFS.isTransitionAnimEnabled) return
-        val main = binding.root
-        val animatorSet = AnimatorSet().apply {
-            playTogether(
-                createObjectAnimator(
-                    main,
-                    "translationX",
-                    if (exit) 0f else -300f,
-                    if (exit) -300f else 0f
-                ),
-                createObjectAnimator(
-                    main,
-                    "rotationY",
-                    if (exit) 0f else 90f,
-                    if (exit) 90f else 0f
-                ),
-                createObjectAnimator(main, "alpha", if (exit) 1f else 0f, if (exit) 0f else 1f),
-                createObjectAnimator(
-                    main,
-                    "scaleX",
-                    if (exit) 1f else 0.5f,
-                    if (exit) 0.5f else 1f
-                ),
-                createObjectAnimator(main, "scaleY", if (exit) 1f else 0.5f, if (exit) 0.5f else 1f)
-            )
-            duration = 400
-        }
-        animatorSet.start()
-    }
-
-    private fun createObjectAnimator(
-        target: Any,
-        property: String,
-        startValue: Float,
-        endValue: Float
-    ): ObjectAnimator {
-        return ObjectAnimator.ofFloat(target, property, startValue, endValue)
-    }
-
-    override fun onResume() {
-        enterAnimation(false)
-        super.onResume()
-    }
-
-    override fun onPause() {
-        enterAnimation(true)
-        super.onPause()
+        (requireActivity() as SettingsActivity).recreateFragment(this)
     }
 }

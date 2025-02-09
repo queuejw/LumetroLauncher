@@ -1,7 +1,5 @@
-package ru.queuejw.mpl.content.settings.activities
+package ru.queuejw.mpl.content.settings.fragments
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -12,75 +10,82 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.WindowCompat
+import androidx.core.content.edit
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.snackbar.Snackbar
 import ru.queuejw.mpl.Application.Companion.PREFS
-import ru.queuejw.mpl.Application.Companion.customBoldFont
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.R
-import ru.queuejw.mpl.databinding.LauncherSettingsThemeBinding
+import ru.queuejw.mpl.content.settings.SettingsActivity
+import ru.queuejw.mpl.databinding.SettingsThemeBinding
 import ru.queuejw.mpl.helpers.ui.WPDialog
 import ru.queuejw.mpl.helpers.utils.Utils
 
-class ThemeSettingsActivity : AppCompatActivity() {
+class ThemeSettingsFragment : Fragment() {
 
-    private lateinit var binding: LauncherSettingsThemeBinding
+    private var _binding: SettingsThemeBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = LauncherSettingsThemeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SettingsThemeBinding.inflate(inflater, container, false)
+        (requireActivity() as SettingsActivity).setText(getString(R.string.start_theme))
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupFont()
         setThemeText()
         configure()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        Utils.applyWindowInsets(binding.root)
         prepareTip()
         setupFont()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupFont() {
         customFont?.let {
-            binding.settingsSectionLabel.typeface = it
-            binding.settingsLabel.typeface = it
-            binding.settingsInclude.backgroundLabel.typeface = it
-            binding.settingsInclude.chooseTheme.typeface = it
-            binding.settingsInclude.chooseLight.typeface = it
-            binding.settingsInclude.chooseDark.typeface = it
-            binding.settingsInclude.chooseAuto.typeface = it
-            binding.settingsInclude.accentColorLabel.typeface = it
-            binding.settingsInclude.chosenAccentName.typeface = it
-            binding.settingsInclude.coloredStrokeLabel.typeface = it
-            binding.settingsInclude.coloredStrokeSwitch.typeface = it
-            binding.settingsInclude.dynamicColorLabel.typeface = it
-            binding.settingsInclude.dynamicColorSub.typeface = it
-            binding.settingsInclude.dynamicColorSwtich.typeface = it
-            binding.settingsInclude.autoPinLabel.typeface = it
-            binding.settingsInclude.autoPinSub.typeface = it
-            binding.settingsInclude.newAppsToStartSwitch.typeface = it
-            binding.settingsInclude.advancedOptions.typeface = it
-            binding.settingsInclude.blockStartLabel.typeface = it
-            binding.settingsInclude.blockStartSub.typeface = it
-            binding.settingsInclude.blockStartSwitch.typeface = it
-            binding.settingsInclude.screenOrientation.typeface = it
-            binding.settingsInclude.portraitOrientation.typeface = it
-            binding.settingsInclude.landscapeOrientation.typeface = it
-            binding.settingsInclude.defaultOrientation.typeface = it
-            binding.settingsInclude.accentTip.typeface = it
+            binding.backgroundLabel.typeface = it
+            binding.chooseTheme.typeface = it
+            binding.chooseLight.typeface = it
+            binding.chooseDark.typeface = it
+            binding.chooseAuto.typeface = it
+            binding.accentColorLabel.typeface = it
+            binding.chosenAccentName.typeface = it
+            binding.coloredStrokeLabel.typeface = it
+            binding.coloredStrokeSwitch.typeface = it
+            binding.dynamicColorLabel.typeface = it
+            binding.dynamicColorSub.typeface = it
+            binding.dynamicColorSwtich.typeface = it
+            binding.autoPinLabel.typeface = it
+            binding.autoPinSub.typeface = it
+            binding.newAppsToStartSwitch.typeface = it
+            binding.advancedOptions.typeface = it
+            binding.blockStartLabel.typeface = it
+            binding.blockStartSub.typeface = it
+            binding.blockStartSwitch.typeface = it
+            binding.screenOrientation.typeface = it
+            binding.portraitOrientation.typeface = it
+            binding.landscapeOrientation.typeface = it
+            binding.defaultOrientation.typeface = it
+            binding.accentTip.typeface = it
 
-        }
-        customBoldFont?.let {
-            binding.settingsLabel.typeface = it
         }
     }
 
     private fun configure() {
-        binding.settingsInclude.chosenAccentName.text = Utils.accentName(this)
-        binding.settingsInclude.chooseTheme.apply {
+        binding.chosenAccentName.text = Utils.accentName(requireActivity())
+        binding.chooseTheme.apply {
             text = when (PREFS.appTheme) {
                 0 -> getString(R.string.auto)
                 1 -> getString(R.string.dark)
@@ -89,33 +94,33 @@ class ThemeSettingsActivity : AppCompatActivity() {
             }
             setOnClickListener {
                 visibility = View.GONE
-                binding.settingsInclude.chooseThemeMenu.visibility = View.VISIBLE
+                binding.chooseThemeMenu.visibility = View.VISIBLE
             }
         }
-        binding.settingsInclude.chooseAuto.setOnClickListener {
+        binding.chooseAuto.setOnClickListener {
             PREFS.apply {
                 PREFS.appTheme = 0
             }
             applyTheme()
         }
-        binding.settingsInclude.chooseLight.setOnClickListener {
+        binding.chooseLight.setOnClickListener {
             PREFS.apply {
                 PREFS.appTheme = 2
             }
             applyTheme()
         }
-        binding.settingsInclude.chooseDark.setOnClickListener {
+        binding.chooseDark.setOnClickListener {
             PREFS.apply {
                 PREFS.appTheme = 1
             }
             applyTheme()
         }
-        binding.settingsInclude.chooseAccent.setOnClickListener {
+        binding.chooseAccent.setOnClickListener {
             AccentDialog.display(
-                supportFragmentManager
+                childFragmentManager
             )
         }
-        binding.settingsInclude.newAppsToStartSwitch.apply {
+        binding.newAppsToStartSwitch.apply {
             isChecked = PREFS.pinNewApps
             text = if (PREFS.pinNewApps) getString(R.string.on) else getString(R.string.off)
             setOnCheckedChangeListener { _, isChecked ->
@@ -123,7 +128,7 @@ class ThemeSettingsActivity : AppCompatActivity() {
                 text = if (isChecked) getString(R.string.on) else getString(R.string.off)
             }
         }
-        binding.settingsInclude.dynamicColorSwtich.apply {
+        binding.dynamicColorSwtich.apply {
             if (!DynamicColors.isDynamicColorAvailable()) {
                 isEnabled = false
             }
@@ -133,7 +138,7 @@ class ThemeSettingsActivity : AppCompatActivity() {
                 if (DynamicColors.isDynamicColorAvailable()) {
                     PREFS.accentColor =
                         if (isChecked) 20 else PREFS.prefs.getInt("previous_accent_color", 5)
-                    recreate()
+                    (requireActivity() as SettingsActivity).recreateFragment(this@ThemeSettingsFragment)
                 } else {
                     Snackbar.make(
                         this,
@@ -143,7 +148,7 @@ class ThemeSettingsActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.settingsInclude.blockStartSwitch.apply {
+        binding.blockStartSwitch.apply {
             isChecked = PREFS.isStartBlocked
             text = if (isChecked) getString(R.string.on) else getString(R.string.off)
             setOnCheckedChangeListener { _, isChecked ->
@@ -151,7 +156,7 @@ class ThemeSettingsActivity : AppCompatActivity() {
                 text = if (isChecked) getString(R.string.on) else getString(R.string.off)
             }
         }
-        binding.settingsInclude.coloredStrokeSwitch.apply {
+        binding.coloredStrokeSwitch.apply {
             isChecked = PREFS.coloredStroke
             text = if (isChecked) getString(R.string.on) else getString(R.string.off)
             setOnCheckedChangeListener { _, isChecked ->
@@ -170,78 +175,27 @@ class ThemeSettingsActivity : AppCompatActivity() {
             )
         val spannable: Spannable = SpannableString(textFinal)
         spannable.setSpan(
-            ForegroundColorSpan(Utils.launcherAccentColor(theme)),
+            ForegroundColorSpan(Utils.launcherAccentColor(requireActivity().theme)),
             textFinal.indexOf(getString(R.string.settings_theme_accent_title_part1)),
             textFinal.indexOf(getString(R.string.settings_theme_accent_title_part1)) + getString(R.string.settings_theme_accent_title_part1).length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        binding.settingsInclude.accentTip.setText(spannable, TextView.BufferType.SPANNABLE)
+        binding.accentTip.setText(spannable, TextView.BufferType.SPANNABLE)
     }
 
     private fun prepareTip() {
         if (PREFS.prefs.getBoolean("tipSettingsThemeEnabled", true)) {
-            WPDialog(this).setTopDialog(true)
+            WPDialog(requireActivity()).setTopDialog(true)
                 .setTitle(getString(R.string.tip))
                 .setMessage(getString(R.string.tipSettingsTheme))
                 .setPositiveButton(getString(android.R.string.ok), null)
                 .show()
-            PREFS.prefs.edit().putBoolean("tipSettingsThemeEnabled", false).apply()
+            PREFS.prefs.edit { putBoolean("tipSettingsThemeEnabled", false) }
         }
-    }
-
-    private fun enterAnimation(exit: Boolean) {
-        if (!PREFS.isTransitionAnimEnabled) return
-
-        val main = binding.root
-        val animatorSet = AnimatorSet().apply {
-            playTogether(
-                createObjectAnimator(
-                    main,
-                    "translationX",
-                    if (exit) 0f else -300f,
-                    if (exit) -300f else 0f
-                ),
-                createObjectAnimator(
-                    main,
-                    "rotationY",
-                    if (exit) 0f else 90f,
-                    if (exit) 90f else 0f
-                ),
-                createObjectAnimator(main, "alpha", if (exit) 1f else 0f, if (exit) 0f else 1f),
-                createObjectAnimator(
-                    main,
-                    "scaleX",
-                    if (exit) 1f else 0.5f,
-                    if (exit) 0.5f else 1f
-                ),
-                createObjectAnimator(main, "scaleY", if (exit) 1f else 0.5f, if (exit) 0.5f else 1f)
-            )
-            duration = 400
-        }
-        animatorSet.start()
-    }
-
-    private fun createObjectAnimator(
-        target: Any,
-        property: String,
-        startValue: Float,
-        endValue: Float
-    ): ObjectAnimator {
-        return ObjectAnimator.ofFloat(target, property, startValue, endValue)
-    }
-
-    override fun onPause() {
-        enterAnimation(true)
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        enterAnimation(false)
     }
 
     private fun applyTheme() {
-        binding.settingsInclude.chooseTheme.apply {
+        binding.chooseTheme.apply {
             text = when (PREFS.appTheme) {
                 0 -> getString(R.string.auto)
                 1 -> getString(R.string.dark)
@@ -250,11 +204,42 @@ class ThemeSettingsActivity : AppCompatActivity() {
             }
             visibility = View.VISIBLE
         }
-        binding.settingsInclude.chooseThemeMenu.visibility = View.GONE
+        binding.chooseThemeMenu.visibility = View.GONE
         when (PREFS.appTheme) {
             0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    private fun setOrientationButtons() {
+        val orientations = mapOf(
+            "p" to Triple(true, false, false),
+            "l" to Triple(false, true, false)
+        )
+        val (portrait, landscape, default) = orientations[PREFS.orientation] ?: Triple(
+            false,
+            false,
+            true
+        )
+        binding.portraitOrientation.isChecked = portrait
+        binding.landscapeOrientation.isChecked = landscape
+        binding.defaultOrientation.isChecked = default
+        binding.orientationRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.portraitOrientation.id -> {
+                    PREFS.orientation = "p"
+                }
+
+                binding.landscapeOrientation.id -> {
+                    PREFS.orientation = "l"
+                }
+
+                binding.defaultOrientation.id -> {
+                    PREFS.orientation = "default"
+                }
+            }
+            PREFS.isPrefsChanged = true
         }
     }
 
@@ -311,48 +296,18 @@ class ThemeSettingsActivity : AppCompatActivity() {
                     accentColor = value
                     isPrefsChanged = true
                 }
+                PREFS.prefs.edit { putBoolean("themeChanged", true) }
                 requireActivity().recreate()
             }
         }
 
         companion object {
-            private const val TAG = "accentD"
+            private const val TAG = "accentDialog"
             fun display(fragmentManager: FragmentManager?): AccentDialog {
                 val accentDialog = AccentDialog()
                 fragmentManager?.let { accentDialog.show(it, TAG) }
                 return accentDialog
             }
-        }
-    }
-
-    fun setOrientationButtons() {
-        val orientations = mapOf(
-            "p" to Triple(true, false, false),
-            "l" to Triple(false, true, false)
-        )
-        val (portrait, landscape, default) = orientations[PREFS.orientation] ?: Triple(
-            false,
-            false,
-            true
-        )
-        binding.settingsInclude.portraitOrientation.isChecked = portrait
-        binding.settingsInclude.landscapeOrientation.isChecked = landscape
-        binding.settingsInclude.defaultOrientation.isChecked = default
-        binding.settingsInclude.orientationRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.settingsInclude.portraitOrientation.id -> {
-                    PREFS.orientation = "p"
-                }
-
-                binding.settingsInclude.landscapeOrientation.id -> {
-                    PREFS.orientation = "l"
-                }
-
-                binding.settingsInclude.defaultOrientation.id -> {
-                    PREFS.orientation = "default"
-                }
-            }
-            PREFS.isPrefsChanged = true
         }
     }
 }

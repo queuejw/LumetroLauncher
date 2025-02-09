@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity.DOWNLOAD_SERVICE
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.net.toUri
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -31,7 +32,8 @@ import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Application.Companion.isUpdateDownloading
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.Prefs
-import ru.queuejw.mpl.content.settings.activities.UpdateActivity
+import ru.queuejw.mpl.content.settings.SettingsActivity
+import ru.queuejw.mpl.content.settings.fragments.UpdateSettingsFragment
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -42,7 +44,7 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
     private fun buildNotificationN(context: Context): NotificationCompat.Builder {
         val icon = IconCompat.createWithResource(context, R.drawable.ic_download)
         val intent = Intent(Intent.ACTION_MAIN)
-            .setClass(context, UpdateActivity::class.java)
+            .setClass(context, SettingsActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         return NotificationCompat.Builder(context, CHAN_ID)
             .setSmallIcon(icon)
@@ -65,7 +67,7 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
     fun buildNotificationO(context: Context): Notification.Builder {
         val icon = Icon.createWithResource(context, R.drawable.ic_download)
         val intent = Intent(Intent.ACTION_MAIN)
-            .setClass(context, UpdateActivity::class.java)
+            .setClass(context, SettingsActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         return Notification.Builder(context, CHAN_ID)
             .setSmallIcon(icon)
@@ -83,11 +85,11 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
         val context = applicationContext
         val prefs = Prefs(context)
         val state: Result = try {
-            UpdateActivity.downloadXml(UpdateActivity.URL)
-            if (UpdateActivity.isUpdateAvailable()) {
+            UpdateSettingsFragment.downloadXml(UpdateSettingsFragment.URL)
+            if (UpdateSettingsFragment.isUpdateAvailable()) {
                 if (PREFS.isAutoUpdateEnabled) {
                     val name = "MPL"
-                    val link = UpdateActivity.URL_RELEASE_FILE
+                    val link = UpdateSettingsFragment.URL_RELEASE_FILE
                     downloadFile(name, link, context)
                 } else {
                     prefs.updateState = 6
@@ -116,7 +118,7 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
     private fun downloadFile(fileName: String, url: String, context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                UpdateActivity.deleteUpdateFile(context)
+                UpdateSettingsFragment.deleteUpdateFile(context)
             } catch (e: IOException) {
                 Log.e("Background Update", "Error: $e")
                 PREFS.updateState = 5
@@ -124,7 +126,7 @@ class UpdateWorker(context: Context, workerParams: WorkerParameters) :
                 return@launch
             }
             try {
-                val request = DownloadManager.Request(Uri.parse(url))
+                val request = DownloadManager.Request(url.toUri())
                 request.setDescription(context.getString(R.string.update_notification))
                 request.setTitle(fileName)
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)

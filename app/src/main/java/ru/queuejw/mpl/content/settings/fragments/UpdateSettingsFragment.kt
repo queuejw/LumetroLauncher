@@ -1,12 +1,11 @@
-package ru.queuejw.mpl.content.settings.activities
+package ru.queuejw.mpl.content.settings.fragments
 
 import android.Manifest
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -15,23 +14,27 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.edit
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.queuejw.mpl.Application.Companion.PREFS
-import ru.queuejw.mpl.Application.Companion.customBoldFont
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.Application.Companion.isUpdateDownloading
 import ru.queuejw.mpl.BuildConfig
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.bsod.BSOD
-import ru.queuejw.mpl.databinding.LauncherSettingsUpdatesBinding
+import ru.queuejw.mpl.content.settings.SettingsActivity
+import ru.queuejw.mpl.databinding.SettingsUpdatesBinding
 import ru.queuejw.mpl.helpers.ui.WPDialog
 import ru.queuejw.mpl.helpers.update.UpdateDataParser
 import ru.queuejw.mpl.helpers.update.UpdateWorker
@@ -41,7 +44,10 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-class UpdateActivity : AppCompatActivity() {
+class UpdateSettingsFragment : Fragment() {
+
+    private var _binding: SettingsUpdatesBinding? = null
+    private val binding get() = _binding!!
 
     private var db: BSOD? = null
     private var manager: DownloadManager? = null
@@ -52,61 +58,66 @@ class UpdateActivity : AppCompatActivity() {
     private var coroutineDownloadingScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private var mainDispatcher = Dispatchers.Main
 
-    private lateinit var binding: LauncherSettingsUpdatesBinding
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SettingsUpdatesBinding.inflate(inflater, container, false)
+        (requireActivity() as SettingsActivity).setText(getString(R.string.launcher_update))
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = LauncherSettingsUpdatesBinding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         init()
+        setupFont()
         refreshUi()
         setOnClickers()
-        Utils.applyWindowInsets(binding.root)
-        prepareTip()
-        setupFont()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun init() {
+        db = BSOD.getData(requireActivity())
     }
 
     private fun setupFont() {
         customFont?.let {
-            binding.settingsSectionLabel.typeface = it
-            binding.settingsLabel.typeface = it
-            binding.settingsInclude.updateStatus.typeface = it
-            binding.settingsInclude.checkingUpdatesSub.typeface = it
-            binding.settingsInclude.progessText.typeface = it
-            binding.settingsInclude.updateInfo.typeface = it
-            binding.settingsInclude.cancelButton.typeface = it
-            binding.settingsInclude.checkForUpdatesBtn.typeface = it
-            binding.settingsInclude.UpdateNotifyCheckBox.typeface = it
-            binding.settingsInclude.AutoUpdateCheckBox.typeface = it
+            binding.updateStatus.typeface = it
+            binding.checkingUpdatesSub.typeface = it
+            binding.progessText.typeface = it
+            binding.updateInfo.typeface = it
+            binding.cancelButton.typeface = it
+            binding.checkForUpdatesBtn.typeface = it
+            binding.UpdateNotifyCheckBox.typeface = it
+            binding.AutoUpdateCheckBox.typeface = it
 
         }
-        customBoldFont?.let {
-            binding.settingsLabel.typeface = it
-        }
-    }
-
-    private fun init() {
-        db = BSOD.getData(this)
     }
 
     private fun setOnClickers() {
-        binding.settingsInclude.AutoUpdateCheckBox.setOnCheckedChangeListener { _, isChecked ->
+        binding.AutoUpdateCheckBox.setOnCheckedChangeListener { _, isChecked ->
             PREFS.isAutoUpdateEnabled = isChecked
             refreshUi()
         }
-        binding.settingsInclude.UpdateNotifyCheckBox.setOnCheckedChangeListener { _, isChecked ->
+        binding.UpdateNotifyCheckBox.setOnCheckedChangeListener { _, isChecked ->
             PREFS.isUpdateNotificationEnabled = isChecked
-            if (isChecked) UpdateWorker.scheduleWork(this) else UpdateWorker.stopWork(this)
+            if (isChecked) UpdateWorker.scheduleWork(requireActivity()) else UpdateWorker.stopWork(
+                requireActivity()
+            )
             refreshUi()
         }
-        binding.settingsInclude.updateInfo.setOnClickListener {
-            WPDialog(this).setTopDialog(true)
+        binding.updateInfo.setOnClickListener {
+            WPDialog(requireActivity()).setTopDialog(true)
                 .setTitle(getString(R.string.details))
                 .setMessage(getUpdateMessage())
                 .setPositiveButton(getString(android.R.string.ok), null).show()
         }
-        binding.settingsInclude.checkForUpdatesBtn.setOnClickListener {
-            if (!Utils.checkStoragePermissions(this)) {
+        binding.checkForUpdatesBtn.setOnClickListener {
+            if (!Utils.checkStoragePermissions(requireActivity())) {
                 PREFS.updateState = 5
                 refreshUi()
                 showPermsDialog()
@@ -120,12 +131,12 @@ class UpdateActivity : AppCompatActivity() {
                             "MPL_update.apk"
                         )
                         val uri = FileProvider.getUriForFile(
-                            this,
-                            applicationContext.packageName + ".provider",
+                            requireActivity(),
+                            requireActivity().packageName + ".provider",
                             file
                         )
-                        PREFS.prefs.edit().putBoolean("updateInstalled", true).apply()
-                        openFile(uri, this)
+                        PREFS.prefs.edit { putBoolean("updateInstalled", true) }
+                        openFile(uri, requireActivity())
                     } catch (e: Exception) {
                         Log.i("InstallAPK", "error: $e")
                         PREFS.updateState = 5
@@ -146,7 +157,7 @@ class UpdateActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.settingsInclude.cancelButton.setOnClickListener {
+        binding.cancelButton.setOnClickListener {
             val ver = if (UpdateDataParser.verCode == null) {
                 PREFS.versionCode
             } else {
@@ -162,85 +173,24 @@ class UpdateActivity : AppCompatActivity() {
             }
             isUpdateDownloading = false
             manager?.remove(downloadId!!)
-            deleteUpdateFile(this)
+            deleteUpdateFile(requireActivity())
             refreshUi()
         }
         if (PREFS.prefs.getBoolean(
                 "permsDialogUpdateScreenEnabled",
                 true
-            ) && !Utils.checkStoragePermissions(this)
+            ) && !Utils.checkStoragePermissions(requireActivity())
         ) showPermsDialog()
     }
 
-    private fun prepareTip() {
-        if (PREFS.prefs.getBoolean("tipSettingsUpdatesEnabled", true)) {
-            WPDialog(this).setTopDialog(true)
-                .setTitle(getString(R.string.tip))
-                .setMessage(getString(R.string.tipSettingsUpdates))
-                .setPositiveButton(getString(android.R.string.ok), null)
-                .show()
-            PREFS.prefs.edit().putBoolean("tipSettingsUpdatesEnabled", false).apply()
-        }
-    }
-
-    private fun enterAnimation(exit: Boolean) {
-        if (!PREFS.isTransitionAnimEnabled) return
-        val main = binding.root
-        val animatorSet = AnimatorSet().apply {
-            playTogether(
-                createObjectAnimator(
-                    main,
-                    "translationX",
-                    if (exit) 0f else -300f,
-                    if (exit) -300f else 0f
-                ),
-                createObjectAnimator(
-                    main,
-                    "rotationY",
-                    if (exit) 0f else 90f,
-                    if (exit) 90f else 0f
-                ),
-                createObjectAnimator(main, "alpha", if (exit) 1f else 0f, if (exit) 0f else 1f),
-                createObjectAnimator(
-                    main,
-                    "scaleX",
-                    if (exit) 1f else 0.5f,
-                    if (exit) 0.5f else 1f
-                ),
-                createObjectAnimator(main, "scaleY", if (exit) 1f else 0.5f, if (exit) 0.5f else 1f)
-            )
-            duration = 400
-        }
-        animatorSet.start()
-    }
-
-    private fun createObjectAnimator(
-        target: Any,
-        property: String,
-        startValue: Float,
-        endValue: Float
-    ): ObjectAnimator {
-        return ObjectAnimator.ofFloat(target, property, startValue, endValue)
-    }
-
-    override fun onResume() {
-        enterAnimation(false)
-        super.onResume()
-    }
-
-    override fun onPause() {
-        enterAnimation(true)
-        super.onPause()
-    }
-
     private fun showPermsDialog() {
-        val dialog = WPDialog(this).setTopDialog(true)
+        val dialog = WPDialog(requireActivity()).setTopDialog(true)
             .setTitle(getString(R.string.perms_req))
             .setCancelable(true)
             .setMessage(getString(R.string.perms_req_tip))
         dialog.setNegativeButton(getString(R.string.yes)) {
             getPermission()
-            WPDialog(this).dismiss()
+            WPDialog(requireActivity()).dismiss()
             dialog.dismiss()
         }
             .setNeutralButton(getString(R.string.hide)) {
@@ -251,6 +201,10 @@ class UpdateActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         dialog.show()
+    }
+
+    private fun hideDialogForever() {
+        PREFS.prefs.edit { putBoolean("permsDialogUpdateScreenEnabled", false) }
     }
 
     private fun getUpdateMessage(): String {
@@ -267,19 +221,15 @@ class UpdateActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun hideDialogForever() {
-        PREFS.prefs.edit().putBoolean("permsDialogUpdateScreenEnabled", false).apply()
-    }
-
     private fun getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).setData(
-                Uri.parse(String.format("package:%s", packageName))
+                String.format("package:%s", requireActivity().packageName).toUri()
             )
             startActivity(intent)
         } else {
             ActivityCompat.requestPermissions(
-                this, arrayOf(
+                requireActivity(), arrayOf(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ),
@@ -289,130 +239,130 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun refreshUi() {
-        binding.settingsInclude.AutoUpdateCheckBox.apply {
+        binding.AutoUpdateCheckBox.apply {
             isChecked = PREFS.isAutoUpdateEnabled
             isEnabled = PREFS.isUpdateNotificationEnabled
         }
-        binding.settingsInclude.UpdateNotifyCheckBox.isChecked = PREFS.isUpdateNotificationEnabled
+        binding.UpdateNotifyCheckBox.isChecked = PREFS.isUpdateNotificationEnabled
         when (PREFS.updateState) {
             1 -> {
                 //checking for updates state
-                binding.settingsInclude.checkForUpdatesBtn.visibility = View.GONE
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkForUpdatesBtn.visibility = View.GONE
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.checking_for_updates)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.GONE
-                binding.settingsInclude.cancelButton.visibility = View.VISIBLE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.GONE
+                binding.cancelButton.visibility = View.VISIBLE
             }
 
             2 -> {
                 // dowloading state
-                binding.settingsInclude.checkingUpdatesSub.visibility = View.GONE
-                binding.settingsInclude.checkForUpdatesBtn.visibility = View.GONE
-                binding.settingsInclude.updateIndicator.visibility = View.VISIBLE
-                binding.settingsInclude.cancelButton.visibility = View.VISIBLE
+                binding.checkingUpdatesSub.visibility = View.GONE
+                binding.checkForUpdatesBtn.visibility = View.GONE
+                binding.updateIndicator.visibility = View.VISIBLE
+                binding.cancelButton.visibility = View.VISIBLE
                 val progressString = if (isUpdateDownloading) {
-                    binding.settingsInclude.progress.progress = PREFS.updateProgressLevel
+                    binding.progress.progress = PREFS.updateProgressLevel
                     getString(R.string.preparing_to_install, PREFS.updateProgressLevel) + "%"
                 } else {
                     getString(R.string.preparing_to_install, 0) + "%"
                 }
-                binding.settingsInclude.progessText.text = progressString
-                binding.settingsInclude.updateInfo.visibility = View.GONE
+                binding.progessText.text = progressString
+                binding.updateInfo.visibility = View.GONE
             }
 
             3 -> {
                 // up to date
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.up_to_date)
                 }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.check_for_updates)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.GONE
-                binding.settingsInclude.cancelButton.visibility = View.GONE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.GONE
+                binding.cancelButton.visibility = View.GONE
             }
 
             4 -> {
                 // ready to install
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.ready_to_install)
                 }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.install)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.VISIBLE
-                binding.settingsInclude.cancelButton.visibility = View.VISIBLE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.VISIBLE
+                binding.cancelButton.visibility = View.VISIBLE
             }
 
             5 -> {
                 // error
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.update_failed)
                 }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.retry)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.GONE
-                binding.settingsInclude.cancelButton.visibility = View.GONE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.GONE
+                binding.cancelButton.visibility = View.GONE
             }
 
             6 -> {
                 // ready for download
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.ready_to_download)
                 }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.download)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.VISIBLE
-                binding.settingsInclude.cancelButton.visibility = View.VISIBLE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.VISIBLE
+                binding.cancelButton.visibility = View.VISIBLE
             }
 
             8 -> {
                 // current version is newer
-                binding.settingsInclude.checkingUpdatesSub.apply {
+                binding.checkingUpdatesSub.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.update_failed_version_bigger_than_server)
                 }
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.retry)
                 }
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.GONE
-                binding.settingsInclude.cancelButton.visibility = View.GONE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.GONE
+                binding.cancelButton.visibility = View.GONE
             }
 
             0 -> {
                 // default
-                binding.settingsInclude.checkForUpdatesBtn.apply {
+                binding.checkForUpdatesBtn.apply {
                     visibility = View.VISIBLE
                     text = getString(R.string.check_for_updates)
                 }
-                binding.settingsInclude.checkingUpdatesSub.visibility = View.GONE
-                binding.settingsInclude.updateIndicator.visibility = View.GONE
-                binding.settingsInclude.updateInfo.visibility = View.GONE
-                binding.settingsInclude.cancelButton.visibility = View.GONE
+                binding.checkingUpdatesSub.visibility = View.GONE
+                binding.updateIndicator.visibility = View.GONE
+                binding.updateInfo.visibility = View.GONE
+                binding.cancelButton.visibility = View.GONE
             }
         }
         if (!BuildConfig.UPDATES_ACITVE) {
-            binding.settingsInclude.checkForUpdatesBtn.visibility = View.GONE
-            binding.settingsInclude.checkingUpdatesSub.apply {
+            binding.checkForUpdatesBtn.visibility = View.GONE
+            binding.checkingUpdatesSub.apply {
                 visibility = View.VISIBLE
                 text = getString(R.string.updates_disabled)
             }
@@ -452,7 +402,7 @@ class UpdateActivity : AppCompatActivity() {
                 PREFS.updateState = 6
             }
             withContext(mainDispatcher) {
-                binding.settingsInclude.progress.isIndeterminate = false
+                binding.progress.isIndeterminate = false
                 refreshUi()
             }
             cancel()
@@ -468,13 +418,13 @@ class UpdateActivity : AppCompatActivity() {
     private fun downloadFile(fileName: String, url: String) {
         coroutineDownloadingScope.launch {
             try {
-                deleteUpdateFile(this@UpdateActivity)
+                deleteUpdateFile(requireActivity())
             } catch (e: IOException) {
                 Utils.saveError(e.toString(), db!!)
                 PREFS.updateState = 5
                 refreshUi()
                 withContext(mainDispatcher) {
-                    WPDialog(this@UpdateActivity).setTopDialog(true)
+                    WPDialog(requireActivity()).setTopDialog(true)
                         .setTitle(getString(R.string.error))
                         .setMessage(getString(R.string.downloading_error))
                         .setPositiveButton(getString(android.R.string.ok), null).show()
@@ -483,7 +433,7 @@ class UpdateActivity : AppCompatActivity() {
                 return@launch
             }
             try {
-                val request = DownloadManager.Request(Uri.parse(url))
+                val request = DownloadManager.Request(url.toUri())
                 request.setDescription(getString(R.string.update_notification))
                 request.setTitle(fileName)
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
@@ -491,7 +441,7 @@ class UpdateActivity : AppCompatActivity() {
                     Environment.DIRECTORY_DOWNLOADS,
                     "MPL_V80.apk"
                 )
-                manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                manager = requireActivity().getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 downloadId = manager?.enqueue(request)
                 isUpdateDownloading = true
                 PREFS.updateState = 2
@@ -513,8 +463,8 @@ class UpdateActivity : AppCompatActivity() {
                             getString(R.string.preparing_to_install, progress) + "%"
                         PREFS.updateProgressLevel = progress
                         withContext(mainDispatcher) {
-                            binding.settingsInclude.progessText.text = progressString
-                            binding.settingsInclude.progress.setProgress(progress, true)
+                            binding.progessText.text = progressString
+                            binding.progress.setProgress(progress, true)
                         }
                         if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                             isUpdateDownloading = false
@@ -536,7 +486,7 @@ class UpdateActivity : AppCompatActivity() {
                         isUpdateDownloading = false
                         PREFS.updateState = 0
                         withContext(mainDispatcher) {
-                            this@UpdateActivity.recreate()
+                            requireActivity().recreate()
                         }
                     }
                 }
@@ -549,7 +499,7 @@ class UpdateActivity : AppCompatActivity() {
                 PREFS.updateState = 5
                 withContext(mainDispatcher) {
                     refreshUi()
-                    WPDialog(this@UpdateActivity).setTopDialog(true)
+                    WPDialog(requireActivity()).setTopDialog(true)
                         .setTitle(getString(R.string.error))
                         .setMessage(getString(R.string.downloading_error))
                         .setPositiveButton(getString(android.R.string.ok), null).show()

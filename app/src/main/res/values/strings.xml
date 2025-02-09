@@ -228,4 +228,5 @@
     <string name="reject_label">reject</string>
     <string name="terms_of_use_label">Terms of Use</string>
     <string name="terms_of_use">By tapping Accept, you agree that</string>
+    <string name="apply_font_error">Failed to apply the font. The error information has been saved.</string>
 </resources>

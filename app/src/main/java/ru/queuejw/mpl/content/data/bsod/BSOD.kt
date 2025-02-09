@@ -1,11 +1,16 @@
 package ru.queuejw.mpl.content.data.bsod
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [BSODEntity::class], version = 2)
+@Database(
+    entities = [BSODEntity::class],
+    version = 3,
+    autoMigrations = [AutoMigration(from = 2, to = 3)]
+)
 abstract class BSOD : RoomDatabase() {
 
     abstract fun getDao(): BSODDao
@@ -14,8 +19,7 @@ abstract class BSOD : RoomDatabase() {
         private const val DB_BSOD: String = "bsodList.db"
 
         fun getData(context: Context): BSOD {
-            return Room.databaseBuilder(context, BSOD::class.java, DB_BSOD)
-                .fallbackToDestructiveMigration().build()
+            return Room.databaseBuilder(context, BSOD::class.java, DB_BSOD).build()
         }
     }
 }

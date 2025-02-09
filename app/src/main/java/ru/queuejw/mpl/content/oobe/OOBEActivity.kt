@@ -27,7 +27,9 @@ import ru.queuejw.mpl.helpers.utils.Utils.Companion.applyWindowInsets
 class OOBEActivity : AppCompatActivity() {
 
     private lateinit var binding: OobeMainScreenBinding
-    private val slideDp by lazy { this.resources.getDimensionPixelSize(R.dimen.oobe_bottom_bar_slide_dp).toFloat() }
+    private val slideDp by lazy {
+        this.resources.getDimensionPixelSize(R.dimen.oobe_bottom_bar_slide_dp).toFloat()
+    }
     private val animationDuration = 400L
 
     var nextFragment = 1
@@ -48,6 +50,7 @@ class OOBEActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {}
         })
     }
+
     private fun setUi() {
         binding.next.setOnClickListener {
             animateBottomBar(true)
@@ -60,9 +63,11 @@ class OOBEActivity : AppCompatActivity() {
         applyWindowInsets(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
     }
+
     fun setFragment(value: Int) {
         lifecycleScope.launch {
-            binding.oobeView.animate().translationX(-1000f).alpha(0f).setDuration(animationDuration).setInterpolator(DecelerateInterpolator()).start()
+            binding.oobeView.animate().translationX(-1000f).alpha(0f).setDuration(animationDuration)
+                .setInterpolator(DecelerateInterpolator()).start()
             delay(250)
             supportFragmentManager.commit {
                 replace(binding.fragmentContainerView.id, getCurrentFragment(value), "oobe")
@@ -70,10 +75,13 @@ class OOBEActivity : AppCompatActivity() {
             binding.oobeView.apply {
                 translationX = 500f
             }
-            binding.oobeView.animate().translationX(0f).alpha(1f).setDuration(animationDuration).setInterpolator(
-                DecelerateInterpolator()).start()
+            binding.oobeView.animate().translationX(0f).alpha(1f).setDuration(animationDuration)
+                .setInterpolator(
+                    DecelerateInterpolator()
+                ).start()
         }
     }
+
     private fun getCurrentFragment(value: Int): Fragment {
         return when (value) {
             1 -> TermsOfUseFragment()
@@ -85,6 +93,7 @@ class OOBEActivity : AppCompatActivity() {
             else -> WelcomeFragment()
         }
     }
+
     fun animateBottomBar(slideDown: Boolean) {
         if (slideDown) {
             binding.bottomBar.animate().translationY(slideDp).alpha(0f).setDuration(125).start()
@@ -92,18 +101,22 @@ class OOBEActivity : AppCompatActivity() {
             binding.bottomBar.animate().translationY(0f).alpha(1f).setDuration(125).start()
         }
     }
+
     fun animateBottomBarFromFragment() {
         lifecycleScope.launch {
             delay(100)
             animateBottomBar(false)
         }
     }
+
     fun updateNextButtonText(text: String) {
         binding.next.text = text
     }
+
     fun updatePreviousButtonText(text: String) {
         binding.previous.text = text
     }
+
     fun enableAllButtons() {
         binding.next.apply {
             visibility = View.VISIBLE
@@ -114,6 +127,7 @@ class OOBEActivity : AppCompatActivity() {
             isActivated = true
         }
     }
+
     fun blockBottomBarButton(next: Boolean) {
         if (next) binding.next.apply {
             visibility = View.INVISIBLE
@@ -126,6 +140,7 @@ class OOBEActivity : AppCompatActivity() {
             }
         }
     }
+
     fun setText(newText: String) {
         binding.appbarTextView.text = newText
     }

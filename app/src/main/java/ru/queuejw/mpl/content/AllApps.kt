@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -28,12 +28,15 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import coil3.load
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
@@ -79,7 +82,7 @@ class AllApps : Fragment() {
     private val binding get() = _binding!!
 
     private val bottomDecor by lazy {
-        Utils.BottomOffsetDecoration(
+        BottomOffsetDecoration(
             requireContext().resources.getDimensionPixelSize(
                 R.dimen.recyclerViewPadding
             )
@@ -145,7 +148,7 @@ class AllApps : Fragment() {
         }
         if (PREFS.prefs.getBoolean("tip2Enabled", true)) {
             tipDialog()
-            PREFS.prefs.edit().putBoolean("tip2Enabled", false).apply()
+            PREFS.prefs.edit { putBoolean("tip2Enabled", false) }
         }
     }
 
@@ -570,14 +573,14 @@ class AllApps : Fragment() {
             }
             uninstall.setOnClickListener {
                 popupWindow?.dismiss()
-                startActivity(Intent(Intent.ACTION_DELETE).setData(Uri.parse("package:${app.appPackage}")))
+                startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.appPackage}".toUri()))
             }
 
             info.setOnClickListener {
                 isAppOpened = true
                 startActivity(
                     Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        .setData(Uri.parse("package:${app.appPackage}"))
+                        .setData("package:${app.appPackage}".toUri())
                 )
             }
             popupWindow?.setOnDismissListener {
@@ -712,6 +715,18 @@ class AllApps : Fragment() {
             override fun areContentsTheSame(old: Int, new: Int): Boolean {
                 return oldList[old] == newList[new]
             }
+        }
+    }
+}
+class BottomOffsetDecoration(private val bottomOffset: Int) : ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) {
+            outRect.bottom = bottomOffset
         }
     }
 }

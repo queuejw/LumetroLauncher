@@ -1,16 +1,16 @@
-package ru.queuejw.mpl.content.settings.activities
+package ru.queuejw.mpl.content.settings.fragments
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,32 +19,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.queuejw.mpl.Application.Companion.PREFS
-import ru.queuejw.mpl.Application.Companion.customBoldFont
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.bsod.BSOD
 import ru.queuejw.mpl.content.data.bsod.BSODEntity
+import ru.queuejw.mpl.content.settings.SettingsActivity
 import ru.queuejw.mpl.databinding.BsodItemBinding
-import ru.queuejw.mpl.databinding.LauncherSettingsFeedbackBsodsBinding
+import ru.queuejw.mpl.databinding.SettingsFeedbackListBinding
 import ru.queuejw.mpl.helpers.utils.Utils
 
-class FeedbackBsodListActivity : AppCompatActivity() {
+class FeedbackListFragment : Fragment() {
 
-    private lateinit var binding: LauncherSettingsFeedbackBsodsBinding
+    private var _binding: SettingsFeedbackListBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = LauncherSettingsFeedbackBsodsBinding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        Utils.applyWindowInsets(binding.root)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SettingsFeedbackListBinding.inflate(inflater, container, false)
+        (requireActivity() as SettingsActivity).setText(getString(R.string.saved_issues))
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val db = BSOD.getData(this@FeedbackBsodListActivity)
-            val mAdapter = BSODadapter(db.getDao().getBsodList(), db)
+            val db = BSOD.getData(requireContext())
+            val mAdapter = BSODAdapter(db.getDao().getBsodList(), db, requireContext())
             withContext(Dispatchers.Main) {
-                binding.settingsInclude.bsodlistRecycler.apply {
+                binding.bsodlistRecycler.apply {
                     layoutManager = LinearLayoutManager(
-                        this@FeedbackBsodListActivity,
+                        requireContext(),
                         LinearLayoutManager.VERTICAL,
                         false
                     )
@@ -52,75 +62,19 @@ class FeedbackBsodListActivity : AppCompatActivity() {
                 }
             }
         }
-        setupFont()
     }
 
-    private fun setupFont() {
-        customFont?.let {
-            binding.settingsSectionLabel.typeface = it
-            binding.settingsLabel.typeface = it
-        }
-        customBoldFont?.let {
-            binding.settingsLabel.typeface = it
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    private fun enterAnimation(exit: Boolean) {
-        if (!PREFS.isTransitionAnimEnabled) return
-
-        val main = binding.root
-        val animatorSet = AnimatorSet().apply {
-            playTogether(
-                createObjectAnimator(
-                    main,
-                    "translationX",
-                    if (exit) 0f else -300f,
-                    if (exit) -300f else 0f
-                ),
-                createObjectAnimator(
-                    main,
-                    "rotationY",
-                    if (exit) 0f else 90f,
-                    if (exit) 90f else 0f
-                ),
-                createObjectAnimator(main, "alpha", if (exit) 1f else 0f, if (exit) 0f else 1f),
-                createObjectAnimator(
-                    main,
-                    "scaleX",
-                    if (exit) 1f else 0.5f,
-                    if (exit) 0.5f else 1f
-                ),
-                createObjectAnimator(main, "scaleY", if (exit) 1f else 0.5f, if (exit) 0.5f else 1f)
-            )
-            duration = 400
-        }
-        animatorSet.start()
-    }
-
-    private fun createObjectAnimator(
-        target: Any,
-        property: String,
-        startValue: Float,
-        endValue: Float
-    ): ObjectAnimator {
-        return ObjectAnimator.ofFloat(target, property, startValue, endValue)
-    }
-
-    override fun onResume() {
-        enterAnimation(false)
-        super.onResume()
-    }
-
-    override fun onPause() {
-        enterAnimation(true)
-        super.onPause()
-    }
-
-    inner class BSODadapter(
+    inner class BSODAdapter(
         private var data: List<BSODEntity>,
-        private val db: BSOD
+        private val db: BSOD,
+        private val context: Context
     ) :
-        RecyclerView.Adapter<BSODadapter.ViewHolder>() {
+        RecyclerView.Adapter<BSODAdapter.ViewHolder>() {
 
         inner class ViewHolder(val holderBinding: BsodItemBinding) :
             RecyclerView.ViewHolder(holderBinding.root) {
@@ -171,12 +125,12 @@ class FeedbackBsodListActivity : AppCompatActivity() {
                 showDialog(item.log)
             }
             viewHolder.holderBinding.share.setOnClickListener {
-                Utils.sendCrash(item.log, this@FeedbackBsodListActivity)
+                Utils.sendCrash(item.log, requireActivity())
             }
         }
 
         private fun showDialog(text: String) {
-            MaterialAlertDialogBuilder(this@FeedbackBsodListActivity)
+            MaterialAlertDialogBuilder(context)
                 .setMessage(text)
                 .setPositiveButton(getString(R.string.copy)) { _: DialogInterface?, _: Int ->
                     copyError(text)
@@ -184,9 +138,9 @@ class FeedbackBsodListActivity : AppCompatActivity() {
         }
 
         private fun copyError(error: String) {
-            val clipbrd = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("MPL_Error", error)
-            clipbrd.setPrimaryClip(clip)
+            clipboard.setPrimaryClip(clip)
         }
 
         override fun getItemCount() = data.size

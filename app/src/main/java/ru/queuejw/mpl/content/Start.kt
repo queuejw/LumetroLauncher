@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
-import android.net.Uri
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.activity.OnBackPressedCallback
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -32,6 +33,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import coil3.load
 import com.arasthel.spannedgridlayoutmanager.SpanSize
 import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
@@ -95,7 +97,7 @@ class Start : Fragment() {
         }
     }
     private val marginDecor by lazy {
-        Utils.MarginItemDecoration(14)
+        MarginItemDecoration(14)
     }
     private val mItemTouchHelper: ItemTouchHelper? by lazy {
         mAdapter?.let {
@@ -1009,15 +1011,13 @@ class Start : Fragment() {
                 bottomSheet.dismiss()
             }
             uninstall.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_DELETE).setData(Uri.parse("package:" + item.tilePackage)))
+                startActivity(Intent(Intent.ACTION_DELETE).setData(("package:" + item.tilePackage).toUri()))
                 bottomSheet.dismiss()
             }
             appInfo.setOnClickListener {
                 startActivity(
                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
-                        Uri.parse(
-                            "package:" + item.tilePackage
-                        )
+                        ("package:" + item.tilePackage).toUri()
                     )
                 )
                 bottomSheet.dismiss()
@@ -1200,6 +1200,20 @@ class Start : Fragment() {
             mAdapter.notifyItemChanged(item.tilePosition!!)
             mAdapter.showSettingsBottomSheet(item)
             super.dismiss()
+        }
+    }
+}
+class MarginItemDecoration(private val spaceSize: Int) : ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect, view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        with(outRect) {
+            top = spaceSize
+            left = spaceSize
+            right = spaceSize
+            bottom = spaceSize
         }
     }
 }
