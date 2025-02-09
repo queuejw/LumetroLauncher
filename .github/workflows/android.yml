@@ -1,10 +1,10 @@
-name: Build MPL
+name: Build MPL 8.1
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "v8.1" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "v8.1" ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-    - name: Build MPL with Gradle
+    - name: Build MPL 8.1 with Gradle
       run: ./gradlew assembleDebug
     - name: Upload artifact
       uses: actions/upload-artifact@v4
