@@ -1,4 +1,4 @@
-name: Build MPL 8.1
+name: Build MPL 8
 
 on:
   push:
