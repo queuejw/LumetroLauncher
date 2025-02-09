@@ -2,9 +2,9 @@ name: Build MPL
 
 on:
   push:
-    branches: [ "v8", "v8.1" ]
+    branches: [ "v8" ]
   pull_request:
-    branches: [ "v8", "v8.1" ]
+    branches: [ "v8" ]
 
 jobs:
   build:
