@@ -1,8 +1,8 @@
 package ru.queuejw.mpl.content.settings
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,6 +10,9 @@ import androidx.core.content.edit
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.settings.fragments.MainSettingsFragment
@@ -17,7 +20,6 @@ import ru.queuejw.mpl.content.settings.fragments.ThemeSettingsFragment
 import ru.queuejw.mpl.databinding.LauncherSettingsMainBinding
 import ru.queuejw.mpl.helpers.ui.WPDialog
 import ru.queuejw.mpl.helpers.utils.Utils
-import kotlin.random.Random
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -48,7 +50,6 @@ class SettingsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         prepareTip()
-        checkHome()
     }
 
     override fun onResume() {
@@ -57,18 +58,6 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-    }
-
-    private fun checkHome() {
-        if (!isTipActive && !isHomeApp() && Random.nextFloat() < 0.25) {
-            WPDialog(this).setTopDialog(false)
-                .setTitle(getString(R.string.tip))
-                .setMessage(getString(R.string.setAsDefaultLauncher))
-                .setNegativeButton(getString(R.string.no), null)
-                .setPositiveButton(getString(R.string.yes)) {
-                    startActivity(Intent(Settings.ACTION_HOME_SETTINGS))
-                }.show()
-        }
     }
 
     private fun prepareTip() {
@@ -86,24 +75,38 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun isHomeApp(): Boolean {
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_HOME)
-        val res = packageManager.resolveActivity(intent, 0)
-        return res!!.activityInfo != null && (packageName
-                == res.activityInfo.packageName)
-    }
-
     private fun setupBackPressedDispatcher() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStackImmediate()
+                    animateFragmentExit()
                 } else {
                     finish()
                 }
             }
         })
+    }
+
+    private fun animateFragmentExit() {
+        if(!PREFS.isTransitionAnimEnabled) {
+            supportFragmentManager.popBackStackImmediate()
+        } else {
+            binding.root.animate().rotationY(90f).alpha(0.1f).translationX(-100f).setDuration(200).setInterpolator(
+                DecelerateInterpolator()
+            ).withEndAction {
+                supportFragmentManager.popBackStack()
+                binding.root.apply {
+                    rotationY = -90f
+                    alpha = 0f
+                }
+                lifecycleScope.launch {
+                    delay(25)
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(200).setInterpolator(
+                        DecelerateInterpolator()
+                    ).start()
+                }.start()
+            }
+        }
     }
 
     fun setText(newText: String) {
@@ -116,9 +119,34 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun changeFragment(fragment: Fragment, name: String) {
+        if(PREFS.isTransitionAnimEnabled) {
+            lifecycleScope.launch {
+                animateFragmentEnter()
+                delay(200)
+                changeFragmentFunction(fragment, name)
+            }
+        } else {
+            changeFragmentFunction(fragment, name)
+        }
+    }
+    private fun changeFragmentFunction(fragment: Fragment, name: String) {
         supportFragmentManager.commit {
             replace(binding.fragmentContainerView.id, fragment)
             addToBackStack(name)
         }
     }
-}
+    private fun animateFragmentEnter() {
+        binding.root.animate().rotationY(-90f).alpha(0.1f).translationX(-100f).setDuration(200)
+            .setInterpolator(
+                DecelerateInterpolator()
+            ).withEndAction {
+                lifecycleScope.launch {
+                    delay(25)
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(200)
+                        .setInterpolator(
+                            DecelerateInterpolator()
+                        ).start()
+                }.start()
+            }
+        }
+    }

@@ -149,7 +149,7 @@
         <item name="colorSecondary">#d0c1d9</item>
         <item name="colorSurface">#1d1b1e</item>
     </style>
-    <style name="AppTheme.Taupe" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppTheme.Taupe" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_taupe</item>
         <item name="colorPrimaryContainer">#4f462a</item>
         <item name="colorOnPrimary">#383016</item>

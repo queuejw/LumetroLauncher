@@ -1,8 +1,10 @@
 package ru.queuejw.mpl.content.settings.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +37,7 @@ class AboutSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFont()
         setupLayout()
+        context?.let { checkHome(it) }
     }
 
     override fun onDestroyView() {
@@ -101,6 +104,26 @@ class AboutSettingsFragment : Fragment() {
         binding.restartLauncher.setOnClickListener {
             exitProcess(0)
         }
+    }
+
+    private fun checkHome(context: Context) {
+        if (!isHomeApp(context)) {
+            WPDialog(context).setTopDialog(false)
+                .setTitle(getString(R.string.tip))
+                .setMessage(getString(R.string.setAsDefaultLauncher))
+                .setNegativeButton(getString(R.string.no), null)
+                .setPositiveButton(getString(R.string.yes)) {
+                    startActivity(Intent(Settings.ACTION_HOME_SETTINGS))
+                }.show()
+        }
+    }
+
+    private fun isHomeApp(context: Context): Boolean {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        val res = context.packageManager.resolveActivity(intent, 0)
+        return res!!.activityInfo != null && (context.packageName
+                == res.activityInfo.packageName)
     }
 
     private fun resetPart1() {

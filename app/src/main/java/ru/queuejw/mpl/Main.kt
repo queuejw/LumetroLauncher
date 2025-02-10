@@ -355,6 +355,9 @@ class Main : AppCompatActivity() {
 
     private fun setupNavigationBar() {
         binding.mainBottomBar.navigationMain.setBackgroundColor(getNavBarColor())
+        if(!PREFS.isAllAppsEnabled) {
+            binding.mainBottomBar.navigationSearchBtn.visibility = View.GONE
+        }
         configureBottomBar()
     }
 
