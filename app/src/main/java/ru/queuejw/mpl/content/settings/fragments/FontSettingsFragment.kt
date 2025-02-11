@@ -16,9 +16,7 @@ import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Application.Companion.customBoldFont
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.Application.Companion.customLightFont
-import ru.queuejw.mpl.Application.Companion.setupCustomBoldFont
-import ru.queuejw.mpl.Application.Companion.setupCustomFont
-import ru.queuejw.mpl.Application.Companion.setupCustomLightFont
+import ru.queuejw.mpl.Application.Companion.setupFonts
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.bsod.BSOD
 import ru.queuejw.mpl.content.settings.SettingsActivity
@@ -149,9 +147,7 @@ class FontSettingsFragment : Fragment() {
     }
 
     private fun activateNewFont() {
-        setupCustomFont()
-        setupCustomLightFont()
-        setupCustomBoldFont()
+        setupFonts()
         setUi()
     }
 

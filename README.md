@@ -4,6 +4,7 @@
 
 MetroPhoneLauncher (MPL, MPLauncher) is an Android launcher designed to resemble Windows Phone 8. 🌟
 
+This is MPL version 8.0. It is lightweight, but contains far fewer features and customization options. Use it on older devices.
 
 MPL is still in development, but it already includes a range of features you might enjoy. Here’s what’s available so far:
 
@@ -37,11 +38,11 @@ And many more smaller features!
 
 # 📸 Screenshots:
 <div>
-  <img src='/screenshots/tiles.jpg' width='250' alt="Tiles">
-  <img src='/screenshots/allapps.jpg' width='250' alt="All Apps">
-  <img src='/screenshots/tiles_lawnicons.jpg' width='250' alt="Tiles with Lawnicons">
-  <img src='/screenshots/settings.jpg' width='250' alt="Settings">
-  <img src='/screenshots/settings_theme.jpg' width='250' alt="Theme settings">
+  <img src='/screenshots/tiles.png' width='250' alt="Tiles">
+  <img src='/screenshots/allapps.png' width='250' alt="All Apps">
+  <img src='/screenshots/tiles2.png' width='250' alt="Tiles 2">
+  <img src='/screenshots/settings.png' width='250' alt="Settings">
+  <img src='/screenshots/settings_theme.png' width='250' alt="Theme settings">
   <img src='/screenshots/oobe.jpg' width='250' alt="OOBE">
 </div>
 

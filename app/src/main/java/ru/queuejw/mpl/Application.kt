@@ -14,19 +14,13 @@ import ru.queuejw.mpl.helpers.utils.Utils
 class Application : Application() {
 
     override fun onCreate() {
-        if (applicationContext == null) {
-            super.onCreate()
-            return
-        }
         BsodDetector.setContext(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(BsodDetector())
         PREFS = Prefs(applicationContext)
         if (PREFS.accentColor == 21 && DynamicColors.isDynamicColorAvailable()) DynamicColors.applyToActivitiesIfAvailable(
             this
         )
-        setupCustomFont()
-        setupCustomLightFont()
-        setupCustomBoldFont()
+        setupFonts()
         super.onCreate()
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             @SuppressLint("SourceLockedOrientationActivity")
@@ -63,16 +57,11 @@ class Application : Application() {
         var customLightFont: Typeface? = null
         var customBoldFont: Typeface? = null
 
-        fun setupCustomFont() {
+        fun setupFonts() {
             customFont = Utils.getCustomFont()
-        }
-
-        fun setupCustomLightFont() {
             customLightFont = Utils.getCustomLightFont()
-        }
-
-        fun setupCustomBoldFont() {
             customBoldFont = Utils.getCustomBoldFont()
         }
+
     }
 }

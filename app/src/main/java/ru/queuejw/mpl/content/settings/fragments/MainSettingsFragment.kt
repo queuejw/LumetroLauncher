@@ -5,9 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import leakcanary.LeakCanary
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.R
@@ -19,8 +16,6 @@ class MainSettingsFragment : Fragment() {
 
     private var _binding: SettingsListBinding? = null
     private val binding get() = _binding!!
-
-    private var fragmentActive = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,29 +74,13 @@ class MainSettingsFragment : Fragment() {
 
     private fun setClickListener(view: View, fragment: Fragment, name: String) {
         view.setOnClickListener {
-            if(PREFS.isTransitionAnimEnabled) {
-                lifecycleScope.launch {
-                    animateSettings(false)
-                    delay(100)
-                    fragmentActive = false
-                    (requireActivity() as SettingsActivity).changeFragment(fragment, name)
-                }
-            } else {
-                (requireActivity() as SettingsActivity).changeFragment(fragment, name)
-            }
+            (requireActivity() as SettingsActivity).changeFragment(fragment, name)
         }
     }
 
     override fun onResume() {
-        if(fragmentActive) {
-            animateSettings(true)
-        }
-        fragmentActive = true
         super.onResume()
 
-    }
-
-    private fun animateSettings(resumeAnimation: Boolean) {
     }
 
     override fun onPause() {

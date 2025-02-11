@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,6 @@ import ru.queuejw.mpl.helpers.utils.Utils
 import ru.queuejw.mpl.helpers.utils.Utils.Companion.generatePlaceholder
 import ru.queuejw.mpl.helpers.utils.Utils.Companion.setUpApps
 import kotlin.random.Random
-import androidx.core.content.edit
 
 class AppsFragment : Fragment() {
 

@@ -2,7 +2,6 @@ package ru.queuejw.mpl.content.settings
 
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -37,6 +36,10 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         Utils.applyWindowInsets(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
         setupBackPressedDispatcher()
         supportFragmentManager.commit {
             replace(binding.fragmentContainerView.id, MainSettingsFragment())
@@ -45,10 +48,6 @@ class SettingsActivity : AppCompatActivity() {
             PREFS.prefs.edit { putBoolean("themeChanged", false) }
             changeFragment(ThemeSettingsFragment(), "theme")
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
         prepareTip()
     }
 
@@ -91,17 +90,17 @@ class SettingsActivity : AppCompatActivity() {
         if(!PREFS.isTransitionAnimEnabled) {
             supportFragmentManager.popBackStackImmediate()
         } else {
-            binding.root.animate().rotationY(90f).alpha(0.1f).translationX(-100f).setDuration(200).setInterpolator(
+            binding.root.animate().rotationY(90f).alpha(0.75f).translationX(-100f).setDuration(150).setInterpolator(
                 DecelerateInterpolator()
             ).withEndAction {
                 supportFragmentManager.popBackStack()
                 binding.root.apply {
-                    rotationY = -90f
+                    rotationY = -45f
                     alpha = 0f
                 }
                 lifecycleScope.launch {
                     delay(25)
-                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(200).setInterpolator(
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(150).setInterpolator(
                         DecelerateInterpolator()
                     ).start()
                 }.start()
@@ -122,7 +121,7 @@ class SettingsActivity : AppCompatActivity() {
         if(PREFS.isTransitionAnimEnabled) {
             lifecycleScope.launch {
                 animateFragmentEnter()
-                delay(200)
+                delay(80)
                 changeFragmentFunction(fragment, name)
             }
         } else {
@@ -136,13 +135,16 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun animateFragmentEnter() {
-        binding.root.animate().rotationY(-90f).alpha(0.1f).translationX(-100f).setDuration(200)
+        binding.root.animate().rotationY(-45f).alpha(0.75f).translationX(-500f).setDuration(75)
             .setInterpolator(
                 DecelerateInterpolator()
             ).withEndAction {
+                binding.root.alpha = 0f
+                binding.root.rotationY = 90f
                 lifecycleScope.launch {
-                    delay(25)
-                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(200)
+                    delay(50)
+                    binding.root.alpha = 0.5f
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(150)
                         .setInterpolator(
                             DecelerateInterpolator()
                         ).start()

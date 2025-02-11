@@ -46,8 +46,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.everything.android.ui.overscroll.IOverScrollDecor
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.Application.Companion.customLightFont
@@ -88,13 +86,6 @@ class AllApps : Fragment() {
             )
         )
     }
-    private val scrollDecor: IOverScrollDecor by lazy {
-        OverScrollDecoratorHelper.setUpOverScroll(
-            binding.appList,
-            OverScrollDecoratorHelper.ORIENTATION_VERTICAL
-        )
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,7 +126,6 @@ class AllApps : Fragment() {
             binding.appList.apply {
                 layoutManager = recyclerViewLM
                 addItemDecoration(bottomDecor)
-                scrollDecor.attach()
             }
         }
     }
@@ -279,7 +269,6 @@ class AllApps : Fragment() {
         if (!isSearching) return
         isSearching = false
         binding.noResults.visibility = View.GONE
-        scrollDecor.attach()
         binding.apply {
             hideKeyboard(search.editText as? AutoCompleteTextView)
             (search.editText as? AutoCompleteTextView)?.apply {
@@ -309,7 +298,6 @@ class AllApps : Fragment() {
         if (isSearching) return
         appAdapter ?: return
         isSearching = true
-        scrollDecor.detach()
         binding.apply {
             searchLayout.apply {
                 visibility = View.VISIBLE
