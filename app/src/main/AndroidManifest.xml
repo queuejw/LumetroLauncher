@@ -23,7 +23,9 @@
         android:testOnly="false"
         android:hardwareAccelerated="true"
         android:label="@string/app_name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
         <activity
             android:icon="@mipmap/launcher_icon"
             android:name="ru.queuejw.mpl.Main"

@@ -76,30 +76,10 @@ class AboutSettingsFragment : Fragment() {
                 Utils.VERSION_NAME
             )
         binding.moreInfobtn.setOnClickListener {
-            binding.phoneinfoMore.text = getString(
-                R.string.phone_moreinfo,
-                Utils.VERSION_NAME,
-                Utils.VERSION_CODE,
-                Build.DEVICE,
-                Build.BRAND,
-                Build.MODEL,
-                Build.PRODUCT,
-                Build.HARDWARE,
-                Build.DISPLAY,
-                Build.TIME
-            )
-            binding.moreInfobtn.visibility = View.GONE
-            binding.moreinfoLayout.visibility = View.VISIBLE
+            showMoreInfo()
         }
         binding.resetLauncher.setOnClickListener {
-            WPDialog(requireActivity()).setTopDialog(true)
-                .setTitle(getString(R.string.reset_warning_title))
-                .setMessage(getString(R.string.reset_warning))
-                .setNegativeButton(getString(R.string.yes)) {
-                    resetPart1()
-                    WPDialog(requireActivity()).dismiss()
-                }
-                .setPositiveButton(getString(R.string.no), null).show()
+            resetDialog()
         }
         binding.restartLauncher.setOnClickListener {
             exitProcess(0)
@@ -131,5 +111,33 @@ class AboutSettingsFragment : Fragment() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         requireActivity().finishAffinity()
         startActivity(intent)
+    }
+
+    private fun resetDialog() {
+        WPDialog(requireActivity()).setTopDialog(true)
+            .setTitle(getString(R.string.reset_warning_title))
+            .setMessage(getString(R.string.reset_warning))
+            .setNegativeButton(getString(R.string.yes)) {
+                resetPart1()
+                WPDialog(requireActivity()).dismiss()
+            }
+            .setPositiveButton(getString(R.string.no), null).show()
+    }
+
+    private fun showMoreInfo() {
+        binding.phoneinfoMore.text = getString(
+            R.string.phone_moreinfo,
+            Utils.VERSION_NAME,
+            Utils.VERSION_CODE,
+            Build.DEVICE,
+            Build.BRAND,
+            Build.MODEL,
+            Build.PRODUCT,
+            Build.HARDWARE,
+            Build.DISPLAY,
+            Build.TIME
+        )
+        binding.moreInfobtn.visibility = View.GONE
+        binding.moreinfoLayout.visibility = View.VISIBLE
     }
 }

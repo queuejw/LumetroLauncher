@@ -35,16 +35,15 @@ class ThemeSettingsFragment : Fragment() {
     ): View {
         _binding = SettingsThemeBinding.inflate(inflater, container, false)
         (requireActivity() as SettingsActivity).setText(getString(R.string.start_theme))
+        setThemeText()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupFont()
-        setThemeText()
         configure()
         prepareTip()
-        setupFont()
     }
 
     override fun onDestroyView() {
@@ -85,7 +84,6 @@ class ThemeSettingsFragment : Fragment() {
         binding.chosenAccentName.text = Utils.accentName(requireActivity())
         binding.chooseTheme.apply {
             text = when (PREFS.appTheme) {
-                0 -> getString(R.string.auto)
                 1 -> getString(R.string.dark)
                 2 -> getString(R.string.light)
                 else -> getString(R.string.auto)
@@ -96,22 +94,13 @@ class ThemeSettingsFragment : Fragment() {
             }
         }
         binding.chooseAuto.setOnClickListener {
-            PREFS.apply {
-                PREFS.appTheme = 0
-            }
-            applyTheme()
+            applyThemeClickListener(0)
         }
         binding.chooseLight.setOnClickListener {
-            PREFS.apply {
-                PREFS.appTheme = 2
-            }
-            applyTheme()
+            applyThemeClickListener(2)
         }
         binding.chooseDark.setOnClickListener {
-            PREFS.apply {
-                PREFS.appTheme = 1
-            }
-            applyTheme()
+            applyThemeClickListener(1)
         }
         binding.chooseAccent.setOnClickListener {
             AccentDialog.display(
@@ -166,6 +155,13 @@ class ThemeSettingsFragment : Fragment() {
         setOrientationButtons()
     }
 
+    private fun applyThemeClickListener(value: Int) {
+        PREFS.apply {
+            PREFS.appTheme = value
+        }
+        applyTheme()
+    }
+
     private fun setThemeText() {
         val textFinal =
             getString(R.string.settings_theme_accent_title_part2) + " " + getString(R.string.settings_theme_accent_title_part1) + " " + getString(
@@ -193,18 +189,8 @@ class ThemeSettingsFragment : Fragment() {
     }
 
     private fun applyTheme() {
-        binding.chooseTheme.apply {
-            text = when (PREFS.appTheme) {
-                0 -> getString(R.string.auto)
-                1 -> getString(R.string.dark)
-                2 -> getString(R.string.light)
-                else -> getString(R.string.auto)
-            }
-            visibility = View.VISIBLE
-        }
-        binding.chooseThemeMenu.visibility = View.GONE
         PREFS.prefs.edit { putBoolean("themeChanged", true) }
-        requireActivity().recreate()
+        activity?.recreate()
     }
 
     private fun setOrientationButtons() {
@@ -292,7 +278,7 @@ class ThemeSettingsFragment : Fragment() {
                     isPrefsChanged = true
                 }
                 PREFS.prefs.edit { putBoolean("themeChanged", true) }
-                requireActivity().recreate()
+                activity?.recreate()
             }
         }
 
