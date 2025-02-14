@@ -20,6 +20,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
@@ -275,17 +276,25 @@ class AllApps : Fragment() {
                 text.clear()
                 clearFocus()
             }
-            searchLayout.animate().translationY(-300f).setDuration(200).withEndAction {
+            searchLayout.animate().translationY(-300f).setDuration(200).setInterpolator(
+                DecelerateInterpolator()).withEndAction {
                 searchLayout.visibility = View.GONE
                 searchBtn.apply {
                     visibility = View.VISIBLE
-                    animate().alpha(1f).setDuration(200).start()
+                    animate().alpha(1f).setDuration(200).setInterpolator(
+                        DecelerateInterpolator()).start()
+                }
+                if (PREFS.isSettingsBtnEnabled) {
+                    settingsBtn.visibility = View.VISIBLE
+                    settingsBtn.animate().alpha(1f).setDuration(200).setInterpolator(
+                        DecelerateInterpolator()
+                    ).start()
                 }
             }.start()
-            settingsBtn.visibility = if (!PREFS.isSettingsBtnEnabled) View.GONE else View.VISIBLE
             appList.apply {
                 alpha = 0.5f
-                animate().translationX(0f).setDuration(200).start()
+                animate().translationX(0f).setDuration(200).setInterpolator(
+                    DecelerateInterpolator()).start()
                 isVerticalScrollBarEnabled = true
             }
         }
@@ -306,7 +315,13 @@ class AllApps : Fragment() {
             searchBtn.animate().alpha(0f).setDuration(100).withEndAction {
                 searchBtn.visibility = View.GONE
             }.start()
-            settingsBtn.visibility = View.GONE
+            if (PREFS.isSettingsBtnEnabled) {
+                settingsBtn.animate().alpha(0f).setDuration(100).setInterpolator(
+                    DecelerateInterpolator()
+                ).withEndAction {
+                    settingsBtn.visibility = View.GONE
+                }
+            }
             appList.apply {
                 animate().translationX(
                     -requireContext().resources.getDimensionPixelSize(R.dimen.recyclerViewSearchPadding)

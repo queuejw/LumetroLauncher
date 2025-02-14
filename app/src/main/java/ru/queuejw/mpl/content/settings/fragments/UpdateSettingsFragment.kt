@@ -53,10 +53,9 @@ class UpdateSettingsFragment : Fragment() {
     private var manager: DownloadManager? = null
     private var downloadId: Long? = null
 
-    private var coroutineXmlScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    private var coroutineErrorScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    private var coroutineDownloadingScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private var mainDispatcher = Dispatchers.Main
+
+    private var fragmentActive = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,13 +70,19 @@ class UpdateSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         setupFont()
-        refreshUi()
         setOnClickers()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        fragmentActive = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fragmentActive = true
+        refreshUi()
     }
 
     private fun init() {
@@ -216,8 +221,6 @@ class UpdateSettingsFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        coroutineXmlScope.cancel()
-        coroutineErrorScope.cancel()
         super.onDestroy()
     }
 
@@ -239,6 +242,9 @@ class UpdateSettingsFragment : Fragment() {
     }
 
     private fun refreshUi() {
+        if(!fragmentActive) {
+            return
+        }
         binding.AutoUpdateCheckBox.apply {
             isChecked = PREFS.isAutoUpdateEnabled
             isEnabled = PREFS.isUpdateNotificationEnabled
@@ -383,13 +389,14 @@ class UpdateSettingsFragment : Fragment() {
                 withContext(mainDispatcher) {
                     refreshUi()
                 }
+            } finally {
+                cancel()
             }
-            cancel()
         }
     }
 
     private fun checkUpdateInfo() {
-        coroutineXmlScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             if (UpdateDataParser.verCode == null) {
                 PREFS.updateState = 5
                 return@launch
@@ -402,8 +409,10 @@ class UpdateSettingsFragment : Fragment() {
                 PREFS.updateState = 6
             }
             withContext(mainDispatcher) {
-                binding.progress.isIndeterminate = false
-                refreshUi()
+                if(fragmentActive) {
+                    binding.progress.isIndeterminate = false
+                    refreshUi()
+                }
             }
             cancel()
         }
@@ -416,18 +425,20 @@ class UpdateSettingsFragment : Fragment() {
 
     @SuppressLint("Range")
     private fun downloadFile(fileName: String, url: String) {
-        coroutineDownloadingScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 deleteUpdateFile(requireActivity())
             } catch (e: IOException) {
                 Utils.saveError(e.toString(), db!!)
                 PREFS.updateState = 5
-                refreshUi()
                 withContext(mainDispatcher) {
-                    WPDialog(requireActivity()).setTopDialog(true)
-                        .setTitle(getString(R.string.error))
-                        .setMessage(getString(R.string.downloading_error))
-                        .setPositiveButton(getString(android.R.string.ok), null).show()
+                    if(fragmentActive) {
+                        refreshUi()
+                        WPDialog(requireActivity()).setTopDialog(true)
+                            .setTitle(getString(R.string.error))
+                            .setMessage(getString(R.string.downloading_error))
+                            .setPositiveButton(getString(android.R.string.ok), null).show()
+                    }
                 }
                 cancel()
                 return@launch
@@ -463,8 +474,10 @@ class UpdateSettingsFragment : Fragment() {
                             getString(R.string.preparing_to_install, progress) + "%"
                         PREFS.updateProgressLevel = progress
                         withContext(mainDispatcher) {
-                            binding.progessText.text = progressString
-                            binding.progress.setProgress(progress, true)
+                            if(fragmentActive) {
+                                binding.progessText.text = progressString
+                                binding.progress.setProgress(progress, true)
+                            }
                         }
                         if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                             isUpdateDownloading = false
@@ -499,13 +512,16 @@ class UpdateSettingsFragment : Fragment() {
                 PREFS.updateState = 5
                 withContext(mainDispatcher) {
                     refreshUi()
+                    if(fragmentActive) {
                     WPDialog(requireActivity()).setTopDialog(true)
                         .setTitle(getString(R.string.error))
                         .setMessage(getString(R.string.downloading_error))
                         .setPositiveButton(getString(android.R.string.ok), null).show()
+                        }
                 }
+            } finally {
+                cancel()
             }
-            cancel()
         }
     }
 

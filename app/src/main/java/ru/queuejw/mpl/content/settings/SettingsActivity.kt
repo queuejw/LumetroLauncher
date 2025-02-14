@@ -29,12 +29,12 @@ class SettingsActivity : AppCompatActivity() {
     private var isTipActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         when (PREFS.appTheme) {
             0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+        super.onCreate(savedInstanceState)
         binding = LauncherSettingsMainBinding.inflate(layoutInflater)
         binding.root.apply {
             pivotX = 24f
@@ -43,11 +43,12 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         Utils.applyWindowInsets(binding.root)
+        setupBackPressedDispatcher()
         setupFont()
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         if (PREFS.prefs.getBoolean("themeChanged", false)) {
-            supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            PREFS.prefs.edit { putBoolean("themeChanged", false) }
             changeFragmentFunction(ThemeSettingsFragment(), "theme")
+            PREFS.prefs.edit { putBoolean("themeChanged", false) }
         } else {
             supportFragmentManager.commit {
                 replace(binding.fragmentContainerView.id, MainSettingsFragment())
@@ -66,7 +67,6 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        setupBackPressedDispatcher()
         prepareTip()
     }
 
@@ -101,7 +101,7 @@ class SettingsActivity : AppCompatActivity() {
         if(!PREFS.isTransitionAnimEnabled) {
             supportFragmentManager.popBackStackImmediate()
         } else {
-            binding.root.animate().rotationY(90f).alpha(0.75f).translationX(-100f).setDuration(125).setInterpolator(
+            binding.root.animate().rotationY(90f).alpha(0.75f).translationX(-500f).setDuration(125).setInterpolator(
                 DecelerateInterpolator()
             ).withEndAction {
                 supportFragmentManager.popBackStack()
@@ -142,7 +142,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
-        binding.root.animate().rotationY(-90f).alpha(0.75f).translationX(-250f).setDuration(125)
+        binding.root.animate().rotationY(-90f).alpha(0.75f).translationX(-500f).setDuration(125)
             .setInterpolator(
                 DecelerateInterpolator()
             ).withEndAction {

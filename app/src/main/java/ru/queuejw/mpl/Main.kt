@@ -173,6 +173,9 @@ class Main : AppCompatActivity() {
         binding.mainPager.apply {
             adapter = pagerAdapter
             registerOnPageChangeCallback(createPageChangeCallback())
+            if(!PREFS.isAllAppsEnabled) {
+                isUserInputEnabled = false
+            }
         }
     }
 
@@ -199,9 +202,26 @@ class Main : AppCompatActivity() {
 
     override fun onResume() {
         // restart MPL if some settings have been changed
-        if (PREFS.isPrefsChanged) restart()
+        if (PREFS.isPrefsChanged) restartDialog()
 
         super.onResume()
+    }
+
+    private fun restartDialog() {
+        WPDialog(this).apply {
+            setTopDialog(true)
+            setCancelable(false)
+            setTitle(getString(R.string.settings_app_title))
+            setMessage(getString(R.string.restart_required))
+            setPositiveButton(getString(R.string.restart)) {
+                dismiss()
+                restart()
+            }
+            setNegativeButton(getString(R.string.later)) {
+                dismiss()
+            }
+            show()
+        }
     }
 
     private fun restart() {
@@ -218,7 +238,9 @@ class Main : AppCompatActivity() {
     }
 
     fun configureViewPagerScroll(enabled: Boolean) {
-        binding.mainPager.isUserInputEnabled = enabled
+        if(PREFS.isAllAppsEnabled) {
+            binding.mainPager.isUserInputEnabled = enabled
+        }
     }
 
     private suspend fun setMainViewModel() {
@@ -384,9 +406,15 @@ class Main : AppCompatActivity() {
         binding.mainBottomBar.navigationStartBtn.apply {
             setImageDrawable(getNavBarIconDrawable())
             setOnClickListener { binding.mainPager.setCurrentItem(0, true) }
+            if(!PREFS.isAllAppsEnabled) setOnLongClickListener {
+                binding.mainPager.setCurrentItem(1, true)
+                true
+            }
         }
-        binding.mainBottomBar.navigationSearchBtn.setOnClickListener {
-            if (PREFS.isAllAppsEnabled) binding.mainPager.setCurrentItem(1, true)
+        if(PREFS.isAllAppsEnabled) {
+            binding.mainBottomBar.navigationSearchBtn.setOnClickListener {
+                binding.mainPager.setCurrentItem(1, true)
+            }
         }
     }
 
@@ -408,11 +436,10 @@ class Main : AppCompatActivity() {
 
     class WinAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount(): Int = if (PREFS.isAllAppsEnabled) 2 else 1
+        override fun getItemCount(): Int = 2
 
         override fun createFragment(position: Int): Fragment {
             return when {
-                !PREFS.isAllAppsEnabled -> Start()
                 position == 1 -> AllApps()
                 else -> Start()
             }

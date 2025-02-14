@@ -63,13 +63,12 @@ class BsodScreen : AppCompatActivity() {
             val model = "\nModel: ${Build.MODEL}\n"
             val brand = "Brand: ${Build.BRAND}\n"
             val mplVerCode = "MPL Ver Code: ${Utils.VERSION_CODE}\n"
-            val mplVerName = "MPL Ver: ${Utils.VERSION_NAME}\n"
             val android = "Android Version: ${Build.VERSION.SDK_INT}\n\n"
             val code = intent.extras?.getString("errorCode")
             val errCode = "\nIf vou call a support person. aive them this info:\n" +
                     "Stop code: $code"
             val error =
-                "Your launcher ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you.\n $model$brand$android$mplVerCode$mplVerName" + intent.extras?.getString(
+                "Your launcher ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you.\n $model$brand$android$mplVerCode" + intent.extras?.getString(
                     "stacktrace"
                 ) + errCode
             Log.e("BSOD", error)

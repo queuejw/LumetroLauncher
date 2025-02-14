@@ -190,7 +190,7 @@ class ThemeSettingsFragment : Fragment() {
 
     private fun applyTheme() {
         PREFS.prefs.edit { putBoolean("themeChanged", true) }
-        activity?.recreate()
+        requireActivity().recreate()
     }
 
     private fun setOrientationButtons() {
