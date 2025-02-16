@@ -131,6 +131,7 @@ class Prefs(context: Context) {
             // 18 - mauve
             // 19 - taupe
             // 20 - dynamic colors
+            // -1 - custom color
             prefsChanged = true
             prefs.edit()
                 .putInt("previous_accent_color", prefs.getInt(accentColorPref, 5))

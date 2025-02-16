@@ -519,20 +519,18 @@ class Start : Fragment() {
      */
     private fun startApp(packageName: String) {
         Application.isAppOpened = true
-        if (activity != null) {
-            val intent = when (packageName) {
-                context?.packageName -> Intent(
-                    requireActivity(),
-                    SettingsActivity::class.java
-                )
+        val intent = when (packageName) {
+            context?.packageName -> Intent(
+                requireActivity(),
+                SettingsActivity::class.java
+            )
 
-                else -> requireActivity().packageManager.getLaunchIntentForPackage(packageName)
-                    ?.apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-            }
-            intent?.let { startActivity(it) }
+            else -> context?.packageManager?.getLaunchIntentForPackage(packageName)
+                ?.apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
         }
+        intent?.let { startActivity(it) }
     }
 
     /**
@@ -1172,6 +1170,9 @@ class Start : Fragment() {
             back.setOnClickListener { dismiss() }
             for (i in 0..<viewIds.size) {
                 setOnClick(view.findViewById<ImageView>(viewIds[i]), i)
+            }
+            val customColor = view.findViewById<ImageView>(R.id.choose_color_custom)
+            customColor.setOnClickListener {
             }
         }
 

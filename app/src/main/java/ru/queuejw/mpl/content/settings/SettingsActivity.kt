@@ -1,7 +1,7 @@
 package ru.queuejw.mpl.content.settings
 
 import android.os.Bundle
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -101,8 +101,8 @@ class SettingsActivity : AppCompatActivity() {
         if(!PREFS.isTransitionAnimEnabled) {
             supportFragmentManager.popBackStackImmediate()
         } else {
-            binding.root.animate().rotationY(90f).alpha(0.75f).translationX(-500f).setDuration(125).setInterpolator(
-                DecelerateInterpolator()
+            binding.root.animate().rotationY(90f).alpha(0.5f).translationX(-250f).setDuration(125).setInterpolator(
+                AccelerateInterpolator()
             ).withEndAction {
                 supportFragmentManager.popBackStack()
                 binding.root.apply {
@@ -112,7 +112,7 @@ class SettingsActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     delay(25)
                     binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(125).setInterpolator(
-                        DecelerateInterpolator()
+                        AccelerateInterpolator()
                     ).start()
                 }.start()
             }
@@ -142,9 +142,9 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
-        binding.root.animate().rotationY(-90f).alpha(0.75f).translationX(-500f).setDuration(125)
+        binding.root.animate().rotationY(-45f).alpha(0f).translationX(-250f).setDuration(125)
             .setInterpolator(
-                DecelerateInterpolator()
+                AccelerateInterpolator()
             ).withEndAction {
                 binding.root.apply {
                     alpha = 0f
@@ -154,9 +154,9 @@ class SettingsActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     delay(25)
                     binding.root.alpha = 0.5f
-                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(125)
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(150)
                         .setInterpolator(
-                            DecelerateInterpolator()
+                            AccelerateInterpolator()
                         ).start()
                 }.start()
             }

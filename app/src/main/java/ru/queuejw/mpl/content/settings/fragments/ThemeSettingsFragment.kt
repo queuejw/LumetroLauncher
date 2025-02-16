@@ -1,5 +1,6 @@
 package ru.queuejw.mpl.content.settings.fragments
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -79,7 +80,6 @@ class ThemeSettingsFragment : Fragment() {
             binding.accentTip.typeface = it
         }
     }
-
     private fun configure() {
         binding.chosenAccentName.text = Utils.accentName(requireActivity())
         binding.chooseTheme.apply {
@@ -168,12 +168,14 @@ class ThemeSettingsFragment : Fragment() {
                 R.string.settings_theme_accent_title_part3
             )
         val spannable: Spannable = SpannableString(textFinal)
+        val color = Utils.launcherAccentColor(requireActivity().theme)
         spannable.setSpan(
-            ForegroundColorSpan(Utils.launcherAccentColor(requireActivity().theme)),
+            ForegroundColorSpan(color),
             textFinal.indexOf(getString(R.string.settings_theme_accent_title_part1)),
             textFinal.indexOf(getString(R.string.settings_theme_accent_title_part1)) + getString(R.string.settings_theme_accent_title_part1).length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        binding.colorView.setBackgroundColor(color)
         binding.accentTip.setText(spannable, TextView.BufferType.SPANNABLE)
     }
 
@@ -241,6 +243,13 @@ class ThemeSettingsFragment : Fragment() {
             setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
         }
 
+        override fun onDismiss(dialog: DialogInterface) {
+            super.onDismiss(dialog)
+            if (PREFS.prefs.getBoolean("themeChanged", false)) {
+                activity?.recreate()
+            }
+        }
+
         override fun onStart() {
             super.onStart()
             dialog?.apply {
@@ -268,20 +277,21 @@ class ThemeSettingsFragment : Fragment() {
             for (i in 0..<viewIds.size) {
                 setOnClick(view.findViewById<ImageView>(viewIds[i]), i)
             }
+            val customColor = view.findViewById<ImageView>(R.id.choose_color_custom)
+            customColor.setOnClickListener {
+            }
         }
 
         private fun setOnClick(colorView: View, value: Int) {
             colorView.setOnClickListener {
-                dismiss()
                 PREFS.apply {
                     accentColor = value
                     isPrefsChanged = true
                 }
                 PREFS.prefs.edit { putBoolean("themeChanged", true) }
-                activity?.recreate()
+                dismiss()
             }
         }
-
         companion object {
             private const val TAG = "accentDialog"
             fun display(fragmentManager: FragmentManager?): AccentDialog {

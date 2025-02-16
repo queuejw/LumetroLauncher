@@ -172,6 +172,9 @@ class Utils {
 
         fun accentName(context: Context): String {
             val selectedColor = PREFS.accentColor
+            if(PREFS.accentColor == -1) {
+                return "custom color"
+            }
             return if (selectedColor >= 0 && selectedColor < accentNames.size) {
                 context.getString(accentNames[selectedColor])
             } else {
