@@ -4,6 +4,8 @@
 
 MetroPhoneLauncher (MPL, MPLauncher) is an Android launcher designed to resemble Windows Phone 8. 🌟
 
+🛸 This is MPL version 8.1. If you are interested in a fast, lightweight version of MPL with the Windows Phone 8.0 design, go here: 
+[Click](https://github.com/queuejw/MetroPhoneLauncher/tree/v8)
 
 MPL is still in development, but it already includes a range of features you might enjoy. Here’s what’s available so far:
 
