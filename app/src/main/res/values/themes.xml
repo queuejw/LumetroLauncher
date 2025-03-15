@@ -1,11 +1,9 @@
 <resources>
+
     <style name="AppTheme.Base" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorOnSurface">@android:color/black</item>
         <item name="android:colorBackground">@android:color/white</item>
         <item name="colorOnBackground">@android:color/black</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
-        <item name="android:windowLightStatusBar">true</item>
         <item name="bottomSheetDialogTheme">@style/MPL.BottomSheet.AllAppsStyle</item>
         <item name="bottomSheetStyle">@style/MPL.BottomSheet.AllAppsStyle</item>
         <item name="materialAlertDialogTheme">@style/MaterialAlertDialog.App</item>
@@ -13,14 +11,16 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="materialButtonStyle">@style/Metro.Button</item>
         <item name="materialSwitchStyle">@style/Metro.Switch</item>
-        <item name="android:windowSplashScreenBackground">@android:color/white</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
+
     <style name="AppTheme.Custom" parent="AppTheme.Base">
         <item name="colorPrimary">#000</item>
         <item name="colorPrimaryDark">#000</item>
         <item name="colorAccent">#000</item>
     </style>
+
     <style name="AppTheme.Lime" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_lime</item>
         <item name="colorPrimaryContainer">#b8f600</item>
@@ -28,6 +28,7 @@
         <item name="colorSecondary">#5a6147</item>
         <item name="colorSurface">#fefcf4</item>
     </style>
+
     <style name="AppTheme.Green" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_green</item>
         <item name="colorPrimaryContainer">#D932CD32</item>
@@ -35,6 +36,7 @@
         <item name="colorSecondary">#55624c</item>
         <item name="colorSurface">#fdfdf6</item>
     </style>
+
     <style name="AppTheme.Emerald" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_emerald</item>
         <item name="colorPrimaryContainer">#83fba5</item>
@@ -42,6 +44,7 @@
         <item name="colorSecondary">#506352</item>
         <item name="colorSurface">#fcfdf7</item>
     </style>
+
     <style name="AppTheme.Cyan" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_cyan</item>
         <item name="colorPrimaryContainer">#5af8fb</item>
@@ -49,6 +52,7 @@
         <item name="colorSecondary">#4a6363</item>
         <item name="colorSurface">#fafdfc</item>
     </style>
+
     <style name="AppTheme.Teal" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_teal</item>
         <item name="colorPrimaryContainer">#00fbfb</item>
@@ -56,6 +60,7 @@
         <item name="colorSecondary">#4a6363</item>
         <item name="colorSurface">#fafdfc</item>
     </style>
+
     <style name="AppTheme.Cobalt" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_cobalt</item>
         <item name="colorPrimaryContainer">#1656AF</item>
@@ -63,6 +68,7 @@
         <item name="colorSecondary">#585e71</item>
         <item name="colorSurface">#fefbff</item>
     </style>
+
     <style name="AppTheme.Indigo" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_indigo</item>
         <item name="colorPrimaryContainer">#f0dbff</item>
@@ -70,6 +76,7 @@
         <item name="colorSecondary">#625b71</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Violet" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_violet</item>
         <item name="colorPrimaryContainer">#f0dbff</item>
@@ -77,6 +84,7 @@
         <item name="colorSecondary">#665a6f</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Pink" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_pink</item>
         <item name="colorPrimaryContainer">#ffd6f9</item>
@@ -84,6 +92,7 @@
         <item name="colorSecondary">#6d586a</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Magenta" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_magenta</item>
         <item name="colorPrimaryContainer">#ffd7f5</item>
@@ -91,6 +100,7 @@
         <item name="colorSecondary">#6e5869</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Crimson" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_crimson</item>
         <item name="colorPrimaryContainer">#ffdad9</item>
@@ -98,6 +108,7 @@
         <item name="colorSecondary">#775656</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Red" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_red</item>
         <item name="colorPrimaryContainer">#ffdad4</item>
@@ -105,6 +116,7 @@
         <item name="colorSecondary">#775651</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Orange" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_orange</item>
         <item name="colorPrimaryContainer">#ffddb7</item>
@@ -112,6 +124,7 @@
         <item name="colorSecondary">#705b41</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Amber" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_amber</item>
         <item name="colorPrimaryContainer">#ffdfa0</item>
@@ -119,6 +132,7 @@
         <item name="colorSecondary">#6b5c3f</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Yellow" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_yellow</item>
         <item name="colorPrimaryContainer">#716300</item>
@@ -126,6 +140,7 @@
         <item name="colorSecondary">#606043</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Brown" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_brown</item>
         <item name="colorPrimaryContainer">#ffddbb</item>
@@ -133,6 +148,7 @@
         <item name="colorSecondary">#725a41</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="AppTheme.Olive" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_olive</item>
         <item name="colorPrimaryContainer">#b0f49e</item>
@@ -140,6 +156,7 @@
         <item name="colorSecondary">#54634e</item>
         <item name="colorSurface">#fcfdf6</item>
     </style>
+
     <style name="AppTheme.Steel" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_steel</item>
         <item name="colorPrimaryContainer">#b4cad6</item>
@@ -147,6 +164,7 @@
         <item name="colorSecondary">#50606e</item>
         <item name="colorSurface">#fcfcff</item>
     </style>
+
     <style name="AppTheme.Mauve" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_mauve</item>
         <item name="colorPrimaryContainer">#f0dbff</item>
@@ -154,6 +172,7 @@
         <item name="colorSecondary">#665a6f</item>
         <item name="colorSurface">#fffbff</item>>
     </style>
+
     <style name="AppTheme.Taupe" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_taupe</item>
         <item name="colorPrimaryContainer">#ffdcc0</item>
@@ -161,9 +180,11 @@
         <item name="colorSecondary">#685e40</item>
         <item name="colorSurface">#fffbff</item>
     </style>
+
     <style name="ThemeOverlay.MPL.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="shapeAppearance">@style/ShapeAppearance</item>
     </style>
+
     <style name="MPL.BottomSheet.AllAppsStyle" parent="ThemeOverlay.MPL.BottomSheet">
         <item name="backgroundTint">@android:color/black</item>
     </style>
@@ -174,6 +195,5 @@
         <item name="colorSurface">@android:color/white</item>
         <item name="android:statusBarColor">@color/bsod</item>
         <item name="android:navigationBarColor">@color/bsod</item>
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

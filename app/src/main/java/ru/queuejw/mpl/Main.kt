@@ -245,12 +245,13 @@ class Main : AppCompatActivity() {
 
     private suspend fun setMainViewModel() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        val list = Utils.setUpApps(this)
-        mainViewModel.setAppList(list)
-        regenerateIcons(list)
+        mainViewModel.apply {
+            val list = Utils.setUpApps(this@Main)
+            setAppList(list)
+            regenerateIcons(list)
+            setTileList(getViewModelTileDao().getTilesList())
+        }
     }
-
-
     private suspend fun regenerateIcons(appList: MutableList<App>) {
         val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
         var diskCache = CacheUtils.initDiskCache(this)

@@ -210,9 +210,8 @@ class Utils {
         }
 
         fun setUpApps(context: Context): MutableList<App> {
-            val pManager = context.packageManager
             val appList = ArrayList<App>()
-            val allApps = pManager.queryIntentActivities(
+            val allApps = context.packageManager.queryIntentActivities(
                 Intent(
                     Intent.ACTION_MAIN,
                     null
@@ -220,20 +219,15 @@ class Utils {
             )
             for (i in 0..<allApps.size) {
                 val packageName = allApps[i].activityInfo.packageName
-                val label = allApps[i].loadLabel(pManager).toString()
-                if (packageName == context.packageName && label == "Leaks") {
-                    continue
-                }
-                if (packageName == context.packageName && label == context.getString(R.string.app_name)) {
-                    continue
-                }
-                val item = App()
-                item.apply {
+                val label = allApps[i].loadLabel(context.packageManager).toString()
+                if (packageName == context.packageName && label == "Leaks") continue
+                if (packageName == context.packageName && label == context.getString(R.string.app_name)) continue
+                App().apply {
                     id = i
                     appPackage = packageName
                     appLabel = label
+                    appList.add(this)
                 }
-                appList.add(item)
             }
             appList.sortBy { it.appLabel }
             return appList

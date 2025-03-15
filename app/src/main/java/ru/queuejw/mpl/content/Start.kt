@@ -78,7 +78,6 @@ class Start : Fragment() {
 
     private var mSpannedLayoutManager: SpannedGridLayoutManager? = null
     private var mAdapter: NewStartAdapter? = null
-    private var tiles: MutableList<Tile>? = null
     private var packageBroadcastReceiver: BroadcastReceiver? = null
 
     private var isBroadcasterRegistered = false
@@ -136,7 +135,6 @@ class Start : Fragment() {
         if (context != null) {
             viewLifecycleOwner.lifecycleScope.launch(defaultDispatcher) {
                 mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-                tiles = mainViewModel.getViewModelTileDao().getTilesList()
                 setupRecyclerViewLayoutManager(requireContext())
                 setupAdapter()
                 withContext(mainDispatcher) {
@@ -159,10 +157,8 @@ class Start : Fragment() {
                 .hasActiveObservers()
         ) return
         mainViewModel.getViewModelTileDao().getTilesLiveData().observe(viewLifecycleOwner) {
-            mAdapter ?: return@observe
-            if (mAdapter!!.list != it) {
-                Log.w("obs", "set new data")
-                mAdapter!!.setData(it)
+            mAdapter?.let { adapter ->
+                if(adapter.list != it) adapter.setData(it)
             }
         }
     }
@@ -185,7 +181,7 @@ class Start : Fragment() {
      * @see onViewCreated
      */
     private fun setupAdapter() {
-        mAdapter = NewStartAdapter(requireContext(), tiles!!)
+        mAdapter = NewStartAdapter(requireContext(), mainViewModel.getTileList())
     }
 
     /**
@@ -222,7 +218,23 @@ class Start : Fragment() {
      * @param context Context
      */
     private fun setupRecyclerViewLayoutManager(context: Context?) {
-        if (mSpannedLayoutManager != null) mSpannedLayoutManager = null
+        if (mSpannedLayoutManager != null) {
+            mSpannedLayoutManager = null
+            binding.startTiles.layoutManager = null
+        }
+        configureLayoutManager(context)
+        mSpannedLayoutManager?.apply {
+            itemOrderIsStable = true
+            spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
+                when (mainViewModel.getTileList()[position].tileSize) {
+                    "medium" -> SpanSize(2, 2)
+                    "big" -> SpanSize(4, 2)
+                    else -> SpanSize(1, 1)
+                }
+            }
+        }
+    }
+    private fun configureLayoutManager(context: Context?) {
         if (!Main.isLandscape) {
             // phone
             mSpannedLayoutManager = SpannedGridLayoutManager(
@@ -249,25 +261,11 @@ class Start : Fragment() {
                 )
             }
         }
-        mSpannedLayoutManager?.apply {
-            itemOrderIsStable = true
-            spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
-                when (tiles!![position].tileSize) {
-                    "medium" -> SpanSize(2, 2)
-                    "big" -> SpanSize(4, 2)
-                    else -> SpanSize(1, 1)
-                }
-            }
-        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        Main.isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
-        setupRecyclerViewLayoutManager(context)
-        binding.startTiles.apply {
-            layoutManager = mSpannedLayoutManager
-        }
+        activity?.recreate()
     }
 
     override fun onResume() {
@@ -479,7 +477,7 @@ class Start : Fragment() {
         val interpolator = AccelerateInterpolator()
         var duration = 175L
         for (i in last downTo first) {
-            if (tiles!![i] == tiles!![position]) continue
+            if (mainViewModel.getTileList()[i] == mainViewModel.getTileList()[position]) continue
             val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
             if (holder.itemViewType == mAdapter!!.spaceType) continue
             delay(5)
@@ -490,7 +488,7 @@ class Start : Fragment() {
         delay(250)
         duration = 150L
         for (i in last downTo first) {
-            if (tiles!![i] != tiles!![position]) continue
+            if (mainViewModel.getTileList()[i] != mainViewModel.getTileList()[position]) continue
             val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
             holder.itemView.animate().rotationY(-90f).translationX(-1000f).translationY(-100f)
                 .setInterpolator(interpolator).setDuration(duration).withEndAction {
@@ -581,7 +579,7 @@ class Start : Fragment() {
             val diffResult = DiffUtil.calculateDiff(diffUtilCallback, false)
             diffResult.dispatchUpdatesTo(this)
             list = newData
-            tiles = newData
+            mainViewModel.setTileList(newData)
         }
 
         /**
@@ -873,7 +871,6 @@ class Start : Fragment() {
         private fun applyResizeIcon(view: ImageView, item: Tile) {
             view.rotation = when (item.tileSize) {
                 "small" -> 45f
-                "medium" -> 0f
                 "big" -> -135f
                 else -> 0f
             }

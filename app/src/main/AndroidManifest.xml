@@ -26,6 +26,7 @@
         android:supportsRtl="true"
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="33">
+
         <activity
             android:icon="@mipmap/launcher_icon"
             android:name="ru.queuejw.mpl.Main"

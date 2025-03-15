@@ -45,7 +45,7 @@ class AppsFragment : Fragment() {
         _binding = OobeFragmentAppsBinding.inflate(inflater, container, false)
         binding.oobeAppsLoadingBar.showProgressBar()
         lifecycleScope.launch(Dispatchers.IO) {
-            PREFS.prefs.edit() { putBoolean("placeholdersGenerated", true) }
+            PREFS.prefs.edit { putBoolean("placeholdersGenerated", true) }
             generatePlaceholder(TileData.getTileData(requireContext()).getTileDao(), 64)
         }
         return binding.root
