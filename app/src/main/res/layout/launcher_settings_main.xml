@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="4dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="8dp">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarSettings"
@@ -31,11 +33,10 @@
                 android:id="@+id/settings_label"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
                 android:ellipsize="none"
                 android:singleLine="true"
                 android:textColor="@color/textColor"
-                android:textSize="52sp" />
+                android:textSize="48sp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

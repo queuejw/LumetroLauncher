@@ -36,10 +36,6 @@ class SettingsActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         binding = LauncherSettingsMainBinding.inflate(layoutInflater)
-        binding.root.apply {
-            pivotX = 24f
-            pivotY = height.toFloat()
-        }
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         Utils.applyWindowInsets(binding.root)
@@ -68,6 +64,10 @@ class SettingsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         prepareTip()
+        binding.root.apply {
+            pivotX = 0f
+            pivotY = 300f
+        }
     }
 
     private fun prepareTip() {
@@ -142,7 +142,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
-        binding.root.animate().rotationY(-45f).alpha(0f).translationX(-250f).setDuration(125)
+        binding.root.animate().rotationY(-45f).alpha(0.5f).translationX(-100f).setDuration(125)
             .setInterpolator(
                 AccelerateInterpolator()
             ).withEndAction {
@@ -158,7 +158,7 @@ class SettingsActivity : AppCompatActivity() {
                         .setInterpolator(
                             AccelerateInterpolator()
                         ).start()
-                }.start()
-            }
+                }
+            }.start()
         }
     }
