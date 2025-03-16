@@ -142,7 +142,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
-        binding.root.animate().rotationY(-45f).alpha(0.5f).translationX(-100f).setDuration(125)
+        binding.root.animate().rotationY(-30f).alpha(0.5f).translationX(-100f).setDuration(125)
             .setInterpolator(
                 AccelerateInterpolator()
             ).withEndAction {
