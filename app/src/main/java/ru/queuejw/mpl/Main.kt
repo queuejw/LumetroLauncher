@@ -266,9 +266,6 @@ class Main : AppCompatActivity() {
         if (diskCache == null) {
             diskCache = initDiskCache(context)
         }
-        diskCache ?: {
-            diskCache = initDiskCache(context)
-        }
         list.forEach {
             var icon = CacheUtils.loadIconFromDiskCache(diskCache!!, it.appPackage)
             if (icon == null) {
