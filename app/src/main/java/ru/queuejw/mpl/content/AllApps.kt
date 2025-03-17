@@ -1,6 +1,5 @@
 package ru.queuejw.mpl.content
 
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -41,10 +40,7 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import coil3.load
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.queuejw.mpl.Application.Companion.PREFS
@@ -74,6 +70,9 @@ class AllApps : Fragment() {
 
     private var isSearching = false
     private var isBroadcasterRegistered = false
+
+    private var popupWindow: PopupWindow? = null
+    private var isWindowVisible = false
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -183,7 +182,10 @@ class AllApps : Fragment() {
                         when (action) {
                             PackageChangesReceiver.PACKAGE_INSTALLED -> {
                                 val bool = PREFS.iconPackPackage != "null"
-                                (requireActivity() as Main).generateIcon(packageName, bool)
+                                mainViewModel.addIconToCache(
+                                    packageName,
+                                    (requireActivity() as Main).generateIcon(packageName, bool)
+                                )
                                 broadcastListUpdater(context)
                             }
 
@@ -238,9 +240,9 @@ class AllApps : Fragment() {
 
     override fun onPause() {
         if (isSearching && !PREFS.showKeyboardWhenOpeningAllApps) disableSearch()
-        if (appAdapter?.isWindowVisible == true) {
-            appAdapter?.popupWindow?.dismiss()
-            appAdapter?.popupWindow = null
+        if (isWindowVisible == true) {
+            popupWindow?.dismiss()
+            popupWindow = null
         }
         super.onPause()
     }
@@ -277,12 +279,14 @@ class AllApps : Fragment() {
                 clearFocus()
             }
             searchLayout.animate().translationY(-300f).setDuration(200).setInterpolator(
-                DecelerateInterpolator()).withEndAction {
+                DecelerateInterpolator()
+            ).withEndAction {
                 searchLayout.visibility = View.GONE
                 searchBtn.apply {
                     visibility = View.VISIBLE
                     animate().alpha(1f).setDuration(200).setInterpolator(
-                        DecelerateInterpolator()).start()
+                        DecelerateInterpolator()
+                    ).start()
                 }
                 if (PREFS.isSettingsBtnEnabled) {
                     settingsBtn.visibility = View.VISIBLE
@@ -294,7 +298,8 @@ class AllApps : Fragment() {
             appList.apply {
                 alpha = 0.5f
                 animate().translationX(0f).setDuration(200).setInterpolator(
-                    DecelerateInterpolator()).start()
+                    DecelerateInterpolator()
+                ).start()
                 isVerticalScrollBarEnabled = true
             }
         }
@@ -337,7 +342,7 @@ class AllApps : Fragment() {
             (binding.search.editText as? AutoCompleteTextView)?.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_GO && appAdapter!!.list.isNotEmpty()) {
                     runApp(
-                        appAdapter!!.list.first().appPackage!!,
+                        appAdapter!!.list.first().appPackage,
                         requireActivity().packageManager
                     )
                     (binding.search.editText as? AutoCompleteTextView)?.text!!.clear()
@@ -390,7 +395,7 @@ class AllApps : Fragment() {
         val filteredList: MutableList<App> = ArrayList()
         val locale = Utils.getDefaultLocale()
         mainViewModel.getAppList().forEach {
-            if (it.appLabel!!.lowercase(locale).contains(searchText.lowercase(locale))) {
+            if (it.appLabel.lowercase(locale).contains(searchText.lowercase(locale))) {
                 filteredList.add(it)
             }
         }
@@ -429,14 +434,144 @@ class AllApps : Fragment() {
         }
     }
 
+    private fun isPopupInTop(anchorView: View, popupHeight: Int): Boolean {
+        val location = IntArray(2)
+        anchorView.getLocationOnScreen(location)
+        val anchorY = location[1]
+        val displayMetrics = anchorView.context.resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+        val popupY = anchorY - popupHeight
+        return popupY < screenHeight / 2
+    }
+
+    private fun getPopupHeight(popupWindow: PopupWindow): Int {
+        val contentView = popupWindow.contentView
+        contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        return contentView.measuredHeight
+    }
+
+    private fun showPopupWindow(view: View, app: App) {
+        binding.appList.isScrollEnabled = false
+        (requireActivity() as Main).configureViewPagerScroll(false)
+        val inflater =
+            view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.all_apps_window, binding.appList, false)
+        popupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        popupWindow!!.isFocusable = true
+        val popupHeight = getPopupHeight(popupWindow!!)
+        val top = isPopupInTop(view, popupHeight)
+        popupView.pivotY = if (top) 0f else popupHeight.toFloat()
+        val pinLabel = popupView.findViewById<MaterialTextView>(R.id.pin_app_label)
+        val infoLabel = popupView.findViewById<MaterialTextView>(R.id.app_info_label)
+        val uninstallLabel = popupView.findViewById<MaterialTextView>(R.id.uninstall_label)
+        (if (PREFS.customLightFontPath != null) customLightFont else customFont)?.let {
+            pinLabel.typeface = it
+            infoLabel.typeface = it
+            uninstallLabel.typeface = it
+        }
+        val anim = ObjectAnimator.ofFloat(popupView, "scaleY", 0f, 0.01f).setDuration(1)
+        val anim2 = ObjectAnimator.ofFloat(popupView, "scaleX", 0f, 1f).setDuration(200)
+        val anim3 = ObjectAnimator.ofFloat(popupView, "scaleY", 0.01f, 1f).setDuration(400)
+        anim.doOnEnd {
+            anim2.doOnEnd {
+                anim3.start()
+            }
+            anim2.start()
+        }
+        anim.start()
+        popupWindow!!.showAsDropDown(
+            view,
+            0,
+            if (top) 0 else (-popupHeight + -view.height),
+            Gravity.CENTER
+        )
+        isWindowVisible = true
+
+        val pin = popupView.findViewById<MaterialCardView>(R.id.pin_app)
+        val info = popupView.findViewById<MaterialCardView>(R.id.infoApp)
+        val uninstall = popupView.findViewById<MaterialCardView>(R.id.uninstallApp)
+
+        var isAppAlreadyPinned = false
+        lifecycleScope.launch(Dispatchers.Default) {
+            val dbList = mainViewModel.getViewModelTileDao().getTilesList()
+            dbList.forEach {
+                if (it.tilePackage == app.appPackage) {
+                    isAppAlreadyPinned = true
+                    return@forEach
+                }
+            }
+            withContext(Dispatchers.Main) {
+                if (isAppAlreadyPinned) {
+                    pin.isEnabled = false
+                    pin.alpha = 0.5f
+                } else {
+                    pin.isEnabled = true
+                    pin.alpha = 1f
+                    pin.setOnClickListener {
+                        insertNewApp(app)
+                        popupWindow?.dismiss()
+                        activity?.onBackPressedDispatcher?.onBackPressed()
+                    }
+                }
+            }
+        }
+        uninstall.setOnClickListener {
+            popupWindow?.dismiss()
+            startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.appPackage}".toUri()))
+        }
+
+        info.setOnClickListener {
+            isAppOpened = true
+            startActivity(
+                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .setData("package:${app.appPackage}".toUri())
+            )
+        }
+        popupWindow?.setOnDismissListener {
+            (requireActivity() as Main).configureViewPagerScroll(true)
+            binding.appList.isScrollEnabled = true
+            isWindowVisible = false
+            popupWindow = null
+        }
+    }
+
+    private fun insertNewApp(app: App) {
+        lifecycleScope.launch(Dispatchers.Default) {
+            val dataList = mainViewModel.getViewModelTileDao().getTilesList()
+            dataList.forEach {
+                if (it.tilePackage == app.appPackage) {
+                    //db already has this app. we must stop this
+                    return@launch
+                }
+            }
+            var pos = 0
+            for (i in 0 until dataList.size) {
+                if (dataList[i].tileType == -1) {
+                    pos = i
+                    break
+                }
+            }
+            val id = Random.nextLong(1000, 2000000)
+            val item = Tile(
+                pos, id, -1, 0,
+                isSelected = false,
+                tileSize = Utils.generateRandomTileSize(true),
+                tileLabel = app.appLabel,
+                tilePackage = app.appPackage
+            )
+            mainViewModel.getViewModelTileDao().addTile(item)
+        }
+    }
+
     open inner class AppAdapter(var list: MutableList<App>) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val appHolder = 0
-
-        var popupWindow: PopupWindow? = null
-        var isWindowVisible = false
-
 
         inner class AppHolder(val binding: AppBinding) : RecyclerView.ViewHolder(binding.root) {
             init {
@@ -453,15 +588,11 @@ class AllApps : Fragment() {
             }
 
             private fun click() {
-                if (PREFS.isAAllAppsAnimEnabled) {
-                    startDismissAnim(list[absoluteAdapterPosition])
-                } else {
-                    if (context != null) {
-                        runApp(
-                            list[absoluteAdapterPosition].appPackage!!,
-                            requireContext().packageManager
-                        )
-                    }
+                activity?.let {
+                    runApp(
+                        list[absoluteAdapterPosition].appPackage,
+                        it.packageManager
+                    )
                 }
             }
         }
@@ -483,217 +614,8 @@ class AllApps : Fragment() {
         }
 
         private fun bindAppHolder(holder: AppHolder, app: App) {
-            holder.binding.appIcon.load(mainViewModel.getIconFromCache(app.appPackage!!))
+            holder.binding.appIcon.load(mainViewModel.getIconFromCache(app.appPackage))
             holder.binding.appLabel.text = app.appLabel
-        }
-
-        fun isPopupInTop(anchorView: View, popupHeight: Int): Boolean {
-            val location = IntArray(2)
-            anchorView.getLocationOnScreen(location)
-            val anchorY = location[1]
-            val displayMetrics = anchorView.context.resources.displayMetrics
-            val screenHeight = displayMetrics.heightPixels
-            val popupY = anchorY - popupHeight
-            return popupY < screenHeight / 2
-        }
-
-        fun getPopupHeight(popupWindow: PopupWindow): Int {
-            val contentView = popupWindow.contentView
-            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            return contentView.measuredHeight
-        }
-
-        private fun showPopupWindow(view: View, app: App) {
-            binding.appList.isScrollEnabled = false
-            (requireActivity() as Main).configureViewPagerScroll(false)
-            val inflater =
-                view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val popupView = inflater.inflate(R.layout.all_apps_window, binding.appList, false)
-            popupWindow = PopupWindow(
-                popupView,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                true
-            )
-            popupWindow!!.isFocusable = true
-            val popupHeight = getPopupHeight(popupWindow!!)
-            val top = isPopupInTop(view, popupHeight)
-            popupView.pivotY = if (top) 0f else popupHeight.toFloat()
-            val pinLabel = popupView.findViewById<MaterialTextView>(R.id.pin_app_label)
-            val infoLabel = popupView.findViewById<MaterialTextView>(R.id.app_info_label)
-            val uninstallLabel = popupView.findViewById<MaterialTextView>(R.id.uninstall_label)
-            (if (PREFS.customLightFontPath != null) customLightFont else customFont)?.let {
-                pinLabel.typeface = it
-                infoLabel.typeface = it
-                uninstallLabel.typeface = it
-            }
-            val anim = ObjectAnimator.ofFloat(popupView, "scaleY", 0f, 0.01f).setDuration(1)
-            val anim2 = ObjectAnimator.ofFloat(popupView, "scaleX", 0f, 1f).setDuration(200)
-            val anim3 = ObjectAnimator.ofFloat(popupView, "scaleY", 0.01f, 1f).setDuration(400)
-            anim.doOnEnd {
-                anim2.doOnEnd {
-                    anim3.start()
-                }
-                anim2.start()
-            }
-            anim.start()
-            fadeList(app, false)
-            popupWindow!!.showAsDropDown(
-                view,
-                0,
-                if (top) 0 else (-popupHeight + -view.height),
-                Gravity.CENTER
-            )
-            isWindowVisible = true
-
-            val pin = popupView.findViewById<MaterialCardView>(R.id.pin_app)
-            val info = popupView.findViewById<MaterialCardView>(R.id.infoApp)
-            val uninstall = popupView.findViewById<MaterialCardView>(R.id.uninstallApp)
-
-            var isAppAlreadyPinned = false
-            lifecycleScope.launch(Dispatchers.Default) {
-                val dbList = mainViewModel.getViewModelTileDao().getTilesList()
-                dbList.forEach {
-                    if (it.tilePackage == app.appPackage) {
-                        isAppAlreadyPinned = true
-                        return@forEach
-                    }
-                }
-                withContext(Dispatchers.Main) {
-                    if (isAppAlreadyPinned) {
-                        pin.isEnabled = false
-                        pin.alpha = 0.5f
-                    } else {
-                        pin.isEnabled = true
-                        pin.alpha = 1f
-                        pin.setOnClickListener {
-                            insertNewApp(app)
-                            popupWindow?.dismiss()
-                            activity?.onBackPressedDispatcher?.onBackPressed()
-                        }
-                    }
-                }
-            }
-            uninstall.setOnClickListener {
-                popupWindow?.dismiss()
-                startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.appPackage}".toUri()))
-            }
-
-            info.setOnClickListener {
-                isAppOpened = true
-                startActivity(
-                    Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        .setData("package:${app.appPackage}".toUri())
-                )
-            }
-            popupWindow?.setOnDismissListener {
-                (requireActivity() as Main).configureViewPagerScroll(true)
-                binding.appList.isScrollEnabled = true
-                fadeList(app, true)
-                isWindowVisible = false
-                popupWindow = null
-            }
-        }
-
-        private fun fadeList(app: App, restoreAll: Boolean) {
-            val first = recyclerViewLM.findFirstVisibleItemPosition()
-            val last = recyclerViewLM.findLastVisibleItemPosition()
-            if (restoreAll) {
-                for (i in first..last) {
-                    val itemView = binding.appList.findViewHolderForAdapterPosition(i)?.itemView
-                    itemView?.animate()?.alpha(1f)?.scaleY(1f)?.scaleX(1f)?.setDuration(500)
-                        ?.start()
-                }
-            } else {
-                for (i in first..last) {
-                    val itemView = binding.appList.findViewHolderForAdapterPosition(i)?.itemView
-                    if (list[i] == app) continue
-                    itemView?.animate()?.alpha(0.5f)?.scaleY(0.95f)?.scaleX(0.95f)?.setDuration(500)
-                        ?.start()
-                }
-            }
-        }
-
-        private fun startDismissAnim(item: App) {
-            if (appAdapter == null || !PREFS.isAAllAppsAnimEnabled) {
-                startAppDelay(item)
-                return
-            }
-            val animatorSetDismiss = AnimatorSet()
-            for (i in 0 until binding.appList.childCount) {
-                val itemView = binding.appList.getChildAt(i) ?: continue
-                animatorSetDismiss.playTogether(
-                    ObjectAnimator.ofFloat(itemView, "alpha", 1f, 0f),
-                    ObjectAnimator.ofFloat(itemView, "rotationY", 0f, -90f)
-                )
-                animatorSetDismiss.duration = (200 + (i * 2)).toLong()
-                animatorSetDismiss.start()
-            }
-            val animatorSet = AnimatorSet()
-            animatorSet.playTogether(
-                ObjectAnimator.ofFloat(binding.appList, "alpha", 1f, 0f),
-                ObjectAnimator.ofFloat(binding.appList, "rotationY", 0f, -90f),
-                ObjectAnimator.ofFloat(binding.appList, "translationX", 0f, -600f)
-            )
-            animatorSet.duration = 325
-            animatorSet.start()
-            animatorSet.doOnEnd {
-                binding.appList.alpha = 0f
-                ObjectAnimator.ofFloat(binding.appList, "rotationY", 0f, 0f).start()
-                ObjectAnimator.ofFloat(binding.appList, "translationX", 0f, 0f).start()
-            }
-            startAppDelay(item)
-        }
-
-        private fun startAppDelay(item: App) {
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(300)
-                context?.let {
-                    runApp(item.appPackage!!, it.packageManager)
-                    delay(100)
-                    val animatorSetItems = AnimatorSet()
-                    animatorSetItems.duration = 100
-                    for (i in 0 until binding.appList.childCount) {
-                        val itemView = binding.appList.getChildAt(i) ?: continue
-                        animatorSetItems.playTogether(
-                            ObjectAnimator.ofFloat(itemView, "alpha", 0f, 1f),
-                            ObjectAnimator.ofFloat(itemView, "rotationY", -90f, 0f),
-                            ObjectAnimator.ofFloat(itemView, "rotation", 45f, 0f),
-                            ObjectAnimator.ofFloat(itemView, "translationX", -500f, 0f)
-                        )
-                        animatorSetItems.start()
-                    }
-                }
-                cancel()
-            }
-        }
-
-        private fun insertNewApp(app: App) {
-            lifecycleScope.launch(Dispatchers.Default) {
-                val dataList = mainViewModel.getViewModelTileDao().getTilesList()
-                dataList.forEach {
-                    if (it.tilePackage == app.appPackage) {
-                        //db already has this app. we must stop this
-                        return@launch
-                    }
-                }
-                var pos = 0
-                for (i in 0 until dataList.size) {
-                    if (dataList[i].tileType == -1) {
-                        pos = i
-                        break
-                    }
-                }
-                val id = Random.nextLong(1000, 2000000)
-                val item = Tile(
-                    pos, id, -1, 0,
-                    isSelected = false,
-                    tileSize = Utils.generateRandomTileSize(true),
-                    tileLabel = app.appLabel!!,
-                    tilePackage = app.appPackage!!
-                )
-                mainViewModel.getViewModelTileDao().addTile(item)
-            }
         }
 
         override fun getItemCount(): Int = list.size
@@ -721,6 +643,7 @@ class AllApps : Fragment() {
         }
     }
 }
+
 class BottomOffsetDecoration(private val bottomOffset: Int) : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,

@@ -80,6 +80,7 @@ class ThemeSettingsFragment : Fragment() {
             binding.accentTip.typeface = it
         }
     }
+
     private fun configure() {
         binding.chosenAccentName.text = Utils.accentName(requireActivity())
         binding.chooseTheme.apply {
@@ -292,6 +293,7 @@ class ThemeSettingsFragment : Fragment() {
                 dismiss()
             }
         }
+
         companion object {
             private const val TAG = "accentDialog"
             fun display(fragmentManager: FragmentManager?): AccentDialog {

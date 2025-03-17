@@ -14,14 +14,14 @@ class CacheUtils {
         private val md by lazy { MessageDigest.getInstance("MD5") }
 
         private fun getDiskCacheDir(context: Context): File {
-            val cachePath = context.cacheDir.path
+            val cachePath = context.cacheDir.absolutePath
             return File(cachePath + File.separator + "icons")
         }
 
         fun initDiskCache(context: Context): DiskLruCache? {
             try {
                 val cacheDir = getDiskCacheDir(context)
-                val cacheSize = 32 * 1024 * 1024
+                val cacheSize = 32 * 1024 * 1024 * 2
                 return DiskLruCache.open(cacheDir, 1, 1, cacheSize.toLong())
             } catch (e: IOException) {
                 e.printStackTrace()

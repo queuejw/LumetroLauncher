@@ -242,7 +242,7 @@ class UpdateSettingsFragment : Fragment() {
     }
 
     private fun refreshUi() {
-        if(!fragmentActive) {
+        if (!fragmentActive) {
             return
         }
         binding.AutoUpdateCheckBox.apply {
@@ -409,7 +409,7 @@ class UpdateSettingsFragment : Fragment() {
                 PREFS.updateState = 6
             }
             withContext(mainDispatcher) {
-                if(fragmentActive) {
+                if (fragmentActive) {
                     binding.progress.isIndeterminate = false
                     refreshUi()
                 }
@@ -432,7 +432,7 @@ class UpdateSettingsFragment : Fragment() {
                 Utils.saveError(e.toString(), db!!)
                 PREFS.updateState = 5
                 withContext(mainDispatcher) {
-                    if(fragmentActive) {
+                    if (fragmentActive) {
                         refreshUi()
                         WPDialog(requireActivity()).setTopDialog(true)
                             .setTitle(getString(R.string.error))
@@ -474,7 +474,7 @@ class UpdateSettingsFragment : Fragment() {
                             getString(R.string.preparing_to_install, progress) + "%"
                         PREFS.updateProgressLevel = progress
                         withContext(mainDispatcher) {
-                            if(fragmentActive) {
+                            if (fragmentActive) {
                                 binding.progessText.text = progressString
                                 binding.progress.setProgress(progress, true)
                             }
@@ -512,12 +512,12 @@ class UpdateSettingsFragment : Fragment() {
                 PREFS.updateState = 5
                 withContext(mainDispatcher) {
                     refreshUi()
-                    if(fragmentActive) {
-                    WPDialog(requireActivity()).setTopDialog(true)
-                        .setTitle(getString(R.string.error))
-                        .setMessage(getString(R.string.downloading_error))
-                        .setPositiveButton(getString(android.R.string.ok), null).show()
-                        }
+                    if (fragmentActive) {
+                        WPDialog(requireActivity()).setTopDialog(true)
+                            .setTitle(getString(R.string.error))
+                            .setMessage(getString(R.string.downloading_error))
+                            .setPositiveButton(getString(android.R.string.ok), null).show()
+                    }
                 }
             } finally {
                 cancel()

@@ -98,12 +98,13 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun animateFragmentExit() {
-        if(!PREFS.isTransitionAnimEnabled) {
+        if (!PREFS.isTransitionAnimEnabled) {
             supportFragmentManager.popBackStackImmediate()
         } else {
-            binding.root.animate().rotationY(90f).alpha(0.5f).translationX(-250f).setDuration(125).setInterpolator(
-                AccelerateInterpolator()
-            ).withEndAction {
+            binding.root.animate().rotationY(90f).alpha(0.5f).translationX(-250f).setDuration(125)
+                .setInterpolator(
+                    AccelerateInterpolator()
+                ).withEndAction {
                 supportFragmentManager.popBackStack()
                 binding.root.apply {
                     rotationY = -90f
@@ -111,9 +112,10 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 lifecycleScope.launch {
                     delay(25)
-                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(125).setInterpolator(
-                        AccelerateInterpolator()
-                    ).start()
+                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(125)
+                        .setInterpolator(
+                            AccelerateInterpolator()
+                        ).start()
                 }.start()
             }
         }
@@ -129,18 +131,20 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun changeFragment(fragment: Fragment, name: String) {
-        if(PREFS.isTransitionAnimEnabled) {
+        if (PREFS.isTransitionAnimEnabled) {
             animateFragmentEnter(fragment, name)
         } else {
             changeFragmentFunction(fragment, name)
         }
     }
+
     private fun changeFragmentFunction(fragment: Fragment, name: String) {
         supportFragmentManager.commit {
             replace(binding.fragmentContainerView.id, fragment)
             addToBackStack(name)
         }
     }
+
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
         binding.root.animate().rotationY(-30f).alpha(0.5f).translationX(-100f).setDuration(125)
             .setInterpolator(
@@ -160,5 +164,5 @@ class SettingsActivity : AppCompatActivity() {
                         ).start()
                 }
             }.start()
-        }
     }
+}

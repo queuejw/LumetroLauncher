@@ -54,6 +54,7 @@ import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Main
 import ru.queuejw.mpl.MainViewModel
 import ru.queuejw.mpl.R
+import ru.queuejw.mpl.content.Start.NewStartAdapter.TileViewHolder
 import ru.queuejw.mpl.content.data.app.App
 import ru.queuejw.mpl.content.data.tile.Tile
 import ru.queuejw.mpl.content.data.tile.TileDao
@@ -158,7 +159,7 @@ class Start : Fragment() {
         ) return
         mainViewModel.getViewModelTileDao().getTilesLiveData().observe(viewLifecycleOwner) {
             mAdapter?.let { adapter ->
-                if(adapter.list != it) adapter.setData(it)
+                if (adapter.list != it) adapter.setData(it)
             }
         }
     }
@@ -234,6 +235,7 @@ class Start : Fragment() {
             }
         }
     }
+
     private fun configureLayoutManager(context: Context?) {
         if (!Main.isLandscape) {
             // phone
@@ -271,7 +273,6 @@ class Start : Fragment() {
     override fun onResume() {
         if (screenLoaded) {
             observe()
-            tryToFixTiles()
         }
         if (Application.isAppOpened) {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -281,19 +282,6 @@ class Start : Fragment() {
         }
         Application.isStartMenuOpened = true
         super.onResume()
-    }
-
-    private fun tryToFixTiles() {
-        for (i in 0..binding.startTiles.childCount) {
-            val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
-            if (holder.itemViewType == -1) continue
-            holder.itemView.apply {
-                scaleX = 1f
-                scaleY = 1f
-                translationY = 0f
-                translationX = 0f
-            }
-        }
     }
 
     override fun onPause() {
@@ -327,7 +315,10 @@ class Start : Fragment() {
                         PackageChangesReceiver.PACKAGE_INSTALLED -> {
                             Log.d("Start", "pkg installed")
                             val bool = PREFS.iconPackPackage != "null"
-                            (requireActivity() as Main).generateIcon(packageName, bool)
+                            mainViewModel.addIconToCache(
+                                packageName,
+                                (requireActivity() as Main).generateIcon(packageName, bool)
+                            )
                             mainViewModel.addAppToList(
                                 App(
                                     appLabel = context.packageManager.getApplicationInfo(
@@ -532,6 +523,211 @@ class Start : Fragment() {
     }
 
     /**
+     * A popup window that shows the tile buttons (resize, unpin, customize)
+     * @param holder TileViewHolder
+     * @param item Tile object
+     * @param position Tile position
+     */
+    private fun showTilePopupWindow(
+        holder: TileViewHolder,
+        item: Tile,
+        position: Int,
+        context: Context
+    ) {
+        binding.startTiles.isScrollEnabled = false
+        holder.itemView.clearAnimation()
+        val inflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView: View = inflater.inflate(
+            if (item.tileSize == "small") R.layout.tile_window_small else R.layout.tile_window,
+            holder.itemView as ViewGroup,
+            false
+        )
+        var width = holder.itemView.width + 50
+        var height = holder.itemView.height + 25
+        val popupWindow = PopupWindow(popupView, width, height, true)
+        val resize = popupView.findViewById<MaterialCardView>(R.id.resize)
+        val resizeIcon = popupView.findViewById<ImageView>(R.id.resizeIco)
+        val settings = popupView.findViewById<MaterialCardView>(R.id.settings)
+        val remove = popupView.findViewById<MaterialCardView>(R.id.remove)
+        popupWindow.setOnDismissListener {
+            binding.startTiles.isScrollEnabled = true
+            mAdapter?.selectedItem = null
+        }
+        popupWindow.showAsDropDown(
+            holder.itemView,
+            -(width / 10),
+            -height,
+            Gravity.CENTER
+        )
+        applyResizeIcon(resizeIcon, item)
+        resize.setOnClickListener {
+            resizeTile(item, position)
+            popupWindow.dismiss()
+        }
+        remove.setOnClickListener {
+            removeTile(item, position)
+            popupWindow.dismiss()
+        }
+        settings.setOnClickListener {
+            showSettingsBottomSheet(item, context)
+            popupWindow.dismiss()
+        }
+    }
+
+    private fun applyResizeIcon(view: ImageView, item: Tile) {
+        view.rotation = when (item.tileSize) {
+            "small" -> 45f
+            "big" -> -135f
+            else -> 0f
+        }
+    }
+
+    private fun removeTile(item: Tile, position: Int) {
+        lifecycleScope.launch(ioDispatcher) {
+            destroyTile(item)
+            withContext(mainDispatcher) {
+                mAdapter?.notifyItemChanged(position)
+            }
+        }
+    }
+
+    private fun resizeTile(item: Tile, position: Int) {
+        lifecycleScope.launch(ioDispatcher) {
+            when (item.tileSize) {
+                "small" -> item.tileSize = "medium"
+                "medium" -> item.tileSize = "big"
+                "big" -> item.tileSize = "small"
+            }
+            mainViewModel.getViewModelTileDao().updateTile(item)
+            withContext(mainDispatcher) {
+                mAdapter?.notifyItemChanged(position)
+            }
+        }
+    }
+
+    /**
+     * The bottom panel with tile settings, which rises from the bottom
+     * @param item Tile object
+     */
+    private fun showSettingsBottomSheet(item: Tile, context: Context) {
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.setContentView(R.layout.start_tile_settings_bottomsheet)
+        bottomSheet.dismissWithAnimation = true
+        val bottomSheetInternal =
+            bottomSheet.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        BottomSheetBehavior.from<View?>(bottomSheetInternal!!).peekHeight =
+            context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_size)
+        configureTileBottomSheet(bottomSheetInternal, bottomSheet, item, context)
+        bottomSheet.show()
+    }
+
+    /**
+     * Creating the interface of the bottom panel is done here
+     * @param bottomSheetInternal bottomSheet view
+     * @param bottomSheet BottomSheetDialog object
+     * @param item Tile object
+     */
+    private fun configureTileBottomSheet(
+        bottomSheetInternal: View,
+        bottomSheet: BottomSheetDialog,
+        item: Tile,
+        context: Context
+    ) {
+        val label = bottomSheetInternal.findViewById<MaterialTextView>(R.id.appLabelSheet)
+        val colorSub = bottomSheetInternal.findViewById<MaterialTextView>(R.id.chooseColorSub)
+        val removeColor =
+            bottomSheetInternal.findViewById<MaterialTextView>(R.id.chooseColorRemove)
+        val uninstall = bottomSheetInternal.findViewById<MaterialCardView>(R.id.uninstallApp)
+        val uninstallLabel =
+            bottomSheetInternal.findViewById<MaterialTextView>(R.id.uninstall_label)
+        val changeLabel = bottomSheetInternal.findViewById<MaterialCardView>(R.id.editAppLabel)
+        val changeColor = bottomSheetInternal.findViewById<MaterialCardView>(R.id.editTileColor)
+        val editor = bottomSheetInternal.findViewById<EditText>(R.id.textEdit)
+        val textFiled = bottomSheetInternal.findViewById<TextInputLayout>(R.id.textField)
+        val labelLayout = bottomSheetInternal.findViewById<LinearLayout>(R.id.changeLabelLayout)
+        val labelChangeBtn =
+            bottomSheetInternal.findViewById<MaterialCardView>(R.id.labelChange)
+        val editLabelText =
+            bottomSheetInternal.findViewById<MaterialTextView>(R.id.editAppLabelText)
+        val appInfo = bottomSheetInternal.findViewById<MaterialCardView>(R.id.appInfo)
+        val chooseTileColor =
+            bottomSheetInternal.findViewById<MaterialTextView>(R.id.choose_tile_color)
+        val appInfoLabel =
+            bottomSheetInternal.findViewById<MaterialTextView>(R.id.app_info_label)
+
+        (if (PREFS.customLightFontPath != null) Application.customLightFont else Application.customFont)?.let {
+            label.typeface = it
+            colorSub.typeface = it
+            removeColor.typeface = it
+            uninstallLabel.typeface = it
+            editor.typeface = it
+            editLabelText.typeface = it
+            chooseTileColor.typeface = it
+            appInfoLabel.typeface = it
+            textFiled.typeface = it
+        }
+        editLabelText.setOnClickListener {
+            labelLayout.visibility = View.VISIBLE
+        }
+        val originalLabel = context.packageManager.getApplicationLabel(
+            context.packageManager.getApplicationInfo(
+                item.tilePackage,
+                0
+            )
+        ).toString()
+        label.text = item.tileLabel
+        editor.setText(item.tileLabel)
+        editor.hint = originalLabel
+        if (item.tileColor == -1) {
+            colorSub.visibility = View.GONE
+            removeColor.visibility = View.GONE
+        } else {
+            colorSub.setTextColor(Utils.getTileColorFromPrefs(item.tileColor!!, context))
+            colorSub.text = getString(
+                R.string.tileSettings_color_sub,
+                Utils.getTileColorName(item.tileColor!!, context)
+            )
+        }
+        changeLabel.setOnClickListener {
+            labelLayout.visibility = View.VISIBLE
+        }
+        labelChangeBtn.setOnClickListener {
+            lifecycleScope.launch(ioDispatcher) {
+                item.tileLabel =
+                    if (editor.text.toString() == "") originalLabel else editor.text.toString()
+                mainViewModel.getViewModelTileDao().updateTile(item)
+            }
+            bottomSheet.dismiss()
+        }
+        removeColor.setOnClickListener {
+            lifecycleScope.launch(ioDispatcher) {
+                item.tileColor = -1
+                mainViewModel.getViewModelTileDao().updateTile(item)
+            }
+            bottomSheet.dismiss()
+        }
+        changeColor.setOnClickListener {
+            val dialog = AccentDialog()
+            dialog.configure(item, mAdapter!!, mainViewModel.getViewModelTileDao())
+            dialog.show(childFragmentManager, "accentDialog")
+            bottomSheet.dismiss()
+        }
+        uninstall.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_DELETE).setData(("package:" + item.tilePackage).toUri()))
+            bottomSheet.dismiss()
+        }
+        appInfo.setOnClickListener {
+            startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+                    ("package:" + item.tilePackage).toUri()
+                )
+            )
+            bottomSheet.dismiss()
+        }
+    }
+
+    /**
      * Tile Screen Adapter
      * @param context Context
      * @param list Current tile list
@@ -590,21 +786,8 @@ class Start : Fragment() {
             (requireActivity() as Main).configureViewPagerScroll(false)
             addCallback()
             isEditMode = true
-            for (i in 0..binding.startTiles.childCount) {
-                val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
-                if (holder.itemViewType == -1) continue
-                holder.itemView.animate().scaleX(0.9f).scaleY(0.9f).setDuration(300).start()
-            }
-            startEditModeAnim()
         }
 
-        fun startEditModeAnim() {
-            for (i in 0..binding.startTiles.childCount) {
-                val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
-                if (holder.itemViewType == -1) continue
-                animateItemEditMode(holder.itemView, i)
-            }
-        }
 
         /**
          * Called to disable the desktop editing mode
@@ -614,28 +797,6 @@ class Start : Fragment() {
             removeCallback()
             (requireActivity() as Main).configureViewPagerScroll(true)
             isEditMode = false
-
-            for (i in 0..binding.startTiles.childCount) {
-                val holder = binding.startTiles.findViewHolderForAdapterPosition(i) ?: continue
-                if (holder.itemViewType == -1) continue
-                holder.itemView.clearAnimation()
-                holder.itemView.animate().scaleX(1f).scaleY(1f).setDuration(300).start()
-                holder.itemView.animate().setDuration(300).translationY(0f).translationX(0f).start()
-            }
-        }
-
-        // tile animation in edit mode
-        fun animateItemEditMode(view: View, position: Int) {
-            if (!PREFS.isTilesAnimEnabled || !isEditMode || list[position] == selectedItem) return
-            val rad = 5
-            val randomX = Random.nextFloat() * 2 * rad - rad
-            val randomY = Random.nextFloat() * 2 * rad - rad
-            if (view.scaleX != 0.9f) view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(300)
-                .start()
-            view.animate().setDuration(1000).translationX(randomX).translationY(randomY)
-                .withEndAction {
-                    animateItemEditMode(view, position)
-                }.start()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -677,24 +838,6 @@ class Start : Fragment() {
             setTileIconSize(holder.binding.tileIcon, item.tileSize)
             setTileText(holder.binding.tileLabel, item)
             setTileIcon(holder.binding.tileIcon, item)
-            setTileAnimation(holder.itemView, position)
-        }
-
-        /**
-         * Creates an animation in edit mode or restores the default scale and translation settings
-         * @param view ItemView
-         * @param pos View position
-         * @see bindDefaultTile
-         */
-        private fun setTileAnimation(view: View, pos: Int) {
-            if (isEditMode) {
-                animateItemEditMode(view, pos)
-            } else {
-                view.scaleX = 1f
-                view.scaleY = 1f
-                view.translationY = 0f
-                view.translationX = 0f
-            }
         }
 
         /**
@@ -813,210 +956,11 @@ class Start : Fragment() {
                     newData.add(item)
                 }
                 mainViewModel.getViewModelTileDao().updateAllTiles(newData)
-                withContext(mainDispatcher) {
-                    startEditModeAnim()
-                }
             }
         }
 
-        /**
-         * A popup window that shows the tile buttons (resize, unpin, customize)
-         * @param holder TileViewHolder
-         * @param item Tile object
-         * @param position Tile position
-         */
-        private fun showTilePopupWindow(holder: TileViewHolder, item: Tile, position: Int) {
-            binding.startTiles.isScrollEnabled = false
-            holder.itemView.clearAnimation()
-            val inflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val popupView: View = inflater.inflate(
-                if (item.tileSize == "small") R.layout.tile_window_small else R.layout.tile_window,
-                holder.itemView as ViewGroup,
-                false
-            )
-            var width = holder.itemView.width + 50
-            var height = holder.itemView.height + 25
-            val popupWindow = PopupWindow(popupView, width, height, true)
-            val resize = popupView.findViewById<MaterialCardView>(R.id.resize)
-            val resizeIcon = popupView.findViewById<ImageView>(R.id.resizeIco)
-            val settings = popupView.findViewById<MaterialCardView>(R.id.settings)
-            val remove = popupView.findViewById<MaterialCardView>(R.id.remove)
-            popupWindow.setOnDismissListener {
-                binding.startTiles.isScrollEnabled = true
-                selectedItem = null
-                animateItemEditMode(holder.itemView, position)
-            }
-            popupWindow.showAsDropDown(
-                holder.itemView,
-                -(width / 10),
-                -height,
-                Gravity.CENTER
-            )
-            applyResizeIcon(resizeIcon, item)
-            resize.setOnClickListener {
-                resizeTile(item, position)
-                popupWindow.dismiss()
-            }
-            remove.setOnClickListener {
-                removeTile(item, position)
-                popupWindow.dismiss()
-            }
-            settings.setOnClickListener {
-                showSettingsBottomSheet(item)
-                popupWindow.dismiss()
-            }
-        }
-
-        private fun applyResizeIcon(view: ImageView, item: Tile) {
-            view.rotation = when (item.tileSize) {
-                "small" -> 45f
-                "big" -> -135f
-                else -> 0f
-            }
-        }
-
-        private fun removeTile(item: Tile, position: Int) {
-            lifecycleScope.launch(ioDispatcher) {
-                destroyTile(item)
-                withContext(mainDispatcher) {
-                    notifyItemChanged(position)
-                }
-            }
-        }
-
-        private fun resizeTile(item: Tile, position: Int) {
-            lifecycleScope.launch(ioDispatcher) {
-                when (item.tileSize) {
-                    "small" -> item.tileSize = "medium"
-                    "medium" -> item.tileSize = "big"
-                    "big" -> item.tileSize = "small"
-                }
-                mainViewModel.getViewModelTileDao().updateTile(item)
-                withContext(mainDispatcher) {
-                    notifyItemChanged(position)
-                }
-            }
-        }
-
-        /**
-         * The bottom panel with tile settings, which rises from the bottom
-         * @param item Tile object
-         */
-        fun showSettingsBottomSheet(item: Tile) {
-            val bottomSheet = BottomSheetDialog(context)
-            bottomSheet.setContentView(R.layout.start_tile_settings_bottomsheet)
-            bottomSheet.dismissWithAnimation = true
-            val bottomSheetInternal =
-                bottomSheet.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            BottomSheetBehavior.from<View?>(bottomSheetInternal!!).peekHeight =
-                context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_size)
-            configureTileBottomSheet(bottomSheetInternal, bottomSheet, item)
-            bottomSheet.show()
-        }
-
-        /**
-         * Creating the interface of the bottom panel is done here
-         * @param bottomSheetInternal bottomSheet view
-         * @param bottomSheet BottomSheetDialog object
-         * @param item Tile object
-         */
-        private fun configureTileBottomSheet(
-            bottomSheetInternal: View,
-            bottomSheet: BottomSheetDialog,
-            item: Tile
-        ) {
-            val label = bottomSheetInternal.findViewById<MaterialTextView>(R.id.appLabelSheet)
-            val colorSub = bottomSheetInternal.findViewById<MaterialTextView>(R.id.chooseColorSub)
-            val removeColor =
-                bottomSheetInternal.findViewById<MaterialTextView>(R.id.chooseColorRemove)
-            val uninstall = bottomSheetInternal.findViewById<MaterialCardView>(R.id.uninstallApp)
-            val uninstallLabel =
-                bottomSheetInternal.findViewById<MaterialTextView>(R.id.uninstall_label)
-            val changeLabel = bottomSheetInternal.findViewById<MaterialCardView>(R.id.editAppLabel)
-            val changeColor = bottomSheetInternal.findViewById<MaterialCardView>(R.id.editTileColor)
-            val editor = bottomSheetInternal.findViewById<EditText>(R.id.textEdit)
-            val textFiled = bottomSheetInternal.findViewById<TextInputLayout>(R.id.textField)
-            val labelLayout = bottomSheetInternal.findViewById<LinearLayout>(R.id.changeLabelLayout)
-            val labelChangeBtn =
-                bottomSheetInternal.findViewById<MaterialCardView>(R.id.labelChange)
-            val editLabelText =
-                bottomSheetInternal.findViewById<MaterialTextView>(R.id.editAppLabelText)
-            val appInfo = bottomSheetInternal.findViewById<MaterialCardView>(R.id.appInfo)
-            val chooseTileColor =
-                bottomSheetInternal.findViewById<MaterialTextView>(R.id.choose_tile_color)
-            val appInfoLabel =
-                bottomSheetInternal.findViewById<MaterialTextView>(R.id.app_info_label)
-
-            (if (PREFS.customLightFontPath != null) Application.customLightFont else Application.customFont)?.let {
-                label.typeface = it
-                colorSub.typeface = it
-                removeColor.typeface = it
-                uninstallLabel.typeface = it
-                editor.typeface = it
-                editLabelText.typeface = it
-                chooseTileColor.typeface = it
-                appInfoLabel.typeface = it
-                textFiled.typeface = it
-            }
-            editLabelText.setOnClickListener {
-                labelLayout.visibility = View.VISIBLE
-            }
-            val originalLabel = context.packageManager.getApplicationLabel(
-                context.packageManager.getApplicationInfo(
-                    item.tilePackage,
-                    0
-                )
-            ).toString()
-            label.text = item.tileLabel
-            editor.setText(item.tileLabel)
-            editor.hint = originalLabel
-            if (item.tileColor == -1) {
-                colorSub.visibility = View.GONE
-                removeColor.visibility = View.GONE
-            } else {
-                colorSub.setTextColor(Utils.getTileColorFromPrefs(item.tileColor!!, context))
-                colorSub.text = getString(
-                    R.string.tileSettings_color_sub,
-                    Utils.getTileColorName(item.tileColor!!, context)
-                )
-            }
-            changeLabel.setOnClickListener {
-                labelLayout.visibility = View.VISIBLE
-            }
-            labelChangeBtn.setOnClickListener {
-                lifecycleScope.launch(ioDispatcher) {
-                    item.tileLabel =
-                        if (editor.text.toString() == "") originalLabel else editor.text.toString()
-                    mainViewModel.getViewModelTileDao().updateTile(item)
-                }
-                bottomSheet.dismiss()
-            }
-            removeColor.setOnClickListener {
-                lifecycleScope.launch(ioDispatcher) {
-                    item.tileColor = -1
-                    mainViewModel.getViewModelTileDao().updateTile(item)
-                }
-                bottomSheet.dismiss()
-            }
-            changeColor.setOnClickListener {
-                val dialog = AccentDialog()
-                dialog.configure(item, this@NewStartAdapter, mainViewModel.getViewModelTileDao())
-                dialog.show(childFragmentManager, "accentDialog")
-                bottomSheet.dismiss()
-            }
-            uninstall.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_DELETE).setData(("package:" + item.tilePackage).toUri()))
-                bottomSheet.dismiss()
-            }
-            appInfo.setOnClickListener {
-                startActivity(
-                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
-                        ("package:" + item.tilePackage).toUri()
-                    )
-                )
-                bottomSheet.dismiss()
-            }
+        fun adapterShowSettingsBottomSheet(item: Tile, context: Context) {
+            showSettingsBottomSheet(item, context)
         }
 
         /**
@@ -1051,7 +995,7 @@ class Start : Fragment() {
                 val item = list[absoluteAdapterPosition]
                 if (isEditMode) {
                     selectedItem = item
-                    showTilePopupWindow(this@TileViewHolder, item, absoluteAdapterPosition)
+                    showTilePopupWindow(this@TileViewHolder, item, absoluteAdapterPosition, context)
                 } else {
                     if (PREFS.isTilesAnimEnabled) {
                         lifecycleScope.launch {
@@ -1196,11 +1140,14 @@ class Start : Fragment() {
 
         override fun dismiss() {
             mAdapter.notifyItemChanged(item.tilePosition!!)
-            mAdapter.showSettingsBottomSheet(item)
+            context?.let {
+                mAdapter.adapterShowSettingsBottomSheet(item, it)
+            }
             super.dismiss()
         }
     }
 }
+
 class MarginItemDecoration(private val spaceSize: Int) : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect, view: View,

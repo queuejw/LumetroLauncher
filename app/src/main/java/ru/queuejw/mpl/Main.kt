@@ -1,7 +1,9 @@
 package ru.queuejw.mpl
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
@@ -173,7 +175,7 @@ class Main : AppCompatActivity() {
         binding.mainPager.apply {
             adapter = pagerAdapter
             registerOnPageChangeCallback(createPageChangeCallback())
-            if(!PREFS.isAllAppsEnabled) {
+            if (!PREFS.isAllAppsEnabled) {
                 isUserInputEnabled = false
             }
         }
@@ -238,7 +240,7 @@ class Main : AppCompatActivity() {
     }
 
     fun configureViewPagerScroll(enabled: Boolean) {
-        if(PREFS.isAllAppsEnabled) {
+        if (PREFS.isAllAppsEnabled) {
             binding.mainPager.isUserInputEnabled = enabled
         }
     }
@@ -248,69 +250,69 @@ class Main : AppCompatActivity() {
         mainViewModel.apply {
             val list = Utils.setUpApps(this@Main)
             setAppList(list)
-            regenerateIcons(list)
             setTileList(getViewModelTileDao().getTilesList())
-        }
-    }
-    private suspend fun regenerateIcons(appList: MutableList<App>) {
-        val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
-        var diskCache = CacheUtils.initDiskCache(this)
-        if (isCustomIconsInstalled) {
-            checkIconPack(diskCache)
-        }
-        if (PREFS.iconPackChanged) {
-            PREFS.iconPackChanged = false
-            diskCache?.apply {
-                delete()
-                close()
-            }
-            diskCache = null
-        }
-        withContext(Dispatchers.IO) {
-            if (diskCache == null) diskCache = CacheUtils.initDiskCache(this@Main)
-            appList.forEach { app ->
-                if (app.type != 1) {
-                    val icon = CacheUtils.loadIconFromDiskCache(diskCache!!, app.appPackage!!)
-                    if (icon == null) {
-                        generateIcon(app.appPackage!!, isCustomIconsInstalled)
-                        CacheUtils.saveIconToDiskCache(
-                            diskCache,
-                            app.appPackage!!,
-                            mainViewModel.getIconFromCache(app.appPackage!!)
-                        )
-                    } else {
-                        mainViewModel.addIconToCache(app.appPackage!!, icon)
-                    }
-                }
-            }
-            CacheUtils.closeDiskCache(diskCache!!)
+            updateIcons(list, this@Main)
         }
     }
 
-    private fun checkIconPack(disk: DiskLruCache?): Boolean {
-        return runCatching {
-            packageManager.getApplicationInfo(PREFS.iconPackPackage!!, 0)
-            true
-        }.getOrElse {
-            PREFS.iconPackPackage = "null"
-            disk?.apply {
-                delete()
-                close()
+    private fun initDiskCache(context: Context): DiskLruCache? {
+        return CacheUtils.initDiskCache(context)
+    }
+
+    private fun updateIcons(list: MutableList<App>, context: Context) {
+        var diskCache = initDiskCache(context)
+        val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
+        updateIconPack(diskCache, isCustomIconsInstalled)
+        if (diskCache == null) {
+            diskCache = initDiskCache(context)
+        }
+        diskCache ?: {
+            diskCache = initDiskCache(context)
+        }
+        list.forEach {
+            var icon = CacheUtils.loadIconFromDiskCache(diskCache!!, it.appPackage)
+            if (icon == null) {
+                icon = generateIcon(it.appPackage, isCustomIconsInstalled)
+                CacheUtils.saveIconToDiskCache(diskCache!!, it.appPackage, icon)
             }
-            false
+            mainViewModel.addIconToCache(it.appPackage, icon)
+        }
+        diskCache?.let {
+            CacheUtils.closeDiskCache(it)
         }
     }
 
     // Icon generation for cache
-    fun generateIcon(appPackage: String, isCustomIconsInstalled: Boolean) {
-        val icon = if (!isCustomIconsInstalled) {
+    fun generateIcon(appPackage: String, isCustomIconsInstalled: Boolean): Bitmap {
+        return if (!isCustomIconsInstalled) {
             packageManager.getApplicationIcon(appPackage)
         } else {
             iconPackManager.getIconPackWithName(PREFS.iconPackPackage)
                 ?.getDrawableIconForPackage(appPackage, null)
                 ?: packageManager.getApplicationIcon(appPackage)
+        }.toBitmap(defaultIconSize, defaultIconSize)
+    }
+
+    private fun updateIconPack(diskLruCache: DiskLruCache?, isCustomIconsInstalled: Boolean) {
+        if (!isCustomIconsInstalled) {
+            return
         }
-        mainViewModel.addIconToCache(appPackage, icon.toBitmap(defaultIconSize, defaultIconSize))
+        if (!iconPackExist()) {
+            PREFS.iconPackPackage = "null"
+            diskLruCache?.let {
+                it.delete()
+                CacheUtils.closeDiskCache(it)
+            }
+        }
+    }
+
+    private fun iconPackExist(): Boolean {
+        runCatching {
+            packageManager.getApplicationInfo(PREFS.iconPackPackage!!, 0)
+            return true
+        }.getOrElse {
+            return false
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -377,10 +379,13 @@ class Main : AppCompatActivity() {
     }
 
     private fun setupNavigationBar() {
-        binding.mainBottomBar.navigationMain.setBackgroundColor(getNavBarColor())
-        if(!PREFS.isAllAppsEnabled) {
-            binding.mainBottomBar.navigationSearchBtn.visibility = View.GONE
+        if (PREFS.navBarColor == 3) {
+            binding.mainBottomBar.root.visibility = View.GONE
+            return
         }
+        if (!PREFS.isAllAppsEnabled) binding.mainBottomBar.navigationSearchBtn.visibility =
+            View.GONE
+        binding.mainBottomBar.navigationMain.setBackgroundColor(getNavBarColor())
         configureBottomBar()
     }
 
@@ -389,11 +394,7 @@ class Main : AppCompatActivity() {
             0 -> ContextCompat.getColor(this, android.R.color.background_dark)
             1 -> ContextCompat.getColor(this, android.R.color.background_light)
             2 -> Utils.accentColorFromPrefs(this)
-            3 -> {
-                binding.mainBottomBar.navigationMain.visibility = View.GONE
-                return ContextCompat.getColor(this, android.R.color.transparent)
-            }
-
+            3 -> ContextCompat.getColor(this, android.R.color.transparent)
             else -> Utils.launcherSurfaceColor(theme)
         }
     }
@@ -407,12 +408,12 @@ class Main : AppCompatActivity() {
         binding.mainBottomBar.navigationStartBtn.apply {
             setImageDrawable(getNavBarIconDrawable())
             setOnClickListener { binding.mainPager.setCurrentItem(0, true) }
-            if(!PREFS.isAllAppsEnabled) setOnLongClickListener {
+            if (!PREFS.isAllAppsEnabled) setOnLongClickListener {
                 binding.mainPager.setCurrentItem(1, true)
                 true
             }
         }
-        if(PREFS.isAllAppsEnabled) {
+        if (PREFS.isAllAppsEnabled) {
             binding.mainBottomBar.navigationSearchBtn.setOnClickListener {
                 binding.mainPager.setCurrentItem(1, true)
             }
