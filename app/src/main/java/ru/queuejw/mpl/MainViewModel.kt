@@ -21,6 +21,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         SparseArrayCompat<Bitmap?>()
     }
 
+    var userTileCount = 0
+
     fun addIconToCache(appPackage: String, bitmap: Bitmap?) {
         icons.append(appPackage.hashCode(), bitmap)
     }
@@ -51,6 +53,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setTileList(list: MutableList<Tile>) {
         tileList = list
+        setUserTileCount(list)
+    }
+
+    fun setUserTileCount(tiles: MutableList<Tile>) {
+        var temp = ArrayList<Tile>()
+        tiles.forEach {
+            if(it.tileType != -1) {
+                temp.add(it)
+            }
+        }
+        userTileCount = temp.last().tilePosition!! + 1
     }
 
     fun getTileList(): MutableList<Tile> {

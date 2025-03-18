@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="12dp"
             app:cardBackgroundColor="?android:attr/colorBackground"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="20dp"
             app:strokeColor="?attr/colorOnBackground"
             app:strokeWidth="3dp">
 
@@ -109,7 +109,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             app:cardBackgroundColor="?android:attr/colorBackground"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="20dp"
             app:strokeColor="?attr/colorOnBackground"
             app:strokeWidth="3dp">
 
@@ -130,7 +130,7 @@
             android:layout_marginTop="12dp"
             android:visibility="gone"
             app:cardBackgroundColor="?android:attr/colorBackground"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="20dp"
             app:strokeColor="?attr/colorOnSurface"
             app:strokeWidth="3dp">
             <ImageView

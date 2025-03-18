@@ -58,9 +58,9 @@ class Application : Application() {
         var customBoldFont: Typeface? = null
 
         fun setupFonts() {
-            customFont = Utils.getCustomFont()
-            customLightFont = Utils.getCustomLightFont()
-            customBoldFont = Utils.getCustomBoldFont()
+            customFont = Utils.getCustomFont(0)
+            customLightFont = Utils.getCustomFont(1)
+            customBoldFont = Utils.getCustomFont(2)
         }
 
     }

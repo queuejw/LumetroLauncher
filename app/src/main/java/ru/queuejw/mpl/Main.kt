@@ -270,7 +270,7 @@ class Main : AppCompatActivity() {
             var icon = CacheUtils.loadIconFromDiskCache(diskCache!!, it.appPackage)
             if (icon == null) {
                 icon = generateIcon(it.appPackage, isCustomIconsInstalled)
-                CacheUtils.saveIconToDiskCache(diskCache!!, it.appPackage, icon)
+                CacheUtils.saveIconToDiskCache(diskCache, it.appPackage, icon)
             }
             mainViewModel.addIconToCache(it.appPackage, icon)
         }

@@ -74,10 +74,10 @@ class AppsFragment : Fragment() {
             appList.forEach {
                 if (it.type != 1) {
                     val bmp = if (!isCustomIconsInstalled)
-                        pm.getApplicationIcon(it.appPackage!!)
+                        pm.getApplicationIcon(it.appPackage)
                     else
                         iconManager?.getIconPackWithName(PREFS.iconPackPackage)
-                            ?.getDrawableIconForPackage(it.appPackage!!, null)
+                            ?.getDrawableIconForPackage(it.appPackage, null)
                     hashCache.append(it.id, bmp)
                 }
             }
@@ -113,7 +113,9 @@ class AppsFragment : Fragment() {
         selectedItems ?: return
         if (selectedItems!!.isEmpty()) return
         saveAppsCoroutine.launch {
+            selectedItems
             val call = TileData.getTileData(requireContext()).getTileDao()
+            generatePlaceholder(call, selectedItems!!.size * 2)
             var pos = 0
             for (i in selectedItems!!) {
                 val id = Random.nextLong(1000, 2000000)
@@ -121,8 +123,8 @@ class AppsFragment : Fragment() {
                     pos, id, -1, 0,
                     isSelected = false,
                     tileSize = Utils.generateRandomTileSize(false),
-                    tileLabel = i.appLabel!!,
-                    tilePackage = i.appPackage!!
+                    tileLabel = i.appLabel,
+                    tilePackage = i.appPackage
                 )
                 call.updateTile(entity)
                 pos += 1

@@ -17,6 +17,7 @@ import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.settings.SettingsActivity
 import ru.queuejw.mpl.databinding.AppBinding
 import ru.queuejw.mpl.databinding.SettingsIconsBinding
+import ru.queuejw.mpl.helpers.disklru.CacheUtils
 import ru.queuejw.mpl.helpers.iconpack.IconPackManager
 import ru.queuejw.mpl.helpers.ui.WPDialog
 
@@ -103,6 +104,7 @@ class IconSettingsFragment : Fragment() {
                 iconPackChanged = true
                 isPrefsChanged = true
             }
+            context?.let { clearIconCache(it) }
             setUi()
         }
         binding.downloadIconPacks.setOnClickListener {
@@ -184,6 +186,14 @@ class IconSettingsFragment : Fragment() {
             if (isListVisible) getString(android.R.string.cancel) else getString(R.string.choose_icon_pack)
     }
 
+    private fun clearIconCache(context: Context) {
+        val diskCache = CacheUtils.initDiskCache(context)
+        diskCache?.let {
+            it.delete()
+            CacheUtils.closeDiskCache(it)
+        }
+    }
+
     inner class IconPackAdapterList(
         private var list: MutableList<IconPackItem>,
         private val context: Context
@@ -216,6 +226,7 @@ class IconSettingsFragment : Fragment() {
                     iconPackChanged = true
                     isPrefsChanged = true
                 }
+                clearIconCache(context)
                 binding.iconPackList.visibility = View.GONE
                 isListVisible = false
                 setUi()
@@ -226,7 +237,7 @@ class IconSettingsFragment : Fragment() {
 
 class IconPackHolder(val holderBinding: AppBinding) : RecyclerView.ViewHolder(holderBinding.root)
 
-class IconPackItem {
-    var name: String = ""
+data class IconPackItem(
+    var name: String = "",
     var appPackage: String = ""
-}
+)

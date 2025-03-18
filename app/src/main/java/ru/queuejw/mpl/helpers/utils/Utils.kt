@@ -359,9 +359,8 @@ class Utils {
         }
 
         suspend fun generatePlaceholder(call: TileDao, value: Int) {
-            val size = value
             val startFrom = call.getTilesList().size
-            val end = startFrom + size
+            val end = startFrom + value
             for (i in startFrom..end) {
                 val placeholder = Tile(
                     i, (i + 1).toLong(), -1, -1,
@@ -392,8 +391,12 @@ class Utils {
             }
         }
 
-        fun getCustomFont(): Typeface? {
-            val path = PREFS.customFontPath
+        fun getCustomFont(fontType: Int): Typeface? {
+            val path = when(fontType) {
+                1 -> PREFS.customLightFontPath
+                2 -> PREFS.customBoldFontPath
+                else -> PREFS.customFontPath
+            }
             if (!PREFS.customFontInstalled || path == null) return null
             return path.let {
                 val fontFile = File(it)
@@ -408,39 +411,6 @@ class Utils {
                 }
             }
         }
-
-        fun getCustomLightFont(): Typeface? {
-            val path = PREFS.customLightFontPath
-            if (!PREFS.customFontInstalled || path == null) return null
-            return path.let {
-                val fontFile = File(it)
-                if (fontFile.exists()) {
-                    val typeface = Typeface.createFromFile(fontFile)
-                    typeface
-                } else {
-                    PREFS.customLightFontPath = null
-                    PREFS.customLightFontName = null
-                    null
-                }
-            }
-        }
-
-        fun getCustomBoldFont(): Typeface? {
-            val path = PREFS.customBoldFontPath
-            if (!PREFS.customFontInstalled || path == null) return null
-            return path.let {
-                val fontFile = File(it)
-                if (fontFile.exists()) {
-                    val typeface = Typeface.createFromFile(fontFile)
-                    typeface
-                } else {
-                    PREFS.customBoldFontPath = null
-                    PREFS.customBoldFontName = null
-                    null
-                }
-            }
-        }
-
         fun getDefaultLocale(): Locale {
             return Locale.getDefault()
         }
