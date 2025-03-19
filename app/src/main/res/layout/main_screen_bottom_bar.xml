@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Control buttons-->
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_main"
     android:layout_width="match_parent"
+    android:focusable="true"
     android:gravity="center"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:visibility="gone"
+    android:clickable="true"
     app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+    <ImageView
+        android:id="@+id/navigation_start_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_os_windows_8" />
+    <ImageView
+        android:id="@+id/navigation_search_btn"
+        android:layout_width="40dp"
+        android:layout_marginStart="64dp"
+        android:layout_height="40dp"
+        android:padding="2dp"
+        android:scaleX="-1"
+        android:src="@drawable/ic_search" />
 
-        <ImageView
-            android:id="@+id/navigation_start_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_os_windows_8" />
-        <ImageView
-            android:id="@+id/navigation_search_btn"
-            android:layout_width="40dp"
-            android:layout_marginStart="64dp"
-            android:layout_height="40dp"
-            android:scaleX="-1"
-            android:src="@drawable/ic_search" />
-    </LinearLayout>
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

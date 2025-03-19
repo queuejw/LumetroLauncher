@@ -105,19 +105,20 @@ class SettingsActivity : AppCompatActivity() {
                 .setInterpolator(
                     AccelerateInterpolator()
                 ).withEndAction {
-                supportFragmentManager.popBackStack()
-                binding.root.apply {
-                    rotationY = -90f
-                    alpha = 0f
+                    supportFragmentManager.popBackStack()
+                    binding.root.apply {
+                        rotationY = -90f
+                        alpha = 0f
+                    }
+                    lifecycleScope.launch {
+                        delay(25)
+                        binding.root.animate().rotationY(0f).alpha(1f).translationX(0f)
+                            .setDuration(125)
+                            .setInterpolator(
+                                AccelerateInterpolator()
+                            ).start()
+                    }.start()
                 }
-                lifecycleScope.launch {
-                    delay(25)
-                    binding.root.animate().rotationY(0f).alpha(1f).translationX(0f).setDuration(125)
-                        .setInterpolator(
-                            AccelerateInterpolator()
-                        ).start()
-                }.start()
-            }
         }
     }
 

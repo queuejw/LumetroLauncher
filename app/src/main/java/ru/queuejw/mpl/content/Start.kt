@@ -786,7 +786,10 @@ class Start : Fragment() {
             (requireActivity() as Main).configureViewPagerScroll(false)
             addCallback()
             isEditMode = true
-            notifyItemRangeChanged(mainViewModel.userTileCount, list.size - mainViewModel.userTileCount)
+            notifyItemRangeChanged(
+                mainViewModel.userTileCount,
+                list.size - mainViewModel.userTileCount
+            )
         }
 
 
@@ -798,7 +801,10 @@ class Start : Fragment() {
             removeCallback()
             (requireActivity() as Main).configureViewPagerScroll(true)
             isEditMode = false
-            notifyItemRangeRemoved(mainViewModel.userTileCount, list.size - mainViewModel.userTileCount)
+            notifyItemRangeRemoved(
+                mainViewModel.userTileCount,
+                list.size - mainViewModel.userTileCount
+            )
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -810,7 +816,7 @@ class Start : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return if(!isEditMode) mainViewModel.userTileCount else list.size
+            return if (!isEditMode) mainViewModel.userTileCount else list.size
         }
 
         override fun getItemId(position: Int): Long {

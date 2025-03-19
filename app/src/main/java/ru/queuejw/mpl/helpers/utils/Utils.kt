@@ -392,7 +392,7 @@ class Utils {
         }
 
         fun getCustomFont(fontType: Int): Typeface? {
-            val path = when(fontType) {
+            val path = when (fontType) {
                 1 -> PREFS.customLightFontPath
                 2 -> PREFS.customBoldFontPath
                 else -> PREFS.customFontPath
@@ -411,6 +411,7 @@ class Utils {
                 }
             }
         }
+
         fun getDefaultLocale(): Locale {
             return Locale.getDefault()
         }

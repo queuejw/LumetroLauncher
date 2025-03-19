@@ -59,11 +59,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setUserTileCount(tiles: MutableList<Tile>) {
         var temp = ArrayList<Tile>()
         tiles.forEach {
-            if(it.tileType != -1) {
+            if (it.tileType != -1) {
                 temp.add(it)
             }
         }
-        userTileCount = if(temp.isNotEmpty()) temp.last().tilePosition!! + 1 else 0
+        userTileCount = if (temp.isNotEmpty()) temp.last().tilePosition!! + 1 else 0
     }
 
     fun getTileList(): MutableList<Tile> {

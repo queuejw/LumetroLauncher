@@ -289,7 +289,10 @@ class Main : AppCompatActivity() {
         }.toBitmap(defaultIconSize, defaultIconSize)
     }
 
-    private fun updateIconPack(diskLruCache: DiskLruCache?, isCustomIconsInstalled: Boolean): Boolean {
+    private fun updateIconPack(
+        diskLruCache: DiskLruCache?,
+        isCustomIconsInstalled: Boolean
+    ): Boolean {
         if (!isCustomIconsInstalled) {
             return false
         }
@@ -361,7 +364,8 @@ class Main : AppCompatActivity() {
     private suspend fun handleCrashFeedback() {
         val dao = BSOD.getData(this@Main).getDao()
         val list = dao.getBsodList()
-        val text =  if(list.isNotEmpty()) dao.getBsodList().last().log else "Failed to retrieve error information"
+        val text = if (list.isNotEmpty()) dao.getBsodList()
+            .last().log else "Failed to retrieve error information"
         withContext(Dispatchers.Main) {
             WPDialog(this@Main).apply {
                 setTopDialog(true)
