@@ -262,8 +262,7 @@ class Main : AppCompatActivity() {
     private fun updateIcons(list: MutableList<App>, context: Context) {
         var diskCache = initDiskCache(context)
         val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
-        updateIconPack(diskCache, isCustomIconsInstalled)
-        if (diskCache == null) {
+        if (updateIconPack(diskCache, isCustomIconsInstalled)) {
             diskCache = initDiskCache(context)
         }
         list.forEach {
@@ -290,17 +289,20 @@ class Main : AppCompatActivity() {
         }.toBitmap(defaultIconSize, defaultIconSize)
     }
 
-    private fun updateIconPack(diskLruCache: DiskLruCache?, isCustomIconsInstalled: Boolean) {
+    private fun updateIconPack(diskLruCache: DiskLruCache?, isCustomIconsInstalled: Boolean): Boolean {
         if (!isCustomIconsInstalled) {
-            return
+            return false
         }
         if (!iconPackExist()) {
             PREFS.iconPackPackage = "null"
             diskLruCache?.let {
                 it.delete()
                 CacheUtils.closeDiskCache(it)
+                return true
             }
+            return false
         }
+        return false
     }
 
     private fun iconPackExist(): Boolean {
@@ -358,9 +360,8 @@ class Main : AppCompatActivity() {
 
     private suspend fun handleCrashFeedback() {
         val dao = BSOD.getData(this@Main).getDao()
-        var pos = (dao.getBsodList().size) - 1
-        if (pos < 0) pos = 0
-        val text = dao.getBSOD(pos).log
+        val list = dao.getBsodList()
+        val text =  if(list.isNotEmpty()) dao.getBsodList().last().log else "Failed to retrieve error information"
         withContext(Dispatchers.Main) {
             WPDialog(this@Main).apply {
                 setTopDialog(true)

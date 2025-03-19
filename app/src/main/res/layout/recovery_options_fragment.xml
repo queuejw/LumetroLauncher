@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -8,108 +8,110 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/launcher_refresh_card"
-        android:layout_width="wrap_content"
+        android:id="@+id/open_github_card"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:strokeWidth="0dp"
         app:cardCornerRadius="0dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
+                android:padding="16dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
-                app:srcCompat="@drawable/ic_refresh"
+                android:src="@drawable/ic_web"
                 app:tint="@android:color/white" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/launcher_restore_title"
+                    android:text="@string/launcher_open_github"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/launcher_restore_subtitle"
+                    android:text="@string/launcher_open_github_subtitle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/open_browser_card"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="24dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
+                android:padding="16dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
-                app:srcCompat="@drawable/ic_web"
+                android:src="@drawable/ic_web"
                 app:tint="@android:color/white" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/recovry_browser_title"
+                    android:text="@string/recovery_browser_title"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/recovry_browser_subtitle"
+                    android:text="@string/recovery_browser_subtitle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/system_settings_card"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="24dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -118,15 +120,15 @@
                 android:layout_height="96dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
-                app:srcCompat="@drawable/ic_settings"
+                android:src="@drawable/ic_settings"
                 app:tint="@android:color/white" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -135,7 +137,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -143,20 +145,20 @@
                     android:text="@string/recovery_system_settings_subtitle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/launcher_settings_card"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="24dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -165,15 +167,15 @@
                 android:layout_height="96dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
-                app:srcCompat="@drawable/ic_settings"
+                android:src="@drawable/ic_settings"
                 app:tint="@android:color/white" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -182,7 +184,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -190,7 +192,7 @@
                     android:text="@string/recovery_settings_subtitle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

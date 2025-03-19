@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bsod"
     android:layout_height="match_parent">
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/automatic_repair"
@@ -14,7 +15,7 @@
         android:layout_marginTop="24dp"
         android:textColor="@android:color/white"
         android:textSize="28sp" />
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/not_start_correctly"
@@ -23,7 +24,7 @@
         android:layout_marginTop="24dp"
         android:textColor="@android:color/white"
         android:textSize="19sp" />
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -42,6 +43,7 @@
         android:layout_marginEnd="4dp"
         android:gravity="start"
         android:text="@string/restart"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
         app:strokeColor="@android:color/white"
         app:strokeWidth="3dp" />
@@ -59,4 +61,4 @@
         android:textStyle="bold"
         app:strokeColor="@android:color/white"
         app:strokeWidth="3dp" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

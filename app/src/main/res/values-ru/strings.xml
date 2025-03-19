@@ -78,8 +78,8 @@
     <string name="customise_your_phone_settings">Настроить телефон</string>
     <string name="recommended_tip">Выберите рекомендуемые настройки, чтобы установить стандартные параметры и автоматически загружать обновления лаунчера. Рекомендуемые настройки также будут отправлять информацию о телефоне и использовании лаунчера для улучшения MPL.</string>
     <string name="oobe_done">Вы закончили настройку лаунчера. Спасибо, что решили попробовать MPL. Приятного использования! \n MPL будет перезапущен.</string>
-    <string name="recovry_browser_subtitle">Найдите информацию об ошибке в Интернете</string>
-    <string name="recovry_browser_title">Открыть браузер</string>
+    <string name="recovery_browser_subtitle">Найдите информацию об ошибке в Интернете</string>
+    <string name="recovery_browser_title">Открыть браузер</string>
     <string name="recovery_system_settings_title">Открыть системные параметры</string>
     <string name="recovery_system_settings_subtitle">Открыть настройки телефона</string>
     <string name="recovery_settings_title">Открыть настройки</string>
@@ -229,4 +229,6 @@
     <string name="terms_of_use_label">Условия использования</string>
     <string name="terms_of_use">Касание кнопки Принять означает, что вы согласны с</string>
     <string name="apply_font_error">Не удалось применить шрифт. Информация об ошибке была сохранена.</string>
+    <string name="launcher_open_github">Открыть наш Github</string>
+    <string name="launcher_open_github_subtitle">Открыть репозиторий MPL на GitHub</string>
 </resources>

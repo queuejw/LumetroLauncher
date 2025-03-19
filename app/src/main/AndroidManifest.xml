@@ -58,15 +58,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name="ru.queuejw.mpl.content.bsod.BsodScreen"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="ru.queuejw.mpl.content.bsod.recovery.Recovery"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="ru.queuejw.mpl.content.bsod.recovery.RecoveryOptions"
+            android:name="ru.queuejw.mpl.content.bsod.CriticalErrorActivity"
             android:exported="true">
         </activity>
         <activity

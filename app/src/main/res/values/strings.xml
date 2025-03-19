@@ -77,8 +77,8 @@
     <string name="customise_your_phone_settings">Customise your phone settings</string>
     <string name="recommended_tip">Choose the recommended settings to set recommended settings and automatically download launcher updates. The recommended settings will also send information about your phone and launcher usage to improve MPL.</string>
     <string name="oobe_done">You have finished setting up the launcher. Thank you for deciding to give MPL a try. Enjoy using it! \n MPL will be restarted.</string>
-    <string name="recovry_browser_subtitle">Find information about the bug on the Internet</string>
-    <string name="recovry_browser_title">Open browser</string>
+    <string name="recovery_browser_subtitle">Find information about the bug on the Internet</string>
+    <string name="recovery_browser_title">Open browser</string>
     <string name="recovery_system_settings_title">Open system settings</string>
     <string name="recovery_system_settings_subtitle">Open settings in the system</string>
     <string name="recovery_settings_title">Open settings</string>
@@ -229,4 +229,6 @@
     <string name="terms_of_use_label">Terms of Use</string>
     <string name="terms_of_use">By tapping Accept, you agree that</string>
     <string name="apply_font_error">Failed to apply the font. The error information has been saved.</string>
+    <string name="launcher_open_github">Open GitHub</string>
+    <string name="launcher_open_github_subtitle">Open MPL repository on GitHub</string>
 </resources>

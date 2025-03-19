@@ -7,15 +7,17 @@ import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
 import com.google.android.material.color.DynamicColors
-import ru.queuejw.mpl.content.bsod.BsodDetector
+import ru.queuejw.mpl.content.bsod.CriticalErrorDetector
 import ru.queuejw.mpl.content.data.Prefs
 import ru.queuejw.mpl.helpers.utils.Utils
 
 class Application : Application() {
 
+    private lateinit var criticalErrorDetector: CriticalErrorDetector
+
     override fun onCreate() {
-        BsodDetector.setContext(applicationContext)
-        Thread.setDefaultUncaughtExceptionHandler(BsodDetector())
+        criticalErrorDetector = CriticalErrorDetector(applicationContext)
+        Thread.setDefaultUncaughtExceptionHandler(criticalErrorDetector)
         PREFS = Prefs(applicationContext)
         if (PREFS.accentColor == 21 && DynamicColors.isDynamicColorAvailable()) DynamicColors.applyToActivitiesIfAvailable(
             this
