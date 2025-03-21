@@ -68,7 +68,7 @@ dependencies {
     //implementation 'com.github.skydoves:colorpickerview:2.3.0' // planned for the 8.1 update
     implementation 'com.github.shadowalker77:wp7progressbar:1.1.0'
     implementation 'io.coil-kt.coil3:coil:3.1.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.10'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.20'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     // testImplementation 'junit:junit:4.13.2'
