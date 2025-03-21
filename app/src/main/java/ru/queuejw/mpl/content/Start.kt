@@ -807,7 +807,6 @@ class Start : Fragment() {
             )
         }
 
-
         /**
          * Called to disable the desktop editing mode
          */

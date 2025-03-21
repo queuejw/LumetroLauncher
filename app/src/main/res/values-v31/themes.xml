@@ -43,12 +43,6 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
     </style>
 
-    <style name="AppTheme.Custom" parent="AppTheme.Base">
-        <item name="colorPrimary">#000</item>
-        <item name="colorPrimaryDark">#000</item>
-        <item name="colorAccent">#000</item>
-    </style>
-
     <style name="AppTheme.Lime" parent="AppTheme.Base">
         <item name="colorPrimary">@color/tile_lime</item>
         <item name="colorPrimaryContainer">#b8f600</item>
