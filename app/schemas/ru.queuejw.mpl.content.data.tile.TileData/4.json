@@ -1,0 +1,72 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "1657e33a92a14972cbdedffc4a423f86",
+    "entities": [
+      {
+        "tableName": "tiles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tilePosition` INTEGER NOT NULL, `id` INTEGER, `tileColor` INTEGER NOT NULL, `tileType` INTEGER NOT NULL, `isSelected` INTEGER NOT NULL, `tileSize` TEXT NOT NULL, `tileLabel` TEXT NOT NULL, `tilePackage` TEXT NOT NULL, PRIMARY KEY(`tilePosition`))",
+        "fields": [
+          {
+            "fieldPath": "tilePosition",
+            "columnName": "tilePosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "tileColor",
+            "columnName": "tileColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileType",
+            "columnName": "tileType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSelected",
+            "columnName": "isSelected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileSize",
+            "columnName": "tileSize",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileLabel",
+            "columnName": "tileLabel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tilePackage",
+            "columnName": "tilePackage",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "tilePosition"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1657e33a92a14972cbdedffc4a423f86')"
+    ]
+  }
+}

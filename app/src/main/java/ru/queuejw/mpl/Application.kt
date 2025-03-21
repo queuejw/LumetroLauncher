@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.color.DynamicColors
 import ru.queuejw.mpl.content.bsod.CriticalErrorDetector
 import ru.queuejw.mpl.content.data.Prefs
@@ -27,6 +28,11 @@ class Application : Application() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             @SuppressLint("SourceLockedOrientationActivity")
             override fun onActivityPreCreated(activity: Activity, savedInstanceState: Bundle?) {
+                when (PREFS.appTheme) {
+                    0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
                 activity.setTheme(Utils.launcherAccentTheme())
                 when (PREFS.orientation) {
                     "p" -> activity.requestedOrientation =

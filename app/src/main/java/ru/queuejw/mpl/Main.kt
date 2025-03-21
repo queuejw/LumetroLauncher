@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toBitmap
@@ -32,6 +31,7 @@ import ru.queuejw.mpl.content.AllApps
 import ru.queuejw.mpl.content.Start
 import ru.queuejw.mpl.content.data.app.App
 import ru.queuejw.mpl.content.data.bsod.BSOD
+import ru.queuejw.mpl.content.data.tile.Tile
 import ru.queuejw.mpl.content.oobe.OOBEActivity
 import ru.queuejw.mpl.databinding.LauncherMainScreenBinding
 import ru.queuejw.mpl.helpers.disklru.CacheUtils
@@ -65,11 +65,6 @@ class Main : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isDarkMode = resources.getBoolean(R.bool.isDark) && PREFS.appTheme != 2
-        when (PREFS.appTheme) {
-            0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
         handleDevMode()
         super.onCreate(savedInstanceState)
 
@@ -118,9 +113,97 @@ class Main : AppCompatActivity() {
      * @see onCreate
      */
     private suspend fun initializeData() {
-        pagerAdapter = WinAdapter(this@Main)
         setMainViewModel()
         checkUpdate()
+        pagerAdapter = WinAdapter(this@Main)
+    }
+
+    fun blockStart() {
+        isStartScreenEmpty = true
+        binding.mainPager.currentItem = 1
+        binding.mainPager.isUserInputEnabled = false
+    }
+
+    private suspend fun setMainViewModel() {
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        mainViewModel.apply {
+            val list = Utils.setUpApps(this@Main)
+            setAppList(list)
+            val tileList = getViewModelTileDao().getTilesList()
+            setTileList(tileList)
+            checkStartScreen(tileList)
+            updateIcons(list, this@Main)
+        }
+    }
+
+    private fun initDiskCache(context: Context): DiskLruCache? {
+        return CacheUtils.initDiskCache(context)
+    }
+
+    private fun updateIcons(list: MutableList<App>, context: Context) {
+        var diskCache = initDiskCache(context)
+        val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
+        if (updateIconPack(diskCache, isCustomIconsInstalled)) {
+            diskCache = initDiskCache(context)
+        }
+        list.forEach {
+            var icon = CacheUtils.loadIconFromDiskCache(diskCache!!, it.appPackage)
+            if (icon == null) {
+                icon = generateIcon(it.appPackage, isCustomIconsInstalled)
+                CacheUtils.saveIconToDiskCache(diskCache, it.appPackage, icon)
+            }
+            mainViewModel.addIconToCache(it.appPackage, icon)
+        }
+        diskCache?.let {
+            CacheUtils.closeDiskCache(it)
+        }
+    }
+
+    // Icon generation for cache
+    fun generateIcon(appPackage: String, isCustomIconsInstalled: Boolean): Bitmap {
+        return if (!isCustomIconsInstalled) {
+            packageManager.getApplicationIcon(appPackage)
+        } else {
+            iconPackManager.getIconPackWithName(PREFS.iconPackPackage)
+                ?.getDrawableIconForPackage(appPackage, null)
+                ?: packageManager.getApplicationIcon(appPackage)
+        }.toBitmap(defaultIconSize, defaultIconSize)
+    }
+
+    private fun updateIconPack(
+        diskLruCache: DiskLruCache?,
+        isCustomIconsInstalled: Boolean
+    ): Boolean {
+        if (!isCustomIconsInstalled) {
+            return false
+        }
+        if (!iconPackExist()) {
+            PREFS.iconPackPackage = "null"
+            diskLruCache?.let {
+                it.delete()
+                CacheUtils.closeDiskCache(it)
+                return true
+            }
+            return false
+        }
+        return false
+    }
+
+    private fun iconPackExist(): Boolean {
+        runCatching {
+            packageManager.getApplicationInfo(PREFS.iconPackPackage!!, 0)
+            return true
+        }.getOrElse {
+            return false
+        }
+    }
+
+    private fun checkStartScreen(list: MutableList<Tile>) {
+        val userTiles = ArrayList<Tile>()
+        list.forEach {
+            if (it.tileType != -1) userTiles.add(it)
+        }
+        if (userTiles.isNotEmpty()) isStartScreenEmpty = false
     }
 
     /**
@@ -164,7 +247,7 @@ class Main : AppCompatActivity() {
     private fun setupBackPressedDispatcher() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.mainPager.currentItem != 0) {
+                if (binding.mainPager.currentItem != 0 && !isStartScreenEmpty) {
                     binding.mainPager.currentItem -= 1
                 }
             }
@@ -175,7 +258,10 @@ class Main : AppCompatActivity() {
         binding.mainPager.apply {
             adapter = pagerAdapter
             registerOnPageChangeCallback(createPageChangeCallback())
-            if (!PREFS.isAllAppsEnabled) {
+            if (isStartScreenEmpty) {
+                binding.mainPager.currentItem = 1
+            }
+            if (!PREFS.isAllAppsEnabled || isStartScreenEmpty) {
                 isUserInputEnabled = false
             }
         }
@@ -240,80 +326,8 @@ class Main : AppCompatActivity() {
     }
 
     fun configureViewPagerScroll(enabled: Boolean) {
-        if (PREFS.isAllAppsEnabled) {
+        if (PREFS.isAllAppsEnabled && !isStartScreenEmpty) {
             binding.mainPager.isUserInputEnabled = enabled
-        }
-    }
-
-    private suspend fun setMainViewModel() {
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        mainViewModel.apply {
-            val list = Utils.setUpApps(this@Main)
-            setAppList(list)
-            setTileList(getViewModelTileDao().getTilesList())
-            updateIcons(list, this@Main)
-        }
-    }
-
-    private fun initDiskCache(context: Context): DiskLruCache? {
-        return CacheUtils.initDiskCache(context)
-    }
-
-    private fun updateIcons(list: MutableList<App>, context: Context) {
-        var diskCache = initDiskCache(context)
-        val isCustomIconsInstalled = PREFS.iconPackPackage != "null"
-        if (updateIconPack(diskCache, isCustomIconsInstalled)) {
-            diskCache = initDiskCache(context)
-        }
-        list.forEach {
-            var icon = CacheUtils.loadIconFromDiskCache(diskCache!!, it.appPackage)
-            if (icon == null) {
-                icon = generateIcon(it.appPackage, isCustomIconsInstalled)
-                CacheUtils.saveIconToDiskCache(diskCache, it.appPackage, icon)
-            }
-            mainViewModel.addIconToCache(it.appPackage, icon)
-        }
-        diskCache?.let {
-            CacheUtils.closeDiskCache(it)
-        }
-    }
-
-    // Icon generation for cache
-    fun generateIcon(appPackage: String, isCustomIconsInstalled: Boolean): Bitmap {
-        return if (!isCustomIconsInstalled) {
-            packageManager.getApplicationIcon(appPackage)
-        } else {
-            iconPackManager.getIconPackWithName(PREFS.iconPackPackage)
-                ?.getDrawableIconForPackage(appPackage, null)
-                ?: packageManager.getApplicationIcon(appPackage)
-        }.toBitmap(defaultIconSize, defaultIconSize)
-    }
-
-    private fun updateIconPack(
-        diskLruCache: DiskLruCache?,
-        isCustomIconsInstalled: Boolean
-    ): Boolean {
-        if (!isCustomIconsInstalled) {
-            return false
-        }
-        if (!iconPackExist()) {
-            PREFS.iconPackPackage = "null"
-            diskLruCache?.let {
-                it.delete()
-                CacheUtils.closeDiskCache(it)
-                return true
-            }
-            return false
-        }
-        return false
-    }
-
-    private fun iconPackExist(): Boolean {
-        runCatching {
-            packageManager.getApplicationInfo(PREFS.iconPackPackage!!, 0)
-            return true
-        }.getOrElse {
-            return false
         }
     }
 
@@ -385,7 +399,7 @@ class Main : AppCompatActivity() {
             binding.mainBottomBar.root.visibility = View.GONE
             return
         }
-        if (!PREFS.isAllAppsEnabled) binding.mainBottomBar.navigationSearchBtn.visibility =
+        if (!PREFS.isAllAppsEnabled && !isStartScreenEmpty) binding.mainBottomBar.navigationSearchBtn.visibility =
             View.GONE
         binding.mainBottomBar.navigationMain.setBackgroundColor(getNavBarColor())
         configureBottomBar()
@@ -409,7 +423,9 @@ class Main : AppCompatActivity() {
         binding.mainBottomBar.navigationMain.visibility = View.VISIBLE
         binding.mainBottomBar.navigationStartBtn.apply {
             setImageDrawable(getNavBarIconDrawable())
-            setOnClickListener { binding.mainPager.setCurrentItem(0, true) }
+            setOnClickListener {
+                if (!isStartScreenEmpty) binding.mainPager.setCurrentItem(0, true)
+            }
             if (!PREFS.isAllAppsEnabled) setOnLongClickListener {
                 binding.mainPager.setCurrentItem(1, true)
                 true
@@ -436,6 +452,7 @@ class Main : AppCompatActivity() {
     companion object {
         var isLandscape: Boolean = false
         var isDarkMode: Boolean = false
+        var isStartScreenEmpty: Boolean = true
     }
 
     class WinAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {

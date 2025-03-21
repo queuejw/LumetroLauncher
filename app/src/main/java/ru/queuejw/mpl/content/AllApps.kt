@@ -48,6 +48,7 @@ import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.Application.Companion.customLightFont
 import ru.queuejw.mpl.Application.Companion.isAppOpened
 import ru.queuejw.mpl.Main
+import ru.queuejw.mpl.Main.Companion.isStartScreenEmpty
 import ru.queuejw.mpl.MainViewModel
 import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.app.App
@@ -78,6 +79,10 @@ class AllApps : Fragment() {
 
     private var _binding: LauncherAllAppsScreenBinding? = null
     private val binding get() = _binding!!
+
+    private val accentColor by lazy {
+        Utils.launcherAccentColor(requireActivity().theme)
+    }
 
     private val bottomDecor by lazy {
         BottomOffsetDecoration(
@@ -406,7 +411,7 @@ class AllApps : Fragment() {
                 val string = context.getString(R.string.no_results_for) + " " + searchText
                 val spannable: Spannable = SpannableString(string)
                 spannable.setSpan(
-                    ForegroundColorSpan(Utils.launcherAccentColor(requireActivity().theme)),
+                    ForegroundColorSpan(accentColor),
                     string.indexOf(searchText),
                     string.indexOf(searchText) + searchText.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -498,24 +503,26 @@ class AllApps : Fragment() {
 
         var isAppAlreadyPinned = false
         lifecycleScope.launch(Dispatchers.Default) {
-            val dbList = mainViewModel.getViewModelTileDao().getTilesList()
-            dbList.forEach {
-                if (it.tilePackage == app.appPackage) {
-                    isAppAlreadyPinned = true
-                    return@forEach
-                }
+            mainViewModel.getViewModelTileDao().getTilesList().forEach {
+                if (it.tilePackage == app.appPackage && !isAppAlreadyPinned) isAppAlreadyPinned =
+                    true
             }
+
             withContext(Dispatchers.Main) {
                 if (isAppAlreadyPinned) {
-                    pin.isEnabled = false
-                    pin.alpha = 0.5f
+                    pin.apply {
+                        isEnabled = false
+                        alpha = 0.5f
+                    }
                 } else {
-                    pin.isEnabled = true
-                    pin.alpha = 1f
-                    pin.setOnClickListener {
-                        insertNewApp(app)
-                        popupWindow?.dismiss()
-                        activity?.onBackPressedDispatcher?.onBackPressed()
+                    pin.apply {
+                        isEnabled = true
+                        alpha = 1f
+                        setOnClickListener {
+                            insertNewApp(app)
+                            popupWindow?.dismiss()
+                            activity?.onBackPressedDispatcher?.onBackPressed()
+                        }
                     }
                 }
             }
@@ -542,29 +549,34 @@ class AllApps : Fragment() {
 
     private fun insertNewApp(app: App) {
         lifecycleScope.launch(Dispatchers.Default) {
-            val dataList = mainViewModel.getViewModelTileDao().getTilesList()
-            dataList.forEach {
-                if (it.tilePackage == app.appPackage) {
-                    //db already has this app. we must stop this
-                    return@launch
+            val list = mainViewModel.getViewModelTileDao().getTilesList()
+            var isAppPinned = false
+            var position: Int? = null
+            list.forEachIndexed { index, item ->
+                if (item.tilePackage == app.appPackage && !isAppPinned) {
+                    isAppPinned = true
+                }
+                if (!isAppPinned) {
+                    if (item.tileType == -1 && position == null) {
+                        position = index
+                    }
                 }
             }
-            var pos = 0
-            for (i in 0 until dataList.size) {
-                if (dataList[i].tileType == -1) {
-                    pos = i
-                    break
-                }
+            if (!isAppPinned) {
+                if (position == null) position = Random.nextInt(0, 25)
+                val item = Tile(
+                    id = Random.nextLong(1000, 2000000),
+                    tilePosition = position,
+                    tileColor = -1,
+                    tileType = 0,
+                    isSelected = false,
+                    tileSize = Utils.generateRandomTileSize(true),
+                    tileLabel = app.appLabel,
+                    tilePackage = app.appPackage
+                )
+                mainViewModel.getViewModelTileDao().addTile(item)
+                isStartScreenEmpty = false
             }
-            val id = Random.nextLong(1000, 2000000)
-            val item = Tile(
-                pos, id, -1, 0,
-                isSelected = false,
-                tileSize = Utils.generateRandomTileSize(true),
-                tileLabel = app.appLabel,
-                tilePackage = app.appPackage
-            )
-            mainViewModel.getViewModelTileDao().addTile(item)
         }
     }
 

@@ -63,7 +63,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 temp.add(it)
             }
         }
-        userTileCount = if (temp.isNotEmpty()) temp.last().tilePosition!! + 1 else 0
+        userTileCount = if (temp.isNotEmpty()) temp.last().tilePosition + 1 else 0
     }
 
     fun getTileList(): MutableList<Tile> {

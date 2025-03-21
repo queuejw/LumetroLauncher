@@ -449,6 +449,21 @@ class Start : Fragment() {
             id = this.id!! / 2
             mainViewModel.getViewModelTileDao().updateTile(this)
         }
+        checkUserTiles()
+    }
+
+    private fun checkUserTiles() {
+        val list = ArrayList<Tile>()
+        mainViewModel.getTileList().forEach {
+            if (it.tileType != -1) list.add(it)
+        }
+        if (list.isNotEmpty()) {
+            mainViewModel.userTileCount = list.last().tilePosition + 1
+        } else {
+            mainViewModel.userTileCount = 0
+            Main.isStartScreenEmpty = true
+            (requireActivity() as Main?)?.blockStart()
+        }
     }
 
     private suspend fun animateTiles(launchApp: Boolean, launchAppPos: Int?, packageName: String?) {
@@ -683,10 +698,10 @@ class Start : Fragment() {
             colorSub.visibility = View.GONE
             removeColor.visibility = View.GONE
         } else {
-            colorSub.setTextColor(Utils.getTileColorFromPrefs(item.tileColor!!, context))
+            colorSub.setTextColor(Utils.getTileColorFromPrefs(item.tileColor, context))
             colorSub.text = getString(
                 R.string.tileSettings_color_sub,
-                Utils.getTileColorName(item.tileColor!!, context)
+                Utils.getTileColorName(item.tileColor, context)
             )
         }
         changeLabel.setOnClickListener {
@@ -906,7 +921,7 @@ class Start : Fragment() {
             holder.binding.cardContainer.setCardBackgroundColor(
                 if (item.tileColor != -1)
                     Utils.getTileColorFromPrefs(
-                        item.tileColor!!,
+                        item.tileColor,
                         context
                     )
                 else
@@ -1148,7 +1163,7 @@ class Start : Fragment() {
         }
 
         override fun dismiss() {
-            mAdapter.notifyItemChanged(item.tilePosition!!)
+            mAdapter.notifyItemChanged(item.tilePosition)
             context?.let {
                 mAdapter.adapterShowSettingsBottomSheet(item, it)
             }
