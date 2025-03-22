@@ -41,6 +41,7 @@ import coil3.load
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.queuejw.mpl.Application.Companion.PREFS
@@ -255,20 +256,26 @@ class AllApps : Fragment() {
     override fun onResume() {
         registerBroadcast()
         super.onResume()
-        if (binding.appList.visibility != View.VISIBLE) binding.appList.visibility = View.VISIBLE
         if (PREFS.showKeyboardWhenOpeningAllApps) searchFunction()
-        if (binding.appList.alpha != 1f) {
-            if (PREFS.isAAllAppsAnimEnabled) {
-                binding.appList.apply {
-                    val anim = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
-                    anim.duration = 100
-                    anim.start()
-                    anim.doOnEnd {
-                        this.alpha = 1f
-                    }
-                }
-            } else {
-                binding.appList.alpha = 1f
+        if (isAppOpened) {
+            if (PREFS.isAAllAppsAnimEnabled) clearAnimation()
+            isAppOpened = false
+        }
+        if (!binding.appList.isScrollEnabled) {
+            binding.appList.isScrollEnabled = true
+        }
+    }
+
+    private fun clearAnimation() {
+        val first =
+            (binding.appList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        val last =
+            (binding.appList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+        binding.appList.isScrollEnabled = false
+        lifecycleScope.launch {
+            for (i in last downTo first) {
+                val view = binding.appList.findViewHolderForAdapterPosition(i)?.itemView ?: continue
+                view.animate().translationX(0f).alpha(1f).rotationY(0f).setDuration(400).start()
             }
         }
     }
@@ -422,6 +429,42 @@ class AllApps : Fragment() {
             }
         }
     }
+
+    private fun runAppWithAnimation(app: String, pm: PackageManager) {
+        val first =
+            (binding.appList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        val last =
+            (binding.appList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+        binding.appList.isScrollEnabled = false
+        if (appAdapter == null) {
+            runApp(app, pm)
+            return
+        }
+        lifecycleScope.launch {
+            var openedAppPos: Int? = null
+            for (i in last downTo first) {
+                val item = appAdapter!!.list[i]
+                if (item.appPackage == app) {
+                    openedAppPos = i
+                    continue
+                }
+                val view = binding.appList.findViewHolderForAdapterPosition(i)?.itemView ?: continue
+                view.animate().translationX(-1000f).alpha(0.75f).rotationY(-90f)
+                    .setDuration(100 + i * 2L).start()
+                delay(20)
+            }
+            if (openedAppPos != null) {
+                delay(125)
+                val view = binding.appList.findViewHolderForAdapterPosition(openedAppPos)?.itemView
+                view!!.animate().translationX(-700f).alpha(0.75f).rotationY(-90f).setDuration(125)
+                    .start()
+                delay(50)
+            }
+            delay(200)
+            runApp(app, pm)
+        }
+    }
+
 
     private fun runApp(app: String, pm: PackageManager) {
         isAppOpened = true
@@ -601,10 +644,17 @@ class AllApps : Fragment() {
 
             private fun click() {
                 activity?.let {
-                    runApp(
-                        list[absoluteAdapterPosition].appPackage,
-                        it.packageManager
-                    )
+                    if (PREFS.isAAllAppsAnimEnabled) {
+                        runAppWithAnimation(
+                            list[absoluteAdapterPosition].appPackage,
+                            it.packageManager
+                        )
+                    } else {
+                        runApp(
+                            list[absoluteAdapterPosition].appPackage,
+                            it.packageManager
+                        )
+                    }
                 }
             }
         }
@@ -628,6 +678,21 @@ class AllApps : Fragment() {
         private fun bindAppHolder(holder: AppHolder, app: App) {
             holder.binding.appIcon.load(mainViewModel.getIconFromCache(app.appPackage))
             holder.binding.appLabel.text = app.appLabel
+            setAnim(holder.itemView)
+        }
+
+        private fun setAnim(view: View) {
+            if (view.alpha != 1f) {
+                if (!PREFS.isAAllAppsAnimEnabled) {
+                    view.apply {
+                        alpha = 1f
+                        rotationY = 0f
+                        translationX = 0f
+                    }
+                } else {
+                    view.animate().alpha(1f).translationX(0f).rotationY(0f).setDuration(100).start()
+                }
+            }
         }
 
         override fun getItemCount(): Int = list.size

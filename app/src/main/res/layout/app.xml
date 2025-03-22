@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
-    android:transformPivotX="0dp">
+    android:transformPivotX="100dp">
 
     <FrameLayout
         android:layout_width="54dp"
@@ -25,9 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingStart="6dp"
         android:gravity="center|start"
         android:maxLines="1"
+        android:paddingStart="6dp"
         android:textSize="24sp"
         app:autoSizeMaxTextSize="24sp"
         app:autoSizeMinTextSize="16sp"
