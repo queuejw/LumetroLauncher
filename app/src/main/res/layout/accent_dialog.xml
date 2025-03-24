@@ -1,210 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <FrameLayout
+        android:id="@+id/back_accent_menu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/base">
+
+        <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:id="@+id/back_accent_menu"
-            android:background="@drawable/base">
-        <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_arrow"
-                android:scaleX="-1"
-                app:tint="?attr/colorOnSurface"/>
+            android:layout_gravity="center"
+            android:scaleX="-1"
+            android:src="@drawable/ic_arrow"
+            app:tint="?attr/colorOnSurface" />
     </FrameLayout>
+
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                <View
-                        android:background="@color/tile_lime"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_lime"/>
-                <View
-                        android:background="@color/tile_green"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_green"/>
-                <View
-                        android:background="@color/tile_emerald"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_emerald"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                <View
-                        android:background="@color/tile_cyan"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_cyan"/>
-                <View
-                        android:background="@color/tile_teal"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_teal"/>
-                <View
-                        android:background="@color/tile_cobalt"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_cobalt"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                <View
-                        android:background="@color/tile_indigo"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_indigo"/>
-                <View
-                        android:background="@color/tile_violet"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_violet"/>
-                <View
-                        android:background="@color/tile_pink"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_pink"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                <View
-                        android:background="@color/tile_magenta"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_magenta"/>
-                <View
-                        android:background="@color/tile_crimson"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_crimson"/>
-                <View
-                        android:background="@color/tile_red"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_red"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <View
-                        android:background="@color/tile_orange"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_orange"/>
-                <View
-                        android:background="@color/tile_amber"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_amber"/>
-                <View
-                        android:background="@color/tile_yellow"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_yellow"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-
-                <View
-                        android:background="@color/tile_brown"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_brown"/>
-                <View
-                        android:background="@color/tile_olive"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_olive"/>
-                <View
-                        android:background="@color/tile_steel"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_steel"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-
-                <View
-                        android:background="@color/tile_mauve"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_mauve"/>
-                <View
-                        android:background="@color/tile_taupe"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:layout_marginStart="12dp"
-                        android:id="@+id/choose_color_taupe"/>
-
-                <ImageView
-                    android:visibility="gone"
-                    android:src="@drawable/ic_paintbrush"
-                    android:background="?attr/colorOnBackground"
+                    android:id="@+id/choose_color_lime"
                     android:layout_width="88dp"
                     android:layout_height="88dp"
                     android:layout_marginStart="12dp"
+                    android:background="@color/tile_lime" />
+
+                <View
+                    android:id="@+id/choose_color_green"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_green" />
+
+                <View
+                    android:id="@+id/choose_color_emerald"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_emerald" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_cyan"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_cyan" />
+
+                <View
+                    android:id="@+id/choose_color_teal"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_teal" />
+
+                <View
+                    android:id="@+id/choose_color_cobalt"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_cobalt" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_indigo"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_indigo" />
+
+                <View
+                    android:id="@+id/choose_color_violet"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_violet" />
+
+                <View
+                    android:id="@+id/choose_color_pink"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_pink" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_magenta"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_magenta" />
+
+                <View
+                    android:id="@+id/choose_color_crimson"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_crimson" />
+
+                <View
+                    android:id="@+id/choose_color_red"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_red" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_orange"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_orange" />
+
+                <View
+                    android:id="@+id/choose_color_amber"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_amber" />
+
+                <View
+                    android:id="@+id/choose_color_yellow"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_yellow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_brown"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_brown" />
+
+                <View
+                    android:id="@+id/choose_color_olive"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_olive" />
+
+                <View
+                    android:id="@+id/choose_color_steel"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_steel" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/choose_color_mauve"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_mauve" />
+
+                <View
+                    android:id="@+id/choose_color_taupe"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/tile_taupe" />
+
+                <ImageView
                     android:id="@+id/choose_color_custom"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginStart="12dp"
+                    android:background="?attr/colorOnBackground"
+                    android:src="@drawable/ic_paintbrush"
+                    android:visibility="gone"
                     app:tint="?android:attr/colorBackground" />
             </LinearLayout>
         </LinearLayout>

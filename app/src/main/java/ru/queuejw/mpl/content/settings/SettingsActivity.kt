@@ -107,7 +107,7 @@ class SettingsActivity : AppCompatActivity() {
                 ).withEndAction {
                     supportFragmentManager.popBackStack()
                     binding.root.apply {
-                        rotationY = -90f
+                        rotationY = -70f
                         alpha = 0f
                     }
                     lifecycleScope.launch {

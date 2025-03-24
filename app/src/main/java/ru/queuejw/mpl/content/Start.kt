@@ -319,18 +319,21 @@ class Start : Fragment() {
                                 packageName,
                                 (requireActivity() as Main).generateIcon(packageName, bool)
                             )
-                            mainViewModel.addAppToList(
-                                App(
-                                    appLabel = context.packageManager.getApplicationInfo(
-                                        packageName,
-                                        0
-                                    ).name,
-                                    appPackage = packageName,
-                                    id = Random.nextInt()
+                            val name: String? = context.packageManager.getApplicationInfo(
+                                packageName,
+                                0
+                            ).name
+                            if (name != null) {
+                                mainViewModel.addAppToList(
+                                    App(
+                                        appLabel = name,
+                                        appPackage = packageName,
+                                        id = Random.nextInt()
+                                    )
                                 )
-                            )
-                            if (PREFS.pinNewApps) {
-                                pinApp(packageName)
+                                if (PREFS.pinNewApps) {
+                                    pinApp(packageName)
+                                }
                             }
                         }
 
@@ -396,23 +399,26 @@ class Start : Fragment() {
     private fun pinApp(packageName: String) {
         lifecycleScope.launch(ioDispatcher) {
             if (mAdapter != null) {
-                var pos = 0
-                for (i in 0..<mAdapter!!.list.size) {
-                    if (mAdapter!!.list[i].tileType == -1) {
-                        pos = i
-                        break
+                var position: Int? = null
+                mAdapter!!.list.forEachIndexed { index, item ->
+                    if (item.tileType == -1 && position == null) {
+                        position = index
                     }
                 }
-                val id = Random.nextLong(1000, 2000000)
-                val item = Tile(
-                    pos, id, -1, 0,
-                    isSelected = false,
-                    tileSize = Utils.generateRandomTileSize(true),
-                    tileLabel = activity?.packageManager?.getApplicationInfo(packageName, 0)
-                        ?.loadLabel(requireActivity().packageManager!!).toString(),
-                    tilePackage = packageName
-                )
-                mainViewModel.getViewModelTileDao().addTile(item)
+                if(position != null) {
+                    val item = Tile(
+                        id = Random.nextLong(1000, 2000000),
+                        tilePosition = position,
+                        tileColor = -1,
+                        tileType = 0,
+                        isSelected = false,
+                        tileSize = Utils.generateRandomTileSize(true),
+                        tileLabel = activity?.packageManager?.getApplicationInfo(packageName, 0)
+                            ?.loadLabel(requireActivity().packageManager!!).toString(),
+                        tilePackage = packageName
+                    )
+                    mainViewModel.getViewModelTileDao().addTile(item)
+                }
             }
         }
     }

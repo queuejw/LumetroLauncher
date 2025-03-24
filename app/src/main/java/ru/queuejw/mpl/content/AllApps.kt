@@ -268,9 +268,12 @@ class AllApps : Fragment() {
 
     private fun clearAnimation() {
         val first =
-            (binding.appList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()
         val last =
-            (binding.appList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition()
+        if(first == null || last == null) {
+            return
+        }
         binding.appList.isScrollEnabled = false
         lifecycleScope.launch {
             for (i in last downTo first) {
@@ -690,7 +693,7 @@ class AllApps : Fragment() {
                         translationX = 0f
                     }
                 } else {
-                    view.animate().alpha(1f).translationX(0f).rotationY(0f).setDuration(100).start()
+                    view.animate().alpha(1f).translationX(0f).rotationY(0f).setDuration(125).start()
                 }
             }
         }

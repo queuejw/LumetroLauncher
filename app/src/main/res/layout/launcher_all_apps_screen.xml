@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?android:attr/colorBackground">
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/searchLayout"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:translationY="-64dp"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/searchBackBtn"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="12dp"
-            app:cardBackgroundColor="?android:attr/colorBackground"
-            app:cardCornerRadius="20dp"
-            app:strokeColor="?attr/colorOnBackground"
-            app:strokeWidth="3dp">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/searchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:translationY="-64dp"
+            android:visibility="gone">
 
-            <ImageView
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchBackBtn"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_arrow"
-                android:scaleX="-1"
-                android:contentDescription="@string/image"
-                app:tint="?attr/colorOnSurface" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginStart="12dp"
+                app:cardBackgroundColor="?android:attr/colorBackground"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="?attr/colorOnBackground"
+                app:strokeWidth="3dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:boxCornerRadiusBottomEnd="0dp"
-            app:boxCornerRadiusBottomStart="0dp"
-            app:boxCornerRadiusTopStart="0dp"
-            app:boxCornerRadiusTopEnd="0dp"
-            app:boxStrokeWidth="3dp"
-            app:boxBackgroundColor="@android:color/white"
-            app:endIconMode="none">
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/image"
+                    android:scaleX="-1"
+                    android:src="@drawable/ic_arrow"
+                    app:tint="?attr/colorOnSurface" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <AutoCompleteTextView
-                android:id="@+id/search_textview"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionGo"
-                android:inputType="text"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="16sp"
-                android:labelFor="@id/search"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:boxBackgroundColor="@android:color/white"
+                app:boxCornerRadiusBottomEnd="0dp"
+                app:boxCornerRadiusBottomStart="0dp"
+                app:boxCornerRadiusTopEnd="0dp"
+                app:boxCornerRadiusTopStart="0dp"
+                app:boxStrokeWidth="3dp"
+                app:endIconMode="none">
 
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-    <ru.queuejw.mpl.helpers.ui.MetroRecyclerView
-        android:id="@+id/app_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/recyclerViewPadding"
-        android:layout_marginTop="4dp"
-        android:scrollbars="vertical"
-        android:scrollbarSize="6dp"
-        android:nestedScrollingEnabled="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        tools:ignore="RtlSymmetry" />
-</LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/search_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionGo"
+                    android:inputType="text"
+                    android:labelFor="@id/search"
+                    android:textColor="@android:color/black"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ru.queuejw.mpl.helpers.ui.MetroRecyclerView
+            android:id="@+id/app_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:paddingStart="@dimen/recyclerViewPadding"
+            android:scrollbarSize="6dp"
+            android:scrollbars="vertical"
+            tools:ignore="RtlSymmetry" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/no_results"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_gravity="top"
         android:layout_marginStart="18dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="18dp"
         android:gravity="start"
-        android:layout_gravity="top"
         android:textSize="22sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/buttonPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
@@ -117,9 +117,9 @@
                 android:layout_width="28dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/image"
                 android:scaleX="-1"
                 android:src="@drawable/ic_search"
-                android:contentDescription="@string/image"
                 app:tint="?attr/colorOnSurface" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -133,6 +133,7 @@
             app:cardCornerRadius="20dp"
             app:strokeColor="?attr/colorOnSurface"
             app:strokeWidth="3dp">
+
             <ImageView
                 android:layout_width="42dp"
                 android:layout_height="42dp"
@@ -141,5 +142,5 @@
                 android:src="@drawable/ic_settings"
                 app:tint="?attr/colorOnSurface" />
         </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

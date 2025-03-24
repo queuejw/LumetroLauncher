@@ -1,51 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:gravity="bottom|center">
-    <LinearLayout
+    android:layout_height="match_parent"
+    android:gravity="bottom|center"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/wp_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/wp_bg"
-        android:orientation="vertical"
         android:gravity="bottom|center"
-        android:id="@+id/wp_bg">
-        <LinearLayout
-            android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.google.android.material.textview.MaterialTextView
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/wp_title"
                 android:layout_width="match_parent"
-                android:textColor="#FFFFFF"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:id="@+id/wp_title"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FFFFFF" />
+
             <com.google.android.material.textview.MaterialTextView
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/wp_message"
                 android:layout_width="match_parent"
-                android:textColor="#FFFFFF"
-                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:id="@+id/wp_message"/>
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
+
             <FrameLayout
                 android:id="@+id/wp_view"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/wp_cancle_bg"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -55,6 +61,7 @@
                 android:layout_weight="1.0"
                 android:background="#FFFFFF"
                 android:orientation="vertical">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/wp_cancel"
                     android:layout_width="match_parent"
@@ -64,8 +71,9 @@
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#FFFFFF" />
-            </LinearLayout>
-            <LinearLayout
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/wp_neutral_bg"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -75,6 +83,7 @@
                 android:layout_weight="1.0"
                 android:background="#FFFFFF"
                 android:orientation="vertical">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/wp_neutral"
                     android:layout_width="match_parent"
@@ -84,8 +93,9 @@
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#FFFFFF" />
-            </LinearLayout>
-            <LinearLayout
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/wp_ok_bg"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -96,6 +106,7 @@
                 android:layout_weight="1.0"
                 android:background="#FFFFFF"
                 android:orientation="horizontal">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/wp_ok"
                     android:layout_width="match_parent"
@@ -105,7 +116,7 @@
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#FFFFFF" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

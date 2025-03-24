@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bsod"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/bsod">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/bsod"
         android:textColor="@android:color/white"
         android:textSize="72sp"
-        android:layout_gravity="center"
         app:fontFamily="@font/manrope_medium" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bsodDetailsText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@android:color/white"
-        android:alpha="0.5" />
+        android:alpha="0.5"
+        android:textColor="@android:color/white" />
 
 </FrameLayout>

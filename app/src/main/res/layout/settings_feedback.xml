@@ -1,164 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/feedback_label"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="21sp"
-        android:layout_marginTop="2dp"
-        android:text="@string/send_launcher_usage" />
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/send_feedback_label"
-        android:textSize="16sp"
-        android:alpha="0.8"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/send_feedback" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/sendFeedbackSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/num_of_issues_label"
-        android:alpha="0.8"
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/number_of_issues_to_save" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/setCrashLogLimitBtn"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:gravity="start"
-        android:textColor="?attr/colorOnBackground"
-        android:textSize="20sp"
-        android:visibility="visible"
-        app:cornerRadius="0dp"
-        app:strokeColor="?attr/colorOnBackground"
-        app:strokeWidth="2dp" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/chooseBsodInfoLimit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:cardBackgroundColor="?attr/colorOnBackground"
-        app:cardCornerRadius="0dp"
-        app:strokeColor="?attr/colorPrimaryContainer"
-        app:strokeWidth="2dp">
-
-        <LinearLayout
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/feedback_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="2dp"
+            android:text="@string/send_launcher_usage"
+            android:textSize="21sp" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/save1bsod"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/send_feedback_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.8"
+            android:text="@string/send_feedback"
+            android:textSize="16sp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/sendFeedbackSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/num_of_issues_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:text="@string/number_of_issues_to_save"
+            android:textSize="18sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/setCrashLogLimitBtn"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:cornerRadius="0dp"
+            app:strokeColor="?attr/colorOnBackground"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chooseBsodInfoLimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorOnBackground"
+            app:cardCornerRadius="0dp"
+            app:strokeColor="?attr/colorPrimaryContainer"
+            app:strokeWidth="2dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="top"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="6dp"
-                android:text="@string/feedback_limit_0"
-                android:textColor="?attr/colorSurface"
-                android:textSize="22sp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/save5bsod"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/feedback_limit_1"
-                android:textColor="?attr/colorSurface"
-                android:textSize="22sp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/save1bsod"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_gravity="top"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/feedback_limit_0"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="22sp" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/save10bsod"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/feedback_limit_2"
-                android:textColor="?attr/colorSurface"
-                android:textSize="22sp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/save5bsod"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/feedback_limit_1"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="22sp" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/saveallbsods"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/feedback_limit_3"
-                android:textColor="?attr/colorSurface"
-                android:textSize="22sp" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/save10bsod"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/feedback_limit_2"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="22sp" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:alpha="0.8"
-        android:layout_height="wrap_content"
-        android:text="@string/bsods_tip"
-        android:textSize="18sp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/saveallbsods"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/feedback_limit_3"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="22sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bsod_details_label"
-        android:textSize="16sp"
-        android:alpha="0.8"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/show_details_on_bsod" />
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/showErrorDetailsOnBsodSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:text="@string/bsods_tip"
+            android:textSize="18sp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:text="@string/show_bsods"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:id="@+id/showBsodInfo"
-        android:textSize="20sp" />
-    <com.google.android.material.button.MaterialButton
-        android:text="@string/delete_bsods"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:id="@+id/deleteBsodInfo"
-        android:textSize="20sp" />
-</LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bsod_details_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.8"
+            android:text="@string/show_details_on_bsod"
+            android:textSize="16sp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/showErrorDetailsOnBsodSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showBsodInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:text="@string/show_bsods"
+            android:textSize="20sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteBsodInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:text="@string/delete_bsods"
+            android:textSize="20sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

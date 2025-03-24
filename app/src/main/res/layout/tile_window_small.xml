@@ -1,8 +1,7 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
     <com.google.android.material.card.MaterialCardView
@@ -14,6 +13,7 @@
         app:cardCornerRadius="20dp"
         app:strokeColor="?attr/colorOnSurface"
         app:strokeWidth="3dp">
+
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -26,8 +26,8 @@
         android:id="@+id/resize"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         app:cardBackgroundColor="?android:attr/colorBackground"
         app:cardCornerRadius="20dp"
         app:strokeColor="?attr/colorOnSurface"

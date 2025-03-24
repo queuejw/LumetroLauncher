@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/oobe_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -22,9 +21,9 @@
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbarlayout"
-                android:backgroundTint="?android:attr/colorBackground"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/colorBackground">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/appbarTextView"
@@ -38,10 +37,10 @@
             <FrameLayout
                 android:id="@+id/fragment_container_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
+                android:layout_height="match_parent" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,8 +65,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
                 android:text="@string/next" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

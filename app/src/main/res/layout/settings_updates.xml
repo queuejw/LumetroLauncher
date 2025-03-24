@@ -1,79 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:animateLayoutChanges="true"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/update_status"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.7"
-        android:text="@string/update_status"
-        android:textSize="19sp" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/checking_updates_sub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/checking_for_updates"
-        android:textSize="19sp" />
-
-    <LinearLayout
-        android:id="@+id/updateIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/progress"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:progressTint="?attr/colorPrimary" />
-
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/progessText"
+            android:id="@+id/update_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/preparing_to_install" />
-    </LinearLayout>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/cancel_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/cancel_update" />
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/updateInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/update_info" />
+            android:alpha="0.7"
+            android:text="@string/update_status"
+            android:textSize="19sp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/checkForUpdatesBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="@string/check_for_updates"
-        android:textSize="20sp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/checking_updates_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/checking_for_updates"
+            android:textSize="19sp" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/UpdateNotifyCheckBox"
-        android:layout_width="match_parent"
-        android:layout_marginTop="64dp"
-        android:layout_height="wrap_content"
-        android:text="@string/notify_update"
-        android:textSize="18sp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/updateIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/AutoUpdateCheckBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/auto_update"
-        android:textSize="18sp" />
-</LinearLayout>
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:progressTint="?attr/colorPrimary" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/progessText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preparing_to_install" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/cancel_update" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/updateInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/update_info" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkForUpdatesBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="@string/check_for_updates"
+            android:textSize="20sp" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/UpdateNotifyCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="@string/notify_update"
+            android:textSize="18sp" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/AutoUpdateCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/auto_update"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

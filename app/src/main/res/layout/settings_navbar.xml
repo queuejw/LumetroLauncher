@@ -1,90 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/navigation_bar"
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:alpha="0.7"
-        android:text="@string/navigation_bar_2"/>
-    <RadioGroup
-        android:id="@+id/navbarRadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:text="@string/auto"/>
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/alwaysDark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:text="@string/always_dark"/>
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/alwaysLight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:text="@string/always_light"/>
-       <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/byTheme"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:text="@string/matches_accent_color"/>
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/hidden"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
-            android:text="@string/hide_navbar"/>
-    </RadioGroup>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/additional_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:alpha="0.7"
-        android:text="@string/navigation_bar_3"/>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/icon_change_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/change_navbar_icon_tip"/>
-    <LinearLayout
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
+
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/current_icon_text"
+            android:id="@+id/navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:text="@string/navigation_bar_2"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/navbarRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/auto"
+                android:textSize="18sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/alwaysDark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/always_dark"
+                android:textSize="18sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/alwaysLight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/always_light"
+                android:textSize="18sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/byTheme"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/matches_accent_color"
+                android:textSize="18sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/hidden"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/hide_navbar"
+                android:textSize="18sp" />
+        </RadioGroup>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/additional_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.7"
+            android:text="@string/navigation_bar_3"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/icon_change_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/current_icon"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/change_navbar_icon_tip"
+            android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/currentStartIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_os_windows" />
-    </LinearLayout>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/choose_start_icon_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/choose_icon"
-        android:textSize="20sp"
-        android:layout_marginStart="8dp"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp">
 
-</LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/current_icon_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_icon"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/currentStartIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_os_windows" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/choose_start_icon_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/choose_icon"
+            android:textSize="20sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

@@ -1,106 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_marginTop="32dp"
             android:id="@+id/phoneinfo_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/phone_information"
             android:textSize="24sp" />
+
         <com.google.android.material.textview.MaterialTextView
-                android:text="@string/phone_info"
-                android:layout_width="match_parent"
-                android:id="@+id/phoneinfo"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"/>
+            android:id="@+id/phoneinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_info"
+            android:textSize="17sp" />
+
         <com.google.android.material.button.MaterialButton
-                android:text="@string/more_info"
-                android:layout_gravity="start"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:id="@+id/moreInfobtn"
-                android:textSize="20sp"/>
-        <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/moreinfoLayout"
-                android:layout_marginTop="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+            android:id="@+id/moreInfobtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:text="@string/more_info"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/moreinfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/phone_moreinfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/phoneinfo_more"
-                    android:textSize="17sp"/>
-        </LinearLayout>
-        <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/help_contacts_label"
-                android:text="@string/help_contacts"
+                android:id="@+id/phoneinfo_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textSize="24sp"/>
+                android:text="@string/phone_moreinfo"
+                android:textSize="17sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/get_help_text"
-                android:text="@string/get_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:fontFamily="@font/manrope_medium"
-                android:textSize="17sp"/>
+            android:id="@+id/help_contacts_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/help_contacts"
+            android:textSize="24sp" />
+
         <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/email_text"
-                android:text="Email: dimon6018t@gmail.com"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/manrope_medium"
-                android:textSize="17sp"
-                android:autoLink="email"/>
+            android:id="@+id/get_help_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:fontFamily="@font/manrope_medium"
+            android:text="@string/get_help"
+            android:textSize="17sp" />
+
         <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/online_contacts_text"
-                android:text="@string/online_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textSize="24sp"/>
+            android:id="@+id/email_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:fontFamily="@font/manrope_medium"
+            android:text="Email: dimon6018t@gmail.com"
+            android:textSize="17sp" />
+
         <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/github_text"
-                android:text="GitHub: github.com/queuejw/metrophonelauncher/"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/manrope_medium"
-                android:textSize="17sp"
-                android:autoLink="web"/>
+            android:id="@+id/online_contacts_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/online_content"
+            android:textSize="24sp" />
+
         <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/telegram_text"
-                android:text="Telegram: t.me/mplauncher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/manrope_medium"
-                android:textSize="17sp"
-                android:autoLink="web"/>
+            android:id="@+id/github_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:fontFamily="@font/manrope_medium"
+            android:text="GitHub: github.com/queuejw/metrophonelauncher/"
+            android:textSize="17sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/telegram_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:fontFamily="@font/manrope_medium"
+            android:text="Telegram: t.me/mplauncher"
+            android:textSize="17sp" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/support_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoLink="web"
             android:fontFamily="@font/manrope_light"
             android:text="@string/support_devs_text"
-            android:textSize="18sp"
-            android:autoLink="web"/>
+            android:textSize="18sp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/queuejw"
@@ -112,38 +123,27 @@
             android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
-                android:text="@string/reset_your_launcher_label"
-                android:layout_gravity="center"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginStart="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:id="@+id/resetLauncher"
-                android:textSize="20sp"/>
-        <com.google.android.material.button.MaterialButton
-            android:text="@string/restart"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="4dp"
+            android:id="@+id/resetLauncher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="4dp"
             android:gravity="start"
-            android:id="@+id/restartLauncher"
-            android:textSize="20sp"/>
+            android:text="@string/reset_your_launcher_label"
+            android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
-            android:text="crash"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="4dp"
+            android:id="@+id/restartLauncher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="4dp"
             android:gravity="start"
-            android:id="@+id/crashBtn"
-            android:textSize="20sp"/>
-    </LinearLayout>
+            android:text="@string/restart"
+            android:textSize="20sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

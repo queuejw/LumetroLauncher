@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        style="@style/MPL.BottomSheet.AllAppsStyle"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="?attr/colorOnSurface"
-        app:behavior_hideable="true"
-        app:enableEdgeToEdge="true"
-        android:animateLayoutChanges="true"
-        app:layout_optimizationLevel="standard"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MPL.BottomSheet.AllAppsStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="?attr/colorOnSurface"
+    app:behavior_hideable="true"
+    app:enableEdgeToEdge="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:layout_optimizationLevel="standard">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/appLabelSheet"
@@ -25,18 +24,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
     <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:id="@+id/editAppLabel"
-            app:cardCornerRadius="0dp"
-            app:strokeWidth="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardBackgroundColor="?attr/colorOnSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/appLabelSheet"
-            android:layout_marginTop="40dp"
-            app:layout_constraintHorizontal_bias="0.0">
+        android:id="@+id/editAppLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="?attr/colorOnSurface"
+        app:cardCornerRadius="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appLabelSheet"
+        app:strokeWidth="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,10 +48,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                app:fontFamily="@font/manrope_light"
                 android:text="@string/edit_app_label"
                 android:textColor="?attr/colorSurface"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                app:fontFamily="@font/manrope_light" />
 
             <LinearLayout
                 android:id="@+id/changeLabelLayout"
@@ -82,8 +83,8 @@
                             android:id="@+id/textEdit"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:fontFamily="@font/manrope_light"
-                            android:textColor="?attr/colorSurface" />
+                            android:textColor="?attr/colorSurface"
+                            app:fontFamily="@font/manrope_light" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.card.MaterialCardView
@@ -127,10 +128,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                app:fontFamily="@font/manrope_light"
                 android:text="@string/choose_tile_color"
                 android:textColor="?attr/colorSurface"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                app:fontFamily="@font/manrope_light" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -142,10 +143,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    app:fontFamily="@font/manrope_light"
                     android:text="@string/selected_color"
                     android:textColor="?attr/colorSurface"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:fontFamily="@font/manrope_light" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/chooseColorRemove"
@@ -153,10 +154,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
-                    app:fontFamily="@font/manrope_light"
                     android:text="@string/remove"
                     android:textColor="?attr/colorSurface"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:fontFamily="@font/manrope_light" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -178,10 +179,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:fontFamily="@font/manrope_light"
             android:text="@string/app_info_label"
             android:textColor="?attr/colorSurface"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            app:fontFamily="@font/manrope_light" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -201,10 +202,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:fontFamily="@font/manrope_light"
             android:text="@string/uninstall"
             android:textColor="?attr/colorSurface"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            app:fontFamily="@font/manrope_light" />
     </com.google.android.material.card.MaterialCardView>
 
     <Space

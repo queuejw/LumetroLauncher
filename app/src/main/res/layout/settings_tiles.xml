@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tile_transparency_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="14dp"
-        android:textSize="20sp"
-        android:text="@string/tile_transparency"/>
+        android:text="@string/tile_transparency"
+        android:textSize="20sp" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/alphaSlider"
@@ -18,5 +19,5 @@
         android:layout_height="wrap_content"
         android:stepSize="0.1"
         android:valueFrom="0.1"
-        android:valueTo="1.0"/>
-</LinearLayout>
+        android:valueTo="1.0" />
+</androidx.appcompat.widget.LinearLayoutCompat>

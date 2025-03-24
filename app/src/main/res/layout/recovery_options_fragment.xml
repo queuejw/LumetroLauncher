@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/bsod"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/open_github_card"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardBackgroundColor="@android:color/transparent"
-        app:strokeWidth="0dp"
-        app:cardCornerRadius="0dp">
+        app:cardCornerRadius="0dp"
+        app:strokeWidth="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -22,9 +21,9 @@
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:padding="16dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
+                android:padding="16dp"
                 android:src="@drawable/ic_web"
                 app:tint="@android:color/white" />
 
@@ -70,9 +69,9 @@
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:padding="16dp"
                 android:layout_gravity="center"
                 android:background="@color/recoveryOpt"
+                android:padding="16dp"
                 android:src="@drawable/ic_web"
                 app:tint="@android:color/white" />
 

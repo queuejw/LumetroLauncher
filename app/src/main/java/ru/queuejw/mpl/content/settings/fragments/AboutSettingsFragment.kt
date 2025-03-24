@@ -84,9 +84,6 @@ class AboutSettingsFragment : Fragment() {
         binding.restartLauncher.setOnClickListener {
             exitProcess(0)
         }
-        binding.crashBtn.setOnClickListener {
-            requireActivity().findViewById<View>(R.id.test_font_text).background = null
-        }
     }
 
     private fun checkHome(context: Context) {

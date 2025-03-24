@@ -1,5 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!-- Bottom bar -->
     <include
         android:id="@+id/main_bottom_bar"
-        layout="@layout/main_screen_bottom_bar"/>
+        layout="@layout/main_screen_bottom_bar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
