@@ -30,6 +30,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,8 +39,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import coil3.load
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,6 +54,7 @@ import ru.queuejw.mpl.R
 import ru.queuejw.mpl.content.data.app.App
 import ru.queuejw.mpl.content.data.tile.Tile
 import ru.queuejw.mpl.content.settings.SettingsActivity
+import ru.queuejw.mpl.databinding.AllAppsWindowBinding
 import ru.queuejw.mpl.databinding.AppBinding
 import ru.queuejw.mpl.databinding.LauncherAllAppsScreenBinding
 import ru.queuejw.mpl.helpers.receivers.PackageChangesReceiver
@@ -435,11 +435,11 @@ class AllApps : Fragment() {
 
     private fun runAppWithAnimation(app: String, pm: PackageManager) {
         val first =
-            (binding.appList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()
         val last =
-            (binding.appList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition()
         binding.appList.isScrollEnabled = false
-        if (appAdapter == null) {
+        if (appAdapter == null || first == null || last == null) {
             runApp(app, pm)
             return
         }
@@ -501,14 +501,17 @@ class AllApps : Fragment() {
         return contentView.measuredHeight
     }
 
-    private fun showPopupWindow(view: View, app: App) {
+    private fun showPopupWindow(view: View, app: App, position: Int) {
         binding.appList.isScrollEnabled = false
+        if (PREFS.isAAllAppsAnimEnabled) {
+            animateApps(position, false)
+        }
         (requireActivity() as Main).configureViewPagerScroll(false)
         val inflater =
             view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.all_apps_window, binding.appList, false)
+        val windowBinding = AllAppsWindowBinding.inflate(inflater)
         popupWindow = PopupWindow(
-            popupView,
+            windowBinding.root,
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             true
@@ -516,25 +519,27 @@ class AllApps : Fragment() {
         popupWindow!!.isFocusable = true
         val popupHeight = getPopupHeight(popupWindow!!)
         val top = isPopupInTop(view, popupHeight)
-        popupView.pivotY = if (top) 0f else popupHeight.toFloat()
-        val pinLabel = popupView.findViewById<MaterialTextView>(R.id.pin_app_label)
-        val infoLabel = popupView.findViewById<MaterialTextView>(R.id.app_info_label)
-        val uninstallLabel = popupView.findViewById<MaterialTextView>(R.id.uninstall_label)
+        windowBinding.root.pivotY = if (top) 0f else popupHeight.toFloat()
         (if (PREFS.customLightFontPath != null) customLightFont else customFont)?.let {
-            pinLabel.typeface = it
-            infoLabel.typeface = it
-            uninstallLabel.typeface = it
+            windowBinding.pinAppLabel.typeface = it
+            windowBinding.appInfoLabel.typeface = it
+            windowBinding.uninstallLabel.typeface = it
         }
-        val anim = ObjectAnimator.ofFloat(popupView, "scaleY", 0f, 0.01f).setDuration(1)
-        val anim2 = ObjectAnimator.ofFloat(popupView, "scaleX", 0f, 1f).setDuration(200)
-        val anim3 = ObjectAnimator.ofFloat(popupView, "scaleY", 0.01f, 1f).setDuration(400)
-        anim.doOnEnd {
-            anim2.doOnEnd {
-                anim3.start()
+        if (PREFS.isAAllAppsAnimEnabled) {
+            val anim =
+                ObjectAnimator.ofFloat(windowBinding.root, "scaleY", 0f, 0.01f).setDuration(1)
+            val anim2 =
+                ObjectAnimator.ofFloat(windowBinding.root, "scaleX", 0f, 1f).setDuration(200)
+            val anim3 =
+                ObjectAnimator.ofFloat(windowBinding.root, "scaleY", 0.01f, 1f).setDuration(400)
+            anim.doOnEnd {
+                anim2.doOnEnd {
+                    anim3.start()
+                }
+                anim2.start()
             }
-            anim2.start()
+            anim.start()
         }
-        anim.start()
         popupWindow!!.showAsDropDown(
             view,
             0,
@@ -542,10 +547,6 @@ class AllApps : Fragment() {
             Gravity.CENTER
         )
         isWindowVisible = true
-
-        val pin = popupView.findViewById<MaterialCardView>(R.id.pin_app)
-        val info = popupView.findViewById<MaterialCardView>(R.id.infoApp)
-        val uninstall = popupView.findViewById<MaterialCardView>(R.id.uninstallApp)
 
         var isAppAlreadyPinned = false
         lifecycleScope.launch(Dispatchers.Default) {
@@ -556,12 +557,12 @@ class AllApps : Fragment() {
 
             withContext(Dispatchers.Main) {
                 if (isAppAlreadyPinned) {
-                    pin.apply {
+                    windowBinding.pinApp.apply {
                         isEnabled = false
                         alpha = 0.5f
                     }
                 } else {
-                    pin.apply {
+                    windowBinding.pinApp.apply {
                         isEnabled = true
                         alpha = 1f
                         setOnClickListener {
@@ -573,12 +574,12 @@ class AllApps : Fragment() {
                 }
             }
         }
-        uninstall.setOnClickListener {
+        windowBinding.uninstallApp.setOnClickListener {
             popupWindow?.dismiss()
             startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.appPackage}".toUri()))
         }
 
-        info.setOnClickListener {
+        windowBinding.infoApp.setOnClickListener {
             isAppOpened = true
             startActivity(
                 Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -587,9 +588,32 @@ class AllApps : Fragment() {
         }
         popupWindow?.setOnDismissListener {
             (requireActivity() as Main).configureViewPagerScroll(true)
+            animateApps(position, true)
             binding.appList.isScrollEnabled = true
             isWindowVisible = false
             popupWindow = null
+        }
+    }
+
+    private fun animateApps(selectedAppPos: Int, restoreAnimations: Boolean) {
+        val first =
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()
+        val last =
+            (binding.appList.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition()
+        if(first == null || last == null) {
+            return
+        }
+        lifecycleScope.launch {
+            for (i in last downTo first) {
+                val view =
+                    binding.appList.findViewHolderForAdapterPosition(i)?.itemView ?: continue
+                if (!restoreAnimations) {
+                    if (i == selectedAppPos) continue
+                    view.animate().alpha(0.7f).scaleY(0.96f).scaleX(0.96f).setDuration(500).start()
+                } else {
+                    view.animate().alpha(1f).scaleY(1f).scaleX(1f).setDuration(500).start()
+                }
+            }
         }
     }
 
@@ -640,7 +664,7 @@ class AllApps : Fragment() {
                     click()
                 }
                 itemView.setOnLongClickListener {
-                    showPopupWindow(itemView, list[absoluteAdapterPosition])
+                    showPopupWindow(itemView, list[absoluteAdapterPosition], absoluteAdapterPosition)
                     true
                 }
             }
