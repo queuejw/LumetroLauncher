@@ -129,11 +129,29 @@ class Main : AppCompatActivity() {
         mainViewModel.apply {
             val list = Utils.setUpApps(this@Main)
             setAppList(list)
-            val tileList = getViewModelTileDao().getTilesList()
+            val tileList = checkTiles(getViewModelTileDao().getTilesList())
             setTileList(tileList)
             checkStartScreen(tileList)
             updateIcons(list, this@Main)
         }
+    }
+
+    private suspend fun checkTiles(list: MutableList<Tile>): MutableList<Tile> {
+        list.forEachIndexed { index, item ->
+            if(!isAppExist(item.tilePackage)) {
+                item.apply {
+                    tileType = -1
+                    tileSize = "small"
+                    tilePackage = ""
+                    tileColor = -1
+                    tileLabel = ""
+                    id = this.id!! / 2
+                    mainViewModel.getViewModelTileDao().updateTile(this)
+                }
+                list[index] = item
+            }
+        }
+        return list
     }
 
     private fun initDiskCache(context: Context): DiskLruCache? {
@@ -177,7 +195,7 @@ class Main : AppCompatActivity() {
         if (!isCustomIconsInstalled) {
             return false
         }
-        if (!iconPackExist()) {
+        if (!isAppExist(PREFS.iconPackPackage!!)) {
             PREFS.iconPackPackage = "null"
             diskLruCache?.let {
                 it.delete()
@@ -189,9 +207,9 @@ class Main : AppCompatActivity() {
         return false
     }
 
-    private fun iconPackExist(): Boolean {
+    private fun isAppExist(packageName: String): Boolean {
         runCatching {
-            packageManager.getApplicationInfo(PREFS.iconPackPackage!!, 0)
+            packageManager.getApplicationInfo(packageName, 0)
             return true
         }.getOrElse {
             return false

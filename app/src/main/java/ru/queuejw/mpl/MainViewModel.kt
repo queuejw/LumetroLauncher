@@ -21,7 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         SparseArrayCompat<Bitmap?>()
     }
 
-    var userTileCount = 0
+    var lastUserTilePosition = 0
 
     fun addIconToCache(appPackage: String, bitmap: Bitmap?) {
         icons.append(appPackage.hashCode(), bitmap)
@@ -63,7 +63,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 temp.add(it)
             }
         }
-        userTileCount = if (temp.isNotEmpty()) temp.last().tilePosition + 1 else 0
+        lastUserTilePosition = if (temp.isNotEmpty()) temp.last().tilePosition + 1 else 0
     }
 
     fun getTileList(): MutableList<Tile> {

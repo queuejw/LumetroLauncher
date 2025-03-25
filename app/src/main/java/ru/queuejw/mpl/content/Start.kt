@@ -111,9 +111,6 @@ class Start : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = LauncherStartScreenBinding.inflate(inflater, container, false)
-        binding.startTiles.setOnClickListener {
-            mAdapter?.let { if (it.isEditMode) it.disableEditMode() }
-        }
         setRecyclerViewInsets(binding.startTiles)
         return binding.root
     }
@@ -464,9 +461,9 @@ class Start : Fragment() {
             if (it.tileType != -1) list.add(it)
         }
         if (list.isNotEmpty()) {
-            mainViewModel.userTileCount = list.last().tilePosition + 1
+            mainViewModel.lastUserTilePosition = list.last().tilePosition + 1
         } else {
-            mainViewModel.userTileCount = 0
+            mainViewModel.lastUserTilePosition = 0
             Main.isStartScreenEmpty = true
             (requireActivity() as Main?)?.blockStart()
         }
@@ -808,38 +805,46 @@ class Start : Fragment() {
             addCallback()
             isEditMode = true
             notifyItemRangeChanged(
-                mainViewModel.userTileCount,
-                list.size - mainViewModel.userTileCount
+                mainViewModel.lastUserTilePosition,
+                list.size - mainViewModel.lastUserTilePosition
             )
             if (PREFS.isTilesAnimEnabled) {
-                animateEditMode()
+                animateEditMode(false)
             }
         }
 
-        private fun animateEditMode() {
+        private fun animateEditMode(cancelAnimations: Boolean) {
             if (mAdapter == null) {
                 return
             }
             for (i in 0..mAdapter!!.itemCount) {
                 val view =
-                    binding.startTiles.findViewHolderForLayoutPosition(i)?.itemView ?: continue
-                if (isEditMode) {
+                    binding.startTiles.findViewHolderForAdapterPosition(i)?.itemView ?: continue
+                if(cancelAnimations) {
+                    disableAnimationForView(view)
+                } else {
                     if (view.scaleY != 0.9f) {
                         view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(300).start()
                     }
                     animateEditModeTile(view)
-                } else {
-                    view.clearAnimation()
-                    view.animate().scaleX(1f).scaleY(1f).translationX(0f).translationY(0f)
-                        .setDuration(200).start()
+                }
+            }
+        }
+
+        private fun disableAnimationForView(view: View) {
+            view.apply {
+                animate().cancel()
+                if(!isEditMode) {
+                    scaleY = 1f
+                    scaleX = 1f
+                    translationX = 0f
+                    translationY = 0f
                 }
             }
         }
 
         private fun animateEditModeTile(view: View) {
             if (!isEditMode) {
-                view.animate().scaleX(1f).scaleY(1f).translationX(0f).translationY(0f)
-                    .setDuration(200).start()
                 return
             }
             val x = Random.nextFloat() * 2 * 5 - 5
@@ -858,11 +863,11 @@ class Start : Fragment() {
             (requireActivity() as Main).configureViewPagerScroll(true)
             isEditMode = false
             notifyItemRangeRemoved(
-                mainViewModel.userTileCount,
-                list.size - mainViewModel.userTileCount
+                mainViewModel.lastUserTilePosition,
+                list.size - mainViewModel.lastUserTilePosition
             )
             if (PREFS.isTilesAnimEnabled) {
-                animateEditMode()
+                animateEditMode(true)
             }
         }
 
@@ -875,7 +880,7 @@ class Start : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return if (!isEditMode) mainViewModel.userTileCount else list.size
+            return if (!isEditMode) mainViewModel.lastUserTilePosition else list.size
         }
 
         override fun getItemId(position: Int): Long {
@@ -1033,6 +1038,9 @@ class Start : Fragment() {
 
         override fun onDragAndDropCompleted() {
             if (!isEditMode) return
+            if (PREFS.isTilesAnimEnabled) {
+                animateEditMode(true)
+            }
             lifecycleScope.launch(defaultDispatcher) {
                 val newData = ArrayList<Tile>()
                 for (i in 0 until list.size) {
@@ -1044,7 +1052,7 @@ class Start : Fragment() {
                 mainViewModel.setUserTileCount(newData)
                 withContext(mainDispatcher) {
                     if (PREFS.isTilesAnimEnabled) {
-                        animateEditMode()
+                        animateEditMode(false)
                     }
                 }
             }
@@ -1113,14 +1121,8 @@ class Start : Fragment() {
          * Placeholder tile
          * @param binding SpaceTileBinding
          */
-        inner class SpaceViewHolder(binding: SpaceTileBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-            init {
-                itemView.setOnClickListener {
-                    if (isEditMode) disableEditMode()
-                }
-            }
-        }
+        inner class SpaceViewHolder(binding: SpaceTileBinding) : RecyclerView.ViewHolder(binding.root)
+
     }
 
     /**
