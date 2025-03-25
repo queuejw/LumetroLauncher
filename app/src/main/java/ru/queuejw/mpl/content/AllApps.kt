@@ -30,7 +30,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -271,7 +270,7 @@ class AllApps : Fragment() {
             (binding.appList.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()
         val last =
             (binding.appList.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition()
-        if(first == null || last == null) {
+        if (first == null || last == null) {
             return
         }
         binding.appList.isScrollEnabled = false
@@ -588,7 +587,9 @@ class AllApps : Fragment() {
         }
         popupWindow?.setOnDismissListener {
             (requireActivity() as Main).configureViewPagerScroll(true)
-            animateApps(position, true)
+            if (PREFS.isAAllAppsAnimEnabled) {
+                animateApps(position, true)
+            }
             binding.appList.isScrollEnabled = true
             isWindowVisible = false
             popupWindow = null
@@ -600,7 +601,7 @@ class AllApps : Fragment() {
             (binding.appList.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()
         val last =
             (binding.appList.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition()
-        if(first == null || last == null) {
+        if (first == null || last == null) {
             return
         }
         lifecycleScope.launch {
@@ -664,7 +665,11 @@ class AllApps : Fragment() {
                     click()
                 }
                 itemView.setOnLongClickListener {
-                    showPopupWindow(itemView, list[absoluteAdapterPosition], absoluteAdapterPosition)
+                    showPopupWindow(
+                        itemView,
+                        list[absoluteAdapterPosition],
+                        absoluteAdapterPosition
+                    )
                     true
                 }
             }

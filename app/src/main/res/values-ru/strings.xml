@@ -179,7 +179,7 @@
     <string name="navigation_bar_3">Дополнительные параметры</string>
     <string name="animations">анимации</string>
     <string name="animations_settings_label">Анимации</string>
-    <string name="tiles_animation_settings_label">Разрешить анимацию открытия и закрытия приложений в меню Пуск</string>
+    <string name="tiles_animation_settings_label">Разрешить анимацию плиток</string>
     <string name="allapps_animation_settings_label">Разрешить анимацию в списке приложений</string>
     <string name="transition_animation_settings_label">Разрешить анимацию перехода между экранами</string>
     <string name="experiments">эксперименты</string>

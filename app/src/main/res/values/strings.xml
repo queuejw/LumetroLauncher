@@ -178,7 +178,7 @@
     <string name="navigation_bar_3">Additional options</string>
     <string name="animations">animations</string>
     <string name="animations_settings_label">Animations</string>
-    <string name="tiles_animation_settings_label">Allow animation of opening and closing applications in the Start screen</string>
+    <string name="tiles_animation_settings_label">Allow animation of tiles</string>
     <string name="allapps_animation_settings_label">Allow animation in the app list</string>
     <string name="transition_animation_settings_label">Enable animation of transitions between MPL screens</string>
     <string name="experiments">experiments</string>

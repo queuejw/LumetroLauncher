@@ -405,7 +405,7 @@ class Start : Fragment() {
                         position = index
                     }
                 }
-                if(position != null) {
+                if (position != null) {
                     val item = Tile(
                         id = Random.nextLong(1000, 2000000),
                         tilePosition = position,
@@ -811,6 +811,42 @@ class Start : Fragment() {
                 mainViewModel.userTileCount,
                 list.size - mainViewModel.userTileCount
             )
+            if (PREFS.isTilesAnimEnabled) {
+                animateEditMode()
+            }
+        }
+
+        private fun animateEditMode() {
+            if (mAdapter == null) {
+                return
+            }
+            for (i in 0..mAdapter!!.itemCount) {
+                val view =
+                    binding.startTiles.findViewHolderForLayoutPosition(i)?.itemView ?: continue
+                if (isEditMode) {
+                    if (view.scaleY != 0.9f) {
+                        view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(300).start()
+                    }
+                    animateEditModeTile(view)
+                } else {
+                    view.clearAnimation()
+                    view.animate().scaleX(1f).scaleY(1f).translationX(0f).translationY(0f)
+                        .setDuration(200).start()
+                }
+            }
+        }
+
+        private fun animateEditModeTile(view: View) {
+            if (!isEditMode) {
+                view.animate().scaleX(1f).scaleY(1f).translationX(0f).translationY(0f)
+                    .setDuration(200).start()
+                return
+            }
+            val x = Random.nextFloat() * 2 * 5 - 5
+            val y = Random.nextFloat() * 2 * 5 - 5
+            view.animate().translationX(x).translationY(y).setDuration(1000).withEndAction {
+                animateEditModeTile(view)
+            }.start()
         }
 
         /**
@@ -825,6 +861,9 @@ class Start : Fragment() {
                 mainViewModel.userTileCount,
                 list.size - mainViewModel.userTileCount
             )
+            if (PREFS.isTilesAnimEnabled) {
+                animateEditMode()
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -847,8 +886,7 @@ class Start : Fragment() {
             when (holder.itemViewType) {
                 defaultTileType -> bindDefaultTile(
                     holder as TileViewHolder,
-                    list[position],
-                    position
+                    list[position]
                 )
             }
         }
@@ -857,15 +895,34 @@ class Start : Fragment() {
          * This function is needed for tile configuration
          * @param holder TileViewHolder
          * @param item Tile object
-         * @param position Holder position
          * @see onBindViewHolder
          */
-        private fun bindDefaultTile(holder: TileViewHolder, item: Tile, position: Int) {
+        private fun bindDefaultTile(holder: TileViewHolder, item: Tile) {
             setTileColor(holder, item)
             setTileSize(item, holder.binding.tileLabel)
             setTileIconSize(holder.binding.tileIcon, item.tileSize)
             setTileText(holder.binding.tileLabel, item)
             setTileIcon(holder.binding.tileIcon, item)
+            if (PREFS.isTilesAnimEnabled) {
+                setTileAnimation(holder.itemView)
+            }
+        }
+
+        private fun setTileAnimation(view: View) {
+            if (isEditMode) {
+                view.apply {
+                    scaleX = 0.9f
+                    scaleY = 0.9f
+                }
+                animateEditModeTile(view)
+            } else {
+                view.apply {
+                    scaleX = 1f
+                    scaleY = 1f
+                    translationY = 0f
+                    translationX = 0f
+                }
+            }
         }
 
         /**
@@ -985,6 +1042,11 @@ class Start : Fragment() {
                 }
                 mainViewModel.getViewModelTileDao().updateAllTiles(newData)
                 mainViewModel.setUserTileCount(newData)
+                withContext(mainDispatcher) {
+                    if (PREFS.isTilesAnimEnabled) {
+                        animateEditMode()
+                    }
+                }
             }
         }
 

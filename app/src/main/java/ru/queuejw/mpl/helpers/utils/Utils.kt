@@ -1,9 +1,7 @@
 package ru.queuejw.mpl.helpers.utils
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -26,7 +24,6 @@ import androidx.core.view.updatePadding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.queuejw.mpl.Application
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.BuildConfig
 import ru.queuejw.mpl.R
@@ -36,7 +33,6 @@ import ru.queuejw.mpl.content.data.bsod.BSOD
 import ru.queuejw.mpl.content.data.bsod.BSODEntity
 import ru.queuejw.mpl.content.data.tile.Tile
 import ru.queuejw.mpl.content.data.tile.TileDao
-import ru.queuejw.mpl.content.settings.fragments.UpdateSettingsFragment
 import ru.queuejw.mpl.helpers.receivers.PackageChangesReceiver
 import java.io.File
 import java.util.Calendar
@@ -143,7 +139,7 @@ class Utils {
         fun launcherAccentColor(theme: Resources.Theme): Int {
             val typedValue = TypedValue()
             theme.resolveAttribute(
-                com.google.android.material.R.attr.colorPrimary,
+                androidx.appcompat.R.attr.colorPrimary,
                 typedValue,
                 true
             )
@@ -190,23 +186,6 @@ class Utils {
                 // Default to "unknown" if the selected color is out of bounds
                 "unknown"
             }
-        }
-
-        fun downloadUpdate(context: Context) {
-            val request = DownloadManager.Request(UpdateSettingsFragment.URL_RELEASE_FILE.toUri())
-            request.setDescription(context.getString(R.string.update_notification))
-            request.setTitle("MPL")
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-            request.setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                "MPL_V80.apk"
-            )
-            val manager =
-                context.getSystemService(android.app.Application.DOWNLOAD_SERVICE) as DownloadManager
-            val downloadId = manager.enqueue(request)
-            Application.isUpdateDownloading = true
-            val q = DownloadManager.Query()
-            q.setFilterById(downloadId)
         }
 
         fun setUpApps(context: Context): MutableList<App> {
@@ -338,21 +317,15 @@ class Utils {
                     MotionEvent.ACTION_DOWN -> {
                         val rotationX = (event.y - centerY) / centerY * 5
                         val rotationY = (centerX - event.x) / centerX * 5
-                        ObjectAnimator.ofFloat(view, "rotationX", -rotationX).setDuration(200)
-                            .start()
-                        ObjectAnimator.ofFloat(view, "rotationY", -rotationY).setDuration(200)
+                        view.animate().rotationX(-rotationX).rotationY(-rotationY).setDuration(200)
                             .start()
                     }
 
-                    MotionEvent.ACTION_UP -> {
-                        ObjectAnimator.ofFloat(view, "rotationX", 0f).setDuration(200).start()
-                        ObjectAnimator.ofFloat(view, "rotationY", 0f).setDuration(200).start()
-                    }
+                    MotionEvent.ACTION_UP -> view.animate().rotationX(0f).rotationY(0f)
+                        .setDuration(200).start()
 
-                    MotionEvent.ACTION_CANCEL -> {
-                        ObjectAnimator.ofFloat(view, "rotationX", 0f).setDuration(200).start()
-                        ObjectAnimator.ofFloat(view, "rotationY", 0f).setDuration(200).start()
-                    }
+                    MotionEvent.ACTION_CANCEL -> view.animate().rotationX(0f).rotationY(0f)
+                        .setDuration(200).start()
                 }
                 false
             }

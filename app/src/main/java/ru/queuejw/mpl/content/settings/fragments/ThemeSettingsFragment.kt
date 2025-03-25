@@ -16,7 +16,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.color.DynamicColors
-import com.google.android.material.snackbar.Snackbar
 import ru.queuejw.mpl.Application.Companion.PREFS
 import ru.queuejw.mpl.Application.Companion.customFont
 import ru.queuejw.mpl.R
@@ -43,7 +42,8 @@ class ThemeSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupFont()
-        configure()
+        configureUi()
+        setOnClick()
         prepareTip()
     }
 
@@ -81,7 +81,7 @@ class ThemeSettingsFragment : Fragment() {
         }
     }
 
-    private fun configure() {
+    private fun configureUi() {
         binding.chosenAccentName.text = Utils.accentName(requireActivity())
         binding.chooseTheme.apply {
             text = when (PREFS.appTheme) {
@@ -94,6 +94,34 @@ class ThemeSettingsFragment : Fragment() {
                 binding.chooseThemeMenu.visibility = View.VISIBLE
             }
         }
+        binding.chooseAccent.apply {
+            isEnabled = PREFS.accentColor != 20
+            alpha = if (PREFS.accentColor != 20) 1f else 0.5f
+        }
+
+        binding.newAppsToStartSwitch.apply {
+            isChecked = PREFS.pinNewApps
+            text = if (PREFS.pinNewApps) getString(R.string.on) else getString(R.string.off)
+        }
+        binding.dynamicColorSwtich.apply {
+            if (!DynamicColors.isDynamicColorAvailable()) {
+                isEnabled = false
+            }
+            isChecked = PREFS.accentColor == 20
+            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
+        }
+        binding.blockStartSwitch.apply {
+            isChecked = PREFS.isStartBlocked
+            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
+        }
+        binding.coloredStrokeSwitch.apply {
+            isChecked = PREFS.coloredStroke
+            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
+        }
+        setOrientationButtons()
+    }
+
+    private fun setOnClick() {
         binding.chooseAuto.setOnClickListener {
             applyThemeClickListener(0)
         }
@@ -104,56 +132,40 @@ class ThemeSettingsFragment : Fragment() {
             applyThemeClickListener(1)
         }
         binding.chooseAccent.setOnClickListener {
-            AccentDialog.display(
-                childFragmentManager
-            )
-        }
-        binding.newAppsToStartSwitch.apply {
-            isChecked = PREFS.pinNewApps
-            text = if (PREFS.pinNewApps) getString(R.string.on) else getString(R.string.off)
-            setOnCheckedChangeListener { _, isChecked ->
-                PREFS.pinNewApps = isChecked
-                text = if (isChecked) getString(R.string.on) else getString(R.string.off)
+            if (PREFS.accentColor != 20) {
+                AccentDialog.display(
+                    childFragmentManager
+                )
             }
         }
-        binding.dynamicColorSwtich.apply {
-            if (!DynamicColors.isDynamicColorAvailable()) {
-                isEnabled = false
-            }
-            isChecked = PREFS.accentColor == 20
-            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
-            setOnCheckedChangeListener { _, isChecked ->
-                if (DynamicColors.isDynamicColorAvailable()) {
-                    PREFS.accentColor =
-                        if (isChecked) 20 else PREFS.prefs.getInt("previous_accent_color", 5)
-                    (requireActivity() as SettingsActivity).recreateFragment(this@ThemeSettingsFragment)
-                } else {
-                    Snackbar.make(
-                        this,
-                        getString(R.string.dynamicColor_error),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
+        binding.newAppsToStartSwitch.setOnCheckedChangeListener { _, isChecked ->
+            PREFS.pinNewApps = isChecked
+            binding.newAppsToStartSwitch.text =
+                if (isChecked) getString(R.string.on) else getString(R.string.off)
         }
-        binding.blockStartSwitch.apply {
-            isChecked = PREFS.isStartBlocked
-            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
-            setOnCheckedChangeListener { _, isChecked ->
-                PREFS.isStartBlocked = isChecked
-                text = if (isChecked) getString(R.string.on) else getString(R.string.off)
-            }
+        binding.dynamicColorSwtich.setOnCheckedChangeListener { _, isChecked ->
+            updateDynamicColor(isChecked)
         }
-        binding.coloredStrokeSwitch.apply {
-            isChecked = PREFS.coloredStroke
-            text = if (isChecked) getString(R.string.on) else getString(R.string.off)
-            setOnCheckedChangeListener { _, isChecked ->
-                PREFS.coloredStroke = isChecked
-                text = if (isChecked) getString(R.string.on) else getString(R.string.off)
-                PREFS.isPrefsChanged = true
-            }
+        binding.blockStartSwitch.setOnCheckedChangeListener { _, isChecked ->
+            PREFS.isStartBlocked = isChecked
+            binding.blockStartSwitch.text =
+                if (isChecked) getString(R.string.on) else getString(R.string.off)
         }
-        setOrientationButtons()
+        binding.coloredStrokeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            PREFS.coloredStroke = isChecked
+            binding.coloredStrokeSwitch.text =
+                if (isChecked) getString(R.string.on) else getString(R.string.off)
+            PREFS.isPrefsChanged = true
+        }
+    }
+
+    private fun updateDynamicColor(bool: Boolean) {
+        if (DynamicColors.isDynamicColorAvailable()) {
+            PREFS.accentColor =
+                if (bool) 20 else PREFS.prefs.getInt("previous_accent_color", 5)
+            PREFS.prefs.edit { putBoolean("themeChanged", true) }
+            activity?.recreate()
+        }
     }
 
     private fun applyThemeClickListener(value: Int) {
