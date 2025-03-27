@@ -570,7 +570,7 @@ class Start : Fragment() {
         val remove = popupView.findViewById<MaterialCardView>(R.id.remove)
         popupWindow.setOnDismissListener {
             binding.startTiles.isScrollEnabled = true
-            mAdapter?.selectedItem = null
+            animateTiles()
         }
         popupWindow.showAsDropDown(
             holder.itemView,
@@ -580,16 +580,13 @@ class Start : Fragment() {
         )
         applyResizeIcon(resizeIcon, item)
         resize.setOnClickListener {
-            resizeTile(item, position)
-            popupWindow.dismiss()
+            resizeTile(item, position, popupWindow)
         }
         remove.setOnClickListener {
-            removeTile(item, position)
-            popupWindow.dismiss()
+            removeTile(item, position, popupWindow)
         }
         settings.setOnClickListener {
             showSettingsBottomSheet(item, context)
-            popupWindow.dismiss()
         }
     }
 
@@ -601,16 +598,17 @@ class Start : Fragment() {
         }
     }
 
-    private fun removeTile(item: Tile, position: Int) {
+    private fun removeTile(item: Tile, position: Int, popupWindow: PopupWindow) {
         lifecycleScope.launch(ioDispatcher) {
             destroyTile(item)
             withContext(mainDispatcher) {
                 mAdapter?.notifyItemChanged(position)
+                popupWindow.dismiss()
             }
         }
     }
 
-    private fun resizeTile(item: Tile, position: Int) {
+    private fun resizeTile(item: Tile, position: Int, popupWindow: PopupWindow) {
         lifecycleScope.launch(ioDispatcher) {
             when (item.tileSize) {
                 "small" -> item.tileSize = "medium"
@@ -620,6 +618,18 @@ class Start : Fragment() {
             mainViewModel.getViewModelTileDao().updateTile(item)
             withContext(mainDispatcher) {
                 mAdapter?.notifyItemChanged(position)
+                popupWindow.dismiss()
+            }
+        }
+    }
+
+    private fun animateTiles() {
+        mAdapter?.selectedViewHash = null
+        if (PREFS.isTilesAnimEnabled) {
+            lifecycleScope.launch {
+                delay(300)
+                mAdapter?.animateEditMode(true)
+                mAdapter?.animateEditMode(false)
             }
         }
     }
@@ -757,7 +767,7 @@ class Start : Fragment() {
         val defaultTileType: Int = 0
         val spaceType: Int = -1
 
-        var selectedItem: Tile? = null
+        var selectedViewHash: Int? = null
 
         private val accentColor: Int by lazy { Utils.launcherAccentColor(requireActivity().theme) }
 
@@ -813,14 +823,11 @@ class Start : Fragment() {
             }
         }
 
-        private fun animateEditMode(cancelAnimations: Boolean) {
-            if (mAdapter == null) {
-                return
-            }
-            for (i in 0..mAdapter!!.itemCount) {
+        fun animateEditMode(cancelAnimations: Boolean) {
+            for (i in 0..itemCount) {
                 val view =
                     binding.startTiles.findViewHolderForAdapterPosition(i)?.itemView ?: continue
-                if(cancelAnimations) {
+                if (cancelAnimations) {
                     disableAnimationForView(view)
                 } else {
                     if (view.scaleY != 0.9f) {
@@ -834,7 +841,7 @@ class Start : Fragment() {
         private fun disableAnimationForView(view: View) {
             view.apply {
                 animate().cancel()
-                if(!isEditMode) {
+                if (!isEditMode) {
                     scaleY = 1f
                     scaleX = 1f
                     translationX = 0f
@@ -843,9 +850,14 @@ class Start : Fragment() {
             }
         }
 
-        private fun animateEditModeTile(view: View) {
+        fun animateEditModeTile(view: View) {
             if (!isEditMode) {
                 return
+            }
+            if (selectedViewHash != null) {
+                if (selectedViewHash == view.hashCode()) {
+                    return
+                }
             }
             val x = Random.nextFloat() * 2 * 5 - 5
             val y = Random.nextFloat() * 2 * 5 - 5
@@ -1093,7 +1105,7 @@ class Start : Fragment() {
             private fun handleClick() {
                 val item = list[absoluteAdapterPosition]
                 if (isEditMode) {
-                    selectedItem = item
+                    selectedViewHash = itemView.hashCode()
                     showTilePopupWindow(this@TileViewHolder, item, absoluteAdapterPosition, context)
                 } else {
                     if (PREFS.isTilesAnimEnabled) {
@@ -1121,7 +1133,8 @@ class Start : Fragment() {
          * Placeholder tile
          * @param binding SpaceTileBinding
          */
-        inner class SpaceViewHolder(binding: SpaceTileBinding) : RecyclerView.ViewHolder(binding.root)
+        inner class SpaceViewHolder(binding: SpaceTileBinding) :
+            RecyclerView.ViewHolder(binding.root)
 
     }
 

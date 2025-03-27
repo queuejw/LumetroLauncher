@@ -138,7 +138,7 @@ class Main : AppCompatActivity() {
 
     private suspend fun checkTiles(list: MutableList<Tile>): MutableList<Tile> {
         list.forEachIndexed { index, item ->
-            if(!isAppExist(item.tilePackage)) {
+            if (!isAppExist(item.tilePackage)) {
                 item.apply {
                     tileType = -1
                     tileSize = "small"

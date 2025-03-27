@@ -19,6 +19,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -604,15 +605,18 @@ class AllApps : Fragment() {
         if (first == null || last == null) {
             return
         }
+        val interpolator = AccelerateInterpolator()
         lifecycleScope.launch {
             for (i in last downTo first) {
                 val view =
                     binding.appList.findViewHolderForAdapterPosition(i)?.itemView ?: continue
                 if (!restoreAnimations) {
                     if (i == selectedAppPos) continue
-                    view.animate().alpha(0.7f).scaleY(0.96f).scaleX(0.96f).setDuration(500).start()
+                    view.animate().alpha(0.7f).scaleY(0.96f).scaleX(0.96f).setDuration(500)
+                        .setInterpolator(interpolator).start()
                 } else {
-                    view.animate().alpha(1f).scaleY(1f).scaleX(1f).setDuration(500).start()
+                    view.animate().alpha(1f).scaleY(1f).scaleX(1f).setDuration(500)
+                        .setInterpolator(interpolator).start()
                 }
             }
         }
