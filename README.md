@@ -58,12 +58,6 @@ Please note, MPL is still in development and some features may not be fully func
 
     Launch the MPLauncher application and follow the on-screen instructions.
 
-Where can I find the Launcher settings?
-
-- Open the "MPL Settings" application
-
 # 🌐 Community:
 
 :airplane: [Telegram channel](https://t.me/mplauncher)
-
-:smiley_cat: [Neko11](https://github.com/queuejw/Neko11)
