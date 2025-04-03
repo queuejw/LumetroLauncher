@@ -18,7 +18,7 @@ android {
         minSdk 21
         targetSdk 35
         // 80xxxx ; 81xxxx ; 100xxxx
-        versionCode 800001
+        versionCode 800002
         var name = "MPL 8 Build $versionCode"
         versionName name
 
