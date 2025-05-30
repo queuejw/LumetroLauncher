@@ -383,7 +383,7 @@ class Main : AppCompatActivity() {
                 delay(5000)
                 PREFS.prefs.edit().apply {
                     putBoolean("app_crashed", false)
-                    putInt("crashCounter", 0)
+                    putInt("crash_count", 0)
                     apply()
                 }
                 if (PREFS.isFeedbackEnabled) {

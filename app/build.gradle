@@ -9,14 +9,14 @@ android {
         enabled = true
     }
     namespace 'ru.queuejw.mpl'
-    compileSdk 35
+    compileSdk 36
     buildFeatures {
         buildConfig = true
     }
     defaultConfig {
         applicationId "ru.queuejw.mpl"
         minSdk 21
-        targetSdk 35
+        targetSdk 36
         // 80xxxx ; 81xxxx ; 100xxxx
         versionCode 800002
         var name = "MPL 8 Build $versionCode"
@@ -47,28 +47,28 @@ android {
 }
 dependencies {
 
-    ksp 'androidx.room:room-compiler:2.7.0-rc03'
+    ksp 'androidx.room:room-compiler:2.7.1'
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'androidx.core:core-ktx:1.15.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.6'
-    implementation 'androidx.room:room-runtime:2.7.0-rc03'
-    implementation 'androidx.room:room-ktx:2.7.0-rc03'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
-    implementation 'androidx.work:work-runtime-ktx:2.10.0'
-    implementation 'androidx.core:core-splashscreen:1.2.0-beta01'
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.7'
+    implementation 'androidx.room:room-runtime:2.7.1'
+    implementation 'androidx.room:room-ktx:2.7.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0'
+    implementation 'androidx.work:work-runtime-ktx:2.10.1'
+    implementation 'androidx.core:core-splashscreen:1.2.0-beta02'
 
-    implementation 'com.google.android.material:material:1.13.0-alpha12'
+    implementation 'com.google.android.material:material:1.14.0-alpha01'
 
     implementation project(path: ':SpannedGridLayoutManager')
 
     //implementation 'com.github.skydoves:colorpickerview:2.3.0' // planned for the 8.1 update
     implementation 'com.github.shadowalker77:wp7progressbar:1.1.0'
-    implementation 'io.coil-kt.coil3:coil:3.1.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.20'
+    implementation 'io.coil-kt.coil3:coil:3.2.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.21'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     // testImplementation 'junit:junit:4.13.2'
