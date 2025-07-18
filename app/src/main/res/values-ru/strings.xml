@@ -1,0 +1,219 @@
+<resources>
+    <string name="app_name">Lumetro</string>
+
+    <string name="restart">перезапустить</string>
+    <string name="on">Вкл.</string>
+    <string name="off">Выкл.</string>
+    <string name="yes">да</string>
+    <string name="no">нет</string>
+    <string name="launcher">лаунчер</string>
+    <string name="back">назад</string>
+    <string name="next">далее</string>
+    <string name="accept">принять</string>
+    <string name="reject">отклонить</string>
+    <string name="cancel">отмена</string>
+
+    <string name="warning_uc">ВНИМАНИЕ</string>
+    <string name="warning_lc">внимание</string>
+    <string name="warning">Внимание</string>
+
+    <string name="error">ошибка</string>
+
+    <!-- Theme -->
+    <string name="auto">авто</string>
+    <string name="dark">темный</string>
+    <string name="light">светлый</string>
+
+    <!-- Apps fragment -->
+    <string name="no_results_for">Нет результатов:\u0020</string>
+    <string name="app_info">о приложении</string>
+    <string name="pin_to_start">на рабочий стол</string>
+    <string name="uninstall_app">удалить</string>
+
+    <!-- colors -->
+    <string name="custom_color">свой цвет</string>
+    <string name="color_lime">светло-зеленый</string>
+    <string name="color_green">зелёный</string>
+    <string name="color_emerald">изумрудный</string>
+    <string name="color_cyan">сине-зеленый</string>
+    <string name="color_teal">голубой</string>
+    <string name="color_cobalt">кобальтовый</string>
+    <string name="color_indigo">индиго</string>
+    <string name="color_violet">фиолетовый</string>
+    <string name="color_pink">розовый</string>
+    <string name="color_magenta">пурпурный</string>
+    <string name="color_crimson">малиновый</string>
+    <string name="color_red">красный</string>
+    <string name="color_orange">оранжевый</string>
+    <string name="color_mauve">розовато-лиловый</string>
+    <string name="color_steel">стальной</string>
+    <string name="color_olive">оливковый</string>
+    <string name="color_amber">янтарный</string>
+    <string name="color_taupe">темно-серый</string>
+    <string name="color_yellow">желтый</string>
+    <string name="color_brown">коричневый</string>
+    <string name="color_dynamic">dynamic</string>
+
+    <!-- About fragment -->
+    <string name="phone_information">сведения о телефоне</string>
+    <string name="phone_info">Название: %s \nМодель: %s \nLumetro: %s</string>
+    <string name="more_info">сведения</string>
+    <string name="phone_more_info">Версия Lumetro: %s \nНомер сборки Lumetro: %d \nУстройство: %s \nБренд устройства: %s \nМодель устройства %s \nПродукт: %s \nАппаратное обеспечение: %s \nСборка: %s \nДата сборки: %d</string>
+    <string name="help_contacts">поддержка</string>
+    <string name="get_help">Get help: github.com/queuejw/metrophonelauncher/issues</string>
+    <string name="online_content">контент в Интернете</string>
+    <string name="support_devs_text">Поддержите разработчика: https://donationalerts.com/r/queuejw</string>
+    <string name="reset_your_launcher">сброс лаунчера</string>
+
+    <!-- Settings -->
+    <string name="advanced_options">Дополнительные параметры</string>
+
+
+    <!-- Settings main fragment -->
+    <string name="settings_activity_title">НАСТРОЙКИ</string>
+    <string name="start_theme">рабочий стол+тема</string>
+    <string name="start_theme_sub">настройте свой телефон</string>
+    <string name="feedback">отчет об ошибках</string>
+    <string name="feedback_sub">помогите улучшить Lumetro Launcher</string>
+    <string name="about">сведения об устройстве</string>
+    <string name="about_sub">характеристики устройства</string>
+    <string name="for_developers">Для разработчиков</string>
+
+    <!-- Theme fragment -->
+    <string name="settings_theme_accent_title_part1">цвет элементов\u0020</string>
+    <string name="settings_theme_accent_title_part2">Измените фон телефона и\u0020</string>
+    <string name="settings_theme_accent_title_part3">по вашему вкусу на день, неделю или месяц\u0020</string>
+    <string name="theme_background">Фон</string>
+    <string name="accent_color">Цвет элементов</string>
+    <string name="dynamicColor_setting">Вы можете использовать обои для выбор цвета элементов</string>
+    <string name="dynamicColor_switch">Использовать динамичные цвета</string>
+    <string name="dynamicColor_error">Этот параметр недоступен на этом устройстве</string>
+    <string name="show_more_tiles_title">Показывать больше иконок</string>
+    <string name="show_more_tiles_sub">Вы можете изменить размер и количество иконок, доступных на рабочем столе</string>
+    <string name="auto_pin_apps">Автоматически закреплять приложения на рабочий стол</string>
+
+    <!-- Feedback fragments -->
+    <string name="feedback_title">Отправляйте отчеты об ошибках и свои отзывы, чтобы помочь улучшить Lumetro Launcher</string>
+    <string name="show_error_details">Показывать детали на экране ошибки</string>
+    <string name="save_errors">Автоматически сохранять данные об ошибке</string>
+    <string name="erase_feedback_data">Вы уверены, что хотите удалить все собранные данные?</string>
+    <string name="show_collected_data">показать собранные данные</string>
+    <string name="delete_collected_data">удалить все собранные данные</string>
+    <string name="feedback_list_hint">Нажмите на кнопку Подделиться, чтобы отправить данные разработчикам</string>
+    <string name="feedback_empty_list">Мы не собрали никаких данных.</string>
+    <string name="dialog_copy_success">Детали ошибки скопированы в буфер обмена</string>
+
+    <string name="send">Отправить</string>
+    <string name="feedback_email_tip">Отправить EMAIL с помощью</string>
+    <string name="feedback_email_placeholder">Lumetro работает не так, как я ожидалось. (опишите что пошло не так, если это возможно)</string>
+
+    <!-- Color dialog -->
+    <string name="choose_color_title">Выберите цвет</string>
+    <string name="color_preview_title">Предпросмотр</string>
+    <string name="save">сохранить</string>
+    <string name="choose_default_colors_title">Либо воспользуйтесь стандартными цветами</string>
+
+    <!-- First Launch Experience (FLE) -->
+    <string name="fle_on_back_pressed_message">Вы точно хотите закрыть лаунчер?</string>
+    <!-- Welcome Fragment -->
+    <string name="fle_skip_setup">Пропустить настройку?</string>
+    <string name="fle_skip_setup_u"><u>Пропустить настройку?</u></string>
+    <string name="skip_fle_dialog_message">Вы можете пропустить настройку. В таком случае будут использоваться настройки по умолчанию. Продолжая, вы соглашаетесь с правилами использования Lumetro.</string>
+    <string name="fle_welcome_title">Привет!\nСпасибо за установку Lumetro.\nСейчас мы поможем Вам настроить лаунчер</string>
+
+    <!-- FLE Apps fragment -->
+    <string name="apps">Приложения</string>
+    <string name="fle_apps_empty_list_warn">Вы уверены, что не хотите закрепить приложения?</string>
+    <string name="fle_apps_counter">Закреплено: %1$d из %2$d</string>
+    <string name="pin_all">Выбрать все</string>
+    <string name="unpin_all">Убрать все</string>
+    <string name="fle_apps_hint">Закрепите на рабочий стол свои любимые приложения</string>
+    <string name="launch_app_error">Нам не удалось запустить это приложение.</string>
+
+    <!-- FLE Setup complete -->
+    <string name="fle_almost_done">Почти готово</string>
+    <string name="fle_setup_complete">Настройка завершена!</string>
+    <string name="fle_setup_complete_sub_1">Теперь всё готово для начала работы.</string>
+    <string name="fle_setup_complete_sub_2">Спасибо, что попробовали Lumetro.\nНадеюсь, Вам понравится!</string>
+    <string name="get_started">начать</string>
+
+    <!-- FLE Theme -->
+    <string name="personalization">Персонализация</string>
+    <string name="fle_theme_hint">Настройте тему, чтобы чувствовать себя как дома.</string>
+    <string name="fle_theme_background_question">Какой фон вам нравится больше?</string>
+    <string name="fle_theme_color_question">Какой ваш любимый цвет?</string>
+    <string name="select_color">выбрать цвет</string>
+
+    <!-- FLE EA -->
+    <string name="early_access">Ранний доступ</string>
+    <string name="fle_early_access_disclaimer">Обратите внимание, что Lumetro находится в (почти) активной разработке.\n\nЭто означает, что Вы можете столкнуться с ошибками (включая критические) во время использования приложения.\nЕсли вы обнаружили ошибку или захотите предложить что-то новое, свяжитесь с нами здесь: https://github.com/queuejw/LumetroLauncher \n\nВы можете отказаться от использования Lumetro в любой момент.\n\nСпасибо за понимание!</string>
+    <string name="fle_ea_data_collection_hint">Если происходит ошибка, мы автоматически сохраняем её детали, а затем уведомляем Вас. Позже, Вы можете удалить эти данные, либо подделиться данными с нами, чтобы помочь исправить ошибку. Мы не отправляем эти данные автоматически. Всё хранится локально на этом устройстве. Подробнее мы опишем далее.</string>
+    <string name="what_is_this"><u>Что это?</u></string>
+    <string name="fle_ea_checkbox">Я ознакомлен с этой информацией</string>
+    <string name="fle_ea_data_collection_checkbox">Разрешить сохранять отчеты об ошибках</string>
+
+    <!-- Terms of Use -->
+    <string name="tou_fragment_title">Обратите внимание</string>
+    <string name="tou">Правила использования</string>
+    <string name="app_description">Lumetro - это Android лаунчер с открытым исходным кодом. Он не содержит платных функций и доступен полностью бесплатно.\n\nhttps://github.com/queuejw/LumetroLauncher</string>
+    <string name="usage_terms">Вы можете использовать это приложение без каких-либо ограничений. Ниже мы опишем некоторые моменты, с которыми вы можете столкнуться во время использования приложения.</string>
+    <string name="security_warning">Если вы установили приложение из друого ресурса, пожалуйста, переустановите приложение из официального источника. Продолжайте использовать приложение, только в том случае, если вы доверяете своему источнику.</string>
+    <string name="data_collection_header">Как было сказано ранее, мы собираем некоторую информацию об устройстве, чтобы ускорить исправление ошибок. Ниже указана собираемая нами информация:</string>
+    <string-array name="collected_data_items">
+        <item>Время, в момент возникновения ошибки</item>
+        <item>Модель устройства</item>
+        <item>Версия Lumetro</item>
+        <item>Номер сборки Lumetro</item>
+        <item>Версия Android</item>
+        <item>Трассировка стека (детали ошибки)</item>
+    </string-array>
+    <string name="data_storage_info">Вся информация хранится локально на вашем устройстве в данных приложения Lumetro. Вы можете посмотреть всю собранную информацию по следующему пути:\n\nНастройки Lumetro -> отчеты об ошибках -> показать собранные данные.\n\nВы можете отправить данные нам (для исправления проблем) или удалить их.\n\Обратите внимание: Мы не отправляем данные автоматически, но собираем после каждой возникшей ошибки. Вы можете изменить это в настройках Lumetro. Если отключить, мы перестанем собирать любую информацию о Lumetro и Вашем устройстве..</string>
+    <string name="update_check_info">Иногда приложение может использовать доступ к сети Интернет для проверки обновлений.\n\nПо умолчанию, эта функция отключена и мы будем спрашивать у вас разрешение на проверку обновлений. Подключение к сети Интернет для других задач не требуется. Обратите внимание: в данный момент это не работает.</string>
+    <string name="tou_disclaimer_text">ПРИЛОЖЕНИЕ ПОСТАВЛЯЕТСЯ """КАК ЕСТЬ""". РАЗРАБОТЧИК НЕ ГАРАНТИРУЕТ СТАБИЛЬНУЮ РАБОТУ ПРИЛОЖЕНИЯ И НЕ НЕСЁТ ОТВЕТСТВЕННОСТЬ ЗА ЛЮБЫЕ ПОСЛЕДСТВИЯ, ВЫЗВАННЫЕ ИСПОЛЬЗОВАНИЕМ ПРИЛОЖЕНИЯ. ЕСЛИ У ВАС ЕСТЬ ВОПРОСЫ, СВЯЖИТЕСЬ С НАМИ \nВ TELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nИЛИ ЭЛ. ПОЧТУ: dimon6018t@gmail.com .\n\nПРОДОЛЖАЯ ИСПОЛЬЗОВАТЬ ПРИЛОЖЕНИЕ, ВЫ БЕРЕТЕ ОТВЕТСТВЕННОСТЬ ЗА ЕГО ИСПОЛЬЗОВАНИЯ НА СЕБЯ.</string>
+
+    <!-- TOU rejected -->
+    <string name="exit">выход</string>
+    <string name="tou_rejected_title">Спасибо за интерес к Lumetro!</string>
+    <string name="tou_rejected_message">Теперь можно закрыть приложение</string>
+
+    <!-- FLE Updates -->
+    <string name="fle_updates_hint">Давайте установим последнюю версию Lumetro</string>
+
+    <!-- Updates -->
+    <string name="updates">Обновления</string>
+    <string name="update_checking">Проверка наличия обновлений</string>
+    <string name="updates_req">Хотите проверить наличие обновлений Lumetro?</string>
+    <string name="update_check_cancelled_by_user">Проверка обновлений отменена пользователем.</string>
+    <string name="update_service_unavailable">Сервис обновлений недоступен. Вы можете повторить попытку вручную в настройках Lumetro после завершения настройки.</string>
+
+    <!-- Uninstall dialog -->
+    <string name="uninstall_app_dialog_title">Удалить приложение?</string>
+    <string name="uninstall_app_dialog_message">Это приложение и все его данные будут удалены с телефона</string>
+
+    <!-- Experiments -->
+    <string name="experiments_unavailable">Пока что эксперименов нет.\nОни могут появиться в будущих обновлениях.</string>
+    <string name="experiments">эксперименты</string>
+    <string name="experiments_sub">лучше не заходить сюда.</string>
+    <string name="experiments_activated">Мне кажется, или что-то изменилось?</string>
+
+    <!-- Edit mode settings -->
+    <string name="editmode">режим редактирования</string>
+    <string name="editmode_sub">взаимодействие с плитками</string>
+
+    <!-- Icon packs -->
+    <string name="icons">иконки</string>
+    <string name="icons_sub">наборы иконок</string>
+    <string name="current_icon_pack">Сейчас выбран: %s</string>
+    <string name="icon_packs">Наборы иконок</string>
+    <string name="select_icon_pack">выбрать набор иконок</string>
+    <string name="remove_icon_pack">убрать набор иконок</string>
+    <string name="clear_icon_cache">очистить кэш иконок</string>
+    <string name="icons_warn">При смене набора иконок или очистке кэша иконок приложение может работать медленее обычного. Нам нужно немного времени, чтобы сохранить новые значки в кэше.</string>
+    <string name="icon_pack_removed_message">Набор значков был отключен.</string>
+    <string name="icon_pack_error">Нам не удалось найти наборы значков на телефоне.</string>
+    <string name="icon_pack_installed_message">Установлен набор значков: %1$s</string>
+
+    <!-- App pinning -->
+    <string name="pin_app_error">Нам не удалось закрепить приложение %1$s</string>
+
+</resources>

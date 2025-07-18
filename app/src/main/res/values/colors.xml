@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="textColor">@android:color/black</color>
+
+    <color name="background">@android:color/white</color>
+    <color name="onBackground">@color/textColor</color>
+
+    <color name="dialog_color">#dddddd</color>
+    <color name="errorBackground">#2165b5</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/onBackground</color>
+
+    <!-- tiles -->
+    <color name="tile_magenta">#FFD80073</color>
+    <color name="tile_crimson">#FFA20025</color>
+    <color name="tile_red">#FFE51400</color>
+    <color name="tile_orange">#FFFA6800</color>
+    <color name="tile_amber">#FFF0A30A</color>
+    <color name="tile_yellow">#FFE3C800</color>
+    <color name="tile_brown">#FF825A2C</color>
+    <color name="tile_olive">#FF6D8764</color>
+    <color name="tile_steel">#FF647687</color>
+    <color name="tile_mauve">#FF76608A</color>
+    <color name="tile_taupe">#FF87794E</color>
+    <color name="tile_lime">#FFA4C400</color>
+    <color name="tile_green">#FF60A917</color>
+    <color name="tile_emerald">#FF008A00</color>
+    <color name="tile_cyan">#FF1BA1E2</color>
+    <color name="tile_teal">#FF00ABA9</color>
+    <color name="tile_cobalt">#FF0050EF</color>
+    <color name="tile_indigo">#FF6A00FF</color>
+    <color name="tile_violet">#FFAA00FF</color>
+    <color name="tile_pink">#FFF472D0</color>
+</resources>

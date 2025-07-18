@@ -1,0 +1,37 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MPL" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/tile_cobalt</item>
+        <item name="colorOnPrimary">#002c70</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorSurface">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="bottomSheetDialogTheme">@style/Lumetro.BottomSheet</item>
+        <item name="bottomSheetStyle">@style/Lumetro.BottomSheet</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="materialButtonStyle">@style/Metro.Button</item>
+        <item name="materialSwitchStyle">@style/Metro.Switch</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="fontFamily">@font/manrope_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MPL.Dynamic" parent="Theme.Material3.DynamicColors.Dark.NoActionBar">
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorSurface">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="bottomSheetDialogTheme">@style/Lumetro.BottomSheet</item>
+        <item name="bottomSheetStyle">@style/Lumetro.BottomSheet</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="materialButtonStyle">@style/Metro.Button</item>
+        <item name="materialSwitchStyle">@style/Metro.Switch</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="fontFamily">@font/manrope_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

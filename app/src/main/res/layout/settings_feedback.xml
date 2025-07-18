@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/feedback_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/feedback_title"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.8"
+            android:text="@string/save_errors"
+            android:textSize="16sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/save_error_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.8"
+            android:text="@string/show_error_details"
+            android:textSize="16sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/show_error_details_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/show_all_errors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/show_collected_data" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/delete_all_errors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/delete_collected_data" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

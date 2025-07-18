@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.queuejw.lumetro.components.ui.metro.MetroCard xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Metro.Card"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="8dp"
+    android:padding="4dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/error_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:textSize="12sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"
+        android:background="@color/dialog_color"
+        android:padding="2dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/delete_data"
+            style="@style/Metro.Card.CircleButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="start|center"
+            android:layout_marginStart="12dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_close" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/copy_data"
+            style="@style/Metro.Card.CircleButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_copy" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/share_data"
+            style="@style/Metro.Card.CircleButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="12dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_share" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+
+</ru.queuejw.lumetro.components.ui.metro.MetroCard>

@@ -1,0 +1,64 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f1b6283844c8c94550aee269ca9baaeb",
+    "entities": [
+      {
+        "tableName": "tiles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tilePosition` INTEGER NOT NULL, `tileColor` TEXT, `tileType` INTEGER NOT NULL, `tileSize` INTEGER NOT NULL, `tileLabel` TEXT, `tilePackage` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tilePosition",
+            "columnName": "tilePosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileColor",
+            "columnName": "tileColor",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "tileType",
+            "columnName": "tileType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileSize",
+            "columnName": "tileSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tileLabel",
+            "columnName": "tileLabel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "tilePackage",
+            "columnName": "tilePackage",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1b6283844c8c94550aee269ca9baaeb')"
+    ]
+  }
+}

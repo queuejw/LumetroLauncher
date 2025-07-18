@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_offset">128dp</dimen>
+
+    <dimen name="icon_size_small">42dp</dimen>
+    <dimen name="icon_size">64dp</dimen>
+    <dimen name="icon_size_big">84dp</dimen>
+
+    <dimen name="tile_margin">4dp</dimen>
+
+    <dimen name="apps_recyclerview_default_padding">64dp</dimen>
+
+    <dimen name="fle_bottom_bar_translation_y">64dp</dimen>
+
+    <dimen name="dialog_translation_y_top">-128dp</dimen>
+    <dimen name="dialog_translation_y">128dp</dimen>
+</resources>

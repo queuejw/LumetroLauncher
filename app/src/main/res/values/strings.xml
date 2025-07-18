@@ -1,0 +1,219 @@
+<resources>
+    <string name="app_name">Lumetro</string>
+
+    <string name="restart">restart</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="launcher">launcher</string>
+    <string name="back">back</string>
+    <string name="next">next</string>
+    <string name="accept">accept</string>
+    <string name="reject">reject</string>
+    <string name="cancel">cancel</string>
+
+    <string name="warning_uc">WARNING</string>
+    <string name="warning_lc">warning</string>
+    <string name="warning">Warning</string>
+
+    <string name="error">error</string>
+
+    <!-- Theme -->
+    <string name="auto">auto</string>
+    <string name="dark">dark</string>
+    <string name="light">light</string>
+
+    <!-- Apps fragment -->
+    <string name="no_results_for">No results for\u0020</string>
+    <string name="app_info">app info</string>
+    <string name="pin_to_start">pin to start</string>
+    <string name="uninstall_app">uninstall</string>
+
+    <!-- colors -->
+    <string name="custom_color">custom color</string>
+    <string name="color_lime">lime</string>
+    <string name="color_green">green</string>
+    <string name="color_emerald">emerald</string>
+    <string name="color_cyan">cyan</string>
+    <string name="color_teal">teal</string>
+    <string name="color_cobalt">cobalt</string>
+    <string name="color_indigo">indigo</string>
+    <string name="color_violet">violet</string>
+    <string name="color_pink">pink</string>
+    <string name="color_magenta">magenta</string>
+    <string name="color_crimson">crimson</string>
+    <string name="color_red">red</string>
+    <string name="color_orange">orange</string>
+    <string name="color_mauve">mauve</string>
+    <string name="color_steel">steel</string>
+    <string name="color_olive">olive</string>
+    <string name="color_amber">amber</string>
+    <string name="color_taupe">taupe</string>
+    <string name="color_yellow">yellow</string>
+    <string name="color_brown">brown</string>
+    <string name="color_dynamic">dynamic</string>
+
+    <!-- About fragment -->
+    <string name="phone_information">phone information</string>
+    <string name="phone_info">Name: %s \nModel: %s \nLumetro: %s</string>
+    <string name="more_info">more info</string>
+    <string name="phone_more_info">Lumetro Version: %s \nLumetro Version code: %d \nDevice: %s \nPhone brand: %s \nPhone model: %s \nProduct: %s \nHardware: %s \nBuild: %s \nBuild time: %d</string>
+    <string name="help_contacts">help contacts</string>
+    <string name="get_help">Get help: github.com/queuejw/metrophonelauncher/issues</string>
+    <string name="online_content">online content</string>
+    <string name="support_devs_text">Support developers: https://donationalerts.com/r/queuejw</string>
+    <string name="reset_your_launcher">reset your launcher</string>
+
+    <!-- Settings -->
+    <string name="advanced_options">Advanced options</string>
+
+
+    <!-- Settings main fragment -->
+    <string name="settings_activity_title">SETTINGS</string>
+    <string name="start_theme">start+theme</string>
+    <string name="start_theme_sub">customize your phone</string>
+    <string name="feedback">feedback</string>
+    <string name="feedback_sub">help me improve MetroPhoneLauncher</string>
+    <string name="about">about</string>
+    <string name="about_sub">information about your phone</string>
+    <string name="for_developers">For developers</string>
+
+    <!-- Theme fragment -->
+    <string name="settings_theme_accent_title_part1">accent color\u0020</string>
+    <string name="settings_theme_accent_title_part2">Change your phone\'s background and\u0020</string>
+    <string name="settings_theme_accent_title_part3">to match your mood today, this week, or all month\u0020</string>
+    <string name="theme_background">Background</string>
+    <string name="accent_color">Accent color</string>
+    <string name="dynamicColor_setting">You can use the color of your wallpaper for an accent color</string>
+    <string name="dynamicColor_switch">Use dynamic colors</string>
+    <string name="dynamicColor_error">This feature is not supported on your device.</string>
+    <string name="show_more_tiles_title">Show more tiles</string>
+    <string name="show_more_tiles_sub">You can change the size and number of tiles available on your start screen</string>
+    <string name="auto_pin_apps">Automatically pin apps to the start screen</string>
+
+    <!-- Feedback fragments -->
+    <string name="feedback_title">Send launcher usage feedback to help improve Lumetro Launcher</string>
+    <string name="show_error_details">Show details on the error screen</string>
+    <string name="save_errors">Automatically save error data</string>
+    <string name="erase_feedback_data">Are you sure you want to delete all collected data?</string>
+    <string name="show_collected_data">show collected data</string>
+    <string name="delete_collected_data">Delete all collected data</string>
+    <string name="feedback_list_hint">Click the Share button to send data to the developers</string>
+    <string name="feedback_empty_list">We haven\’t collected any data.</string>
+    <string name="dialog_copy_success">Error details copied to clipboard</string>
+
+    <string name="send">Send</string>
+    <string name="feedback_email_tip">Send Email with</string>
+    <string name="feedback_email_placeholder">Lumetro is not working as expected (please describe your problem in more detail if you want and if it possible)</string>
+
+    <!-- Color dialog -->
+    <string name="choose_color_title">Choose color below</string>
+    <string name="color_preview_title">Preview</string>
+    <string name="save">save</string>
+    <string name="choose_default_colors_title">Or use standard colors</string>
+
+    <!-- First Launch Experience (FLE) -->
+    <string name="fle_on_back_pressed_message">Are you sure you want to close the launcher?</string>
+    <!-- Welcome Fragment -->
+    <string name="fle_skip_setup">Skip setup?</string>
+    <string name="fle_skip_setup_u"><u>Skip setup?</u></string>
+    <string name="skip_fle_dialog_message">You can skip the launcher setup. In this case, the default settings will be applied. By continuing, you agree to Lumetro\'s terms of use</string>
+    <string name="fle_welcome_title">Hello!\nThank you for installing Lumetro.\nWe\'ll now help you set up the launcher</string>
+
+    <!-- FLE Apps fragment -->
+    <string name="apps">Apps</string>
+    <string name="fle_apps_empty_list_warn">Are you sure you don’t want to pin apps to the start screen?</string>
+    <string name="fle_apps_counter">Pinned: %1$d из %2$d</string>
+    <string name="pin_all">Pin all</string>
+    <string name="unpin_all">Unpin all</string>
+    <string name="fle_apps_hint">Pin your favorite apps to the start screen</string>
+    <string name="launch_app_error">We were unable to launch this application.</string>
+
+    <!-- FLE Setup complete -->
+    <string name="fle_almost_done">Almost done</string>
+    <string name="fle_setup_complete">Setup complete!</string>
+    <string name="fle_setup_complete_sub_1">You\'re now ready to get started.</string>
+    <string name="fle_setup_complete_sub_2">Thank you for trying Lumetro.\nWe hope you\'ll enjoy it!</string>
+    <string name="get_started">get started</string>
+
+    <!-- FLE Theme -->
+    <string name="personalization">Personalization</string>
+    <string name="fle_theme_hint">Let’s customize your theme to make it feel like home</string>
+    <string name="fle_theme_background_question">Which background do you prefer?</string>
+    <string name="fle_theme_color_question">What’s your favorite color?</string>
+    <string name="select_color">select color</string>
+
+    <!-- FLE EA -->
+    <string name="early_access">Early access</string>
+    <string name="fle_early_access_disclaimer">Please note that Lumetro is under active (maybe) development.\n\nThis means you may encounter issues (including critical ones) while using the app.\nIf you find a bug or want to suggest a new feature, please report it on GitHub: https://github.com/queuejw/LumetroLauncher \n\nYou’re free to stop using Lumetro at any time if it doesn’t meet your expectations.\n\nThank you for your understanding!</string>
+    <string name="fle_ea_data_collection_hint">If an error occurs while using the app, we automatically save error data and then notify you. Later, you can share this information with us or delete it. We do not send this data automatically. Everything is stored locally on this device. More details will be provided later.</string>
+    <string name="what_is_this"><u>What is this?</u></string>
+    <string name="fle_ea_checkbox">I acknowledge this information</string>
+    <string name="fle_ea_data_collection_checkbox">Allow collect error data</string>
+
+    <!-- Terms of Use -->
+    <string name="tou_fragment_title">Before we begin</string>
+    <string name="tou">Terms of Use</string>
+    <string name="app_description">Lumetro is an open-source Android launcher. It contains no paid features and is completely free.\n\nhttps://github.com/queuejw/LumetroLauncher</string>
+    <string name="usage_terms">You can use this app without any restrictions. Below are explanations for some aspects you may encounter while using the launcher.</string>
+    <string name="security_warning">If you downloaded this app from a third-party source, please install it from official sources instead. Only continue using the app if you trust your source.</string>
+    <string name="data_collection_header">As mentioned earlier, we collect some device data to help us fix app issues faster. Below is the information we collect:</string>
+    <string-array name="collected_data_items">
+        <item>Time of the issue</item>
+        <item>Device model</item>
+        <item>Lumetro version</item>
+        <item>Lumetro build number</item>
+        <item>Android version</item>
+        <item>Stack trace (error details)</item>
+    </string-array>
+    <string name="data_storage_info">All data is stored locally on your device in the app\'s storage. You can review the collected data at:\n\nLumetro Settings -> Feedback -> show collected data.\n\nYou can either send it to us (to help fix the issue) or delete it.\n\nNote: We do not automatically send your data but collect it locally after each error. You can change this in Lumetro settings. If disabled, we will stop collect any device or app data.</string>
+    <string name="update_check_info">The app may use an internet connection to check for updates.\n\nBy default, this feature is disabled, and we will ask for your permission before checking for updates. No other tasks require an internet connection. Please note: This is not currently working.</string>
+    <string name="tou_disclaimer_text">THIS APPLICATION IS PROVIDED """AS IS""". THE DEVELOPER DOES NOT GUARANTEE STABLE APP WORK AND SHALL NOT BE HELD LIABLE FOR ANY CONSEQUENCES RESULTING FROM ITS USE.\n\nIF YOU HAVE QUESTIONS, CONTACT US VIA:\nTELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nOR EMAIL: dimon6018t@gmail.com\n\nBY CONTINUING TO USE THE APPLICATION, YOU ASSUME FULL RESPONSIBILITY FOR ITS USE.</string>
+
+    <!-- TOU rejected -->
+    <string name="exit">exit</string>
+    <string name="tou_rejected_title">Thank you for your interest in Lumetro!</string>
+    <string name="tou_rejected_message">You may now close the app</string>
+
+    <!-- FLE Updates -->
+    <string name="fle_updates_hint">Let\'s install the latest version of Lumetro</string>
+
+    <!-- Updates -->
+    <string name="updates">Updates</string>
+    <string name="update_checking">Checking for updates</string>
+    <string name="updates_req">Would you like to check for Lumetro updates?</string>
+    <string name="update_check_cancelled_by_user">Update check cancelled by user</string>
+    <string name="update_service_unavailable">Update service unavailable. You can check for updates manually in Lumetro settings after completing setup</string>
+
+    <!-- Uninstall dialog -->
+    <string name="uninstall_app_dialog_title">Uninstall this app?</string>
+    <string name="uninstall_app_dialog_message">This app, plus any information it contains, will be deleted from your phone</string>
+
+    <!-- Experiments -->
+    <string name="experiments_unavailable">There are no experiments available.\nThey may appear in future updates.</string>
+    <string name="experiments">experiments</string>
+    <string name="experiments_sub">if you press it, everything will break.</string>
+    <string name="experiments_activated">It seems like something has changed?</string>
+
+    <!-- Edit mode settings -->
+    <string name="editmode">edit mode</string>
+    <string name="editmode_sub">interaction with tiles</string>
+
+    <!-- Icon packs -->
+    <string name="icons">icons</string>
+    <string name="icons_sub">icon packs</string>
+    <string name="current_icon_pack">Currently installed: %s</string>
+    <string name="icon_packs">Icon packs</string>
+    <string name="select_icon_pack">select icon pack</string>
+    <string name="remove_icon_pack">remove icon pack</string>
+    <string name="clear_icon_cache">clear icon cache</string>
+    <string name="icons_warn">When you change the icon pack or clear the icon cache, the app may run slower than usual. We need a little time to save the new icons in the cache.</string>
+    <string name="icon_pack_removed_message">The icon pack has been disabled.</string>
+    <string name="icon_pack_error">We couldn\'t find any icon packs on your phone.</string>
+    <string name="icon_pack_installed_message">Icon pack installed: %1$s</string>
+
+    <!-- App pinning -->
+    <string name="pin_app_error">We were unable to pin the app %1$s</string>
+
+</resources>

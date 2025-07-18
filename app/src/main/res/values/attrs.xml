@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WP7ProgressBar">
+        <attr name="interval" format="integer" />
+        <attr name="animationDuration" format="integer" />
+        <attr name="indicatorHeight" format="integer" />
+        <attr name="indicatorColor" format="color" />
+        <attr name="indicatorRadius" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="WP10ProgressBar" parent="WP7ProgressBar">
+        <attr name="interval" />
+        <attr name="animationDuration" />
+        <attr name="indicatorHeight" />
+        <attr name="indicatorColor" />
+        <attr name="indicatorRadius" />
+    </declare-styleable>
+</resources>

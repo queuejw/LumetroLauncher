@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/accentTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/background_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/theme_background"
+            android:textSize="19sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/background_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:gravity="start"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroCard
+            android:id="@+id/background_menu"
+            style="@style/Metro.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorOnBackground">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseAuto"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/auto"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_gravity="top"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/light"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/dark"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ru.queuejw.lumetro.components.ui.metro.MetroCard>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/accent_color_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:text="@string/accent_color"
+            android:textSize="20sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/choose_accent"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="?attr/colorOnBackground"
+            app:cardCornerRadius="0dp"
+            app:strokeColor="?attr/colorOnBackground"
+            app:strokeWidth="2dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/color_view"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/accent_color_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dynamic_color_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/dynamicColor_setting"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dynamic_color_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/dynamicColor_switch"
+            android:textSize="18sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/dynamicColorSwtich"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:checked="false" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/more_tiles_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/show_more_tiles_title"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/more_tiles_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/show_more_tiles_sub"
+            android:textSize="18sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/moreTilesSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/phone_img"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/tiles_default"
+            app:tintMode="multiply" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/auto_pin_apps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/auto_pin_apps"
+            android:textSize="18sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/auto_pin_apps_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

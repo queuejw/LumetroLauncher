@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="@string/fle_theme_hint" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="4dp"
+            android:text="@string/fle_theme_background_question" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/fle_background_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="start"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroCard
+            android:id="@+id/fle_background_menu"
+            style="@style/Metro.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorOnBackground">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseAuto"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/auto"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_gravity="top"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/light"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chooseDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/dark"
+                    android:textColor="?attr/colorSurface"
+                    android:textSize="21sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ru.queuejw.lumetro.components.ui.metro.MetroCard>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="4dp"
+            android:text="@string/fle_theme_color_question" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/fle_color_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="start"
+            android:text="@string/select_color"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

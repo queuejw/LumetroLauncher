@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_packs"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/icon_pack_name_textview"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/current_icon_pack"/>
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/icon_pack_action_button"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_height="wrap_content"
+            android:text="@string/select_icon_pack"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/iconPackList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroButton
+            android:id="@+id/clear_icon_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/clear_icon_cache"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:alpha="0.5"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icons_warn"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

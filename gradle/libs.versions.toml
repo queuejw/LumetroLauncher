@@ -1,0 +1,45 @@
+[versions]
+agp = "8.11.1"
+coil = "3.2.0"
+collectionVersion = "1.5.0"
+colorpickerviewVersion = "2.3.0"
+fragment = "1.8.8"
+kotlin = "2.2.0"
+coreKtx = "1.16.0"
+appcompat = "1.7.1"
+kotlinxCoroutinesCoreJvm = "1.10.2"
+leakcanaryAndroid = "2.14"
+lifecycleViewmodelKtx = "2.9.1"
+material = "1.13.0-beta01"
+activity = "1.10.1"
+constraintlayout = "2.2.1"
+ksp = "2.2.0-2.0.2"
+recyclerview = "1.4.0"
+room = "2.7.2"
+viewpager2 = "1.1.0"
+
+[libraries]
+androidx-collection = { module = "androidx.collection:collection", version.ref = "collectionVersion" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesCoreJvm" }
+kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinxCoroutinesCoreJvm" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+skydoves-colorpickerview = { module = "com.github.skydoves:colorpickerview", version.ref = "colorpickerviewVersion" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+

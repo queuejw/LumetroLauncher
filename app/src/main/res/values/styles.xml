@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Metro.Button" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeColor">?attr/colorOnBackground</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="Metro.Card.CircleButton" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">48dp</item>
+        <item name="strokeWidth">4dp</item>
+        <item name="strokeColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Metro.Card.LetterHolder" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="strokeColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Metro.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <style name="Settings.Card" parent="Metro.Card">
+        <item name="strokeWidth">0dp</item>
+        <item name="cardBackgroundColor">?android:attr/colorBackground</item>
+        <item name="android:transformPivotX">5dp</item>
+        <item name="android:transformPivotY">0dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <style name="Lumetro.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="shapeAppearance">@style/ShapeAppearance</item>
+    </style>
+
+    <style name="Metro.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+        <item name="android:showText">true</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Metro.Search.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">0dp</item>
+        <item name="boxCornerRadiusBottomStart">0dp</item>
+        <item name="boxCornerRadiusTopEnd">0dp</item>
+        <item name="boxCornerRadiusTopStart">0dp</item>
+        <item name="boxStrokeColor">?attr/colorPrimary</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxBackgroundColor">@android:color/white</item>
+        <item name="endIconMode">none</item>
+    </style>
+
+    <style name="Lumetro.Apps.BottomSheet.Text" parent="Widget.MaterialComponents.TextView">
+        <item name="android:padding">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:gravity">center|start</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">?attr/colorSurface</item>
+    </style>
+
+    <style name="Lumetro.Tile.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Lumetro.FullScreenDialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:statusBarColor">@color/dialog_color</item>
+        <item name="android:navigationBarColor">@color/dialog_color</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@color/dialog_color</item>
+        <item name="android:windowBackground">@color/dialog_color</item>
+        <item name="materialButtonStyle">@style/Metro.Button</item>
+        <item name="materialCardViewStyle">@style/Metro.Card.CircleButton</item>
+    </style>
+
+    <style name="Metro.Dialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:statusBarColor">@color/dialog_color</item>
+        <item name="android:navigationBarColor">@color/dialog_color</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="materialButtonStyle">@style/Metro.Button</item>
+        <item name="materialCardViewStyle">@style/Metro.Card.CircleButton</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Lumetro.Tile.Card.Placeholder" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Metro.Button.Dialog" parent="Metro.Button">
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Lumetro.Settings.AdvancedOptions.Text" parent="Widget.MaterialComponents.TextView">
+        <item name="android:alpha">0.7</item>
+        <item name="android:text">@string/advanced_options</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">12dp</item>
+    </style>
+
+    <style name="Lumetro.Settings.Sub.Text" parent="Widget.MaterialComponents.TextView">
+        <item name="android:alpha">0.75</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/manrope_light</item>
+    </style>
+</resources>
