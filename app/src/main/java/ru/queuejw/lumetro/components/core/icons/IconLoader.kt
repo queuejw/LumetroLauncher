@@ -20,12 +20,11 @@ class IconLoader(
 
     var iconPackManager: IconPackManager? = null
     private var diskCache: DiskLruCache? = null
+    private var iconSize: Int? = null
 
     private val cacheSize by lazy {
         ((Runtime.getRuntime().maxMemory() / 1024) / 8).toInt()
     }
-    private var iconSize: Int? = null
-
     private val memoryCache by lazy {
         object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String, value: Bitmap): Int {
@@ -55,13 +54,9 @@ class IconLoader(
         memoryCache[mPackage]?.let {
             return it
         }
-        if (diskCache?.isClosed == true) {
-            diskCache = null
-        }
         if (diskCache == null) {
             diskCache = getDiskCache(context)
         }
-        if (diskCache!!.isClosed) return null
         CacheUtils.loadIconFromDiskCache(diskCache, mPackage)?.let {
             memoryCache.put(mPackage, it)
             return it
@@ -114,11 +109,13 @@ class IconLoader(
         }
     }
 
-    fun resetIconLoader() {
+    fun resetIconLoader(closeCache: Boolean = false) {
         iconPackManager = null
         iconSize = null
         memoryCache.evictAll()
-        CacheUtils.closeDiskCache(diskCache)
+        if(closeCache) {
+            CacheUtils.closeDiskCache(diskCache)
+        }
         diskCache = null
     }
 
@@ -129,6 +126,5 @@ class IconLoader(
             diskCache = getDiskCache(context)
         }
         diskCache?.delete()
-        CacheUtils.closeDiskCache(diskCache)
     }
 }

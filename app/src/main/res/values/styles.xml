@@ -49,6 +49,8 @@
         <item name="android:thumb">@drawable/switch_thumb</item>
         <item name="android:showText">true</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 
     <style name="Metro.Search.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">

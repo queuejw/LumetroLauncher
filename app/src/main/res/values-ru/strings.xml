@@ -199,6 +199,7 @@
     <!-- Edit mode settings -->
     <string name="editmode">режим редактирования</string>
     <string name="editmode_sub">взаимодействие с плитками</string>
+    <string name="edit_mode_anim">Включить анимацию в режиме редактирования</string>
 
     <!-- Icon packs -->
     <string name="icons">иконки</string>

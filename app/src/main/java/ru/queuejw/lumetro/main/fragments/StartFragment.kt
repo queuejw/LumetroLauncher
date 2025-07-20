@@ -92,6 +92,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
 
     private fun animateAllTiles(boolean: Boolean) {
         spannedGridLayoutManager ?: return
+        if(!prefs.allowEditModeAnimation) return
         for (i in 0..spannedGridLayoutManager!!.itemCount) {
             binding.recyclerView.findViewHolderForAdapterPosition(i)?.apply {
                 if (itemViewType == TileViewTypes.TYPE_PLACEHOLDER.type) continue
@@ -135,7 +136,8 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             iconSizes = Triple(iconSmallSize, iconDefaultSize, iconBigSize),
             isMoreTilesEnabled = isMoreTilesEnabled,
             accentColor = viewModel.getColorManager().getAccentColor(context),
-            iconProvider = viewModel.getIconLoader()!!
+            iconProvider = viewModel.getIconLoader()!!,
+            editModeAnimation = prefs.allowEditModeAnimation
         ) {
 
             override fun saveTilesFunction(list: MutableList<TileEntity>) {

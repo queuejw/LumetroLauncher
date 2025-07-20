@@ -18,16 +18,18 @@ class MetroSwitch @JvmOverloads constructor(
     private var colorManager: ColorManager? = null
     private var defaultTrack: Drawable? = ContextCompat.getDrawable(context, R.drawable.switch_track)
     private var coloredDrawable: Drawable? = null
+    private var blackColor: Int? = ContextCompat.getColor(context, android.R.color.black)
 
     init {
         updateDrawable()
     }
 
     fun updateDrawable() {
+        val isLight = ContextCompat.getColor(context, R.color.textColor) == blackColor
         colorManager = ColorManager()
         coloredDrawable = DrawableCompat.wrap(
             ContextCompat.getDrawable(context, R.drawable.switch_track)!!.mutate()).also {
-            DrawableCompat.setTintMode(it, PorterDuff.Mode.LIGHTEN)
+            DrawableCompat.setTintMode(it, if(isLight) PorterDuff.Mode.DARKEN else PorterDuff.Mode.LIGHTEN)
             DrawableCompat.setTint(it, colorManager!!.getAccentColor(context))
         }
         changeDrawable(isChecked)
@@ -50,6 +52,7 @@ class MetroSwitch @JvmOverloads constructor(
         super.onDetachedFromWindow()
         defaultTrack = null
         coloredDrawable = null
+        blackColor = null
         colorManager = null
     }
 

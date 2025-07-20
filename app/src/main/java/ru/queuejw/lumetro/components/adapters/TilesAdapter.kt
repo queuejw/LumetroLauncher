@@ -25,7 +25,8 @@ abstract class TilesAdapter(
     private val iconSizes: Triple<Int, Int, Int>,
     private val isMoreTilesEnabled: Boolean,
     private val accentColor: Int,
-    private val iconProvider: IconProvider
+    private val iconProvider: IconProvider,
+    private val editModeAnimation: Boolean
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperAdapter {
     var isEditMode = false
@@ -213,6 +214,7 @@ abstract class TilesAdapter(
     }
 
     private fun animateTileTranslationInEditMode(itemView: View) {
+        if (!editModeAnimation) return
         if (!isEditMode) {
             itemView.animate().translationX(0f).translationY(0f).setDuration(200).start()
             return
@@ -227,6 +229,7 @@ abstract class TilesAdapter(
     }
 
     private fun animateTileInEditMode(itemView: View, boolean: Boolean = isEditMode) {
+        if (!editModeAnimation) return
         if (!boolean) {
             itemView.animate()?.cancel()
             itemView.clearAnimation()

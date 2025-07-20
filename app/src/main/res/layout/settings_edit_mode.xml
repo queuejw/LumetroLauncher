@@ -8,6 +8,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/edit_mode_anim"
+            android:textSize="18sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/editmode_anim_switch"
+            style="@style/Metro.Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

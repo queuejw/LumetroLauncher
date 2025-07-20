@@ -199,6 +199,7 @@
     <!-- Edit mode settings -->
     <string name="editmode">edit mode</string>
     <string name="editmode_sub">interaction with tiles</string>
+    <string name="edit_mode_anim">Enable animation in edit mode</string>
 
     <!-- Icon packs -->
     <string name="icons">icons</string>

@@ -38,8 +38,8 @@ class FleCompleteSetupFragment : BaseFragment<FleCompleteSetupBinding>() {
         prefs.fleProgress = 0
         (activity as FirstLaunchExperienceActivity?)?.setAppBarText(null)
         binding.apply {
-            buttonLayout.animate().alpha(0f).translationY(128f).setDuration(300).start()
-            textLayout.animate().alpha(0f).translationY(-128f).setDuration(300).withEndAction {
+            buttonLayout.animate().alpha(0f).setDuration(300).start()
+            textLayout.animate().alpha(0f).setDuration(300).withEndAction {
                 destroyActivity()
             }.start()
         }

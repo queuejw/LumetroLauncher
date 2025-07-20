@@ -18,8 +18,29 @@ class EditModeSettingsFragment : BaseFragment<SettingsEditModeBinding>() {
         return SettingsEditModeBinding.inflate(inflater, container, false)
     }
 
+    private fun setAnimSwitch(binding: SettingsEditModeBinding) {
+        binding.editmodeAnimSwitch.apply {
+            isChecked = prefs.allowEditModeAnimation
+            updateText()
+            setOnCheckedChangeListener { _, isChecked ->
+                prefs.apply {
+                    isRestartRequired = true
+                    allowEditModeAnimation = isChecked
+                }
+                updateText()
+            }
+        }
+    }
+
+    private fun setUi() {
+        binding.apply {
+            setAnimSwitch(this)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as SettingsActivity?)?.setText(getString(R.string.editmode))
+        setUi()
     }
 }

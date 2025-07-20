@@ -55,12 +55,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _colorManager?.clearColors()
         iconLoader?.resetIconLoader()
         iconLoader = null
-        db?.close()
         db = null
     }
 
     private fun destroyViewModelComponents() {
-        cleanUp()
+        _colorManager?.clearColors()
+        iconLoader?.resetIconLoader(true)
+        iconLoader = null
+        db = null
         _appsList = null
         _onlyAppsList?.clear()
         _onlyAppsList = null
