@@ -339,7 +339,7 @@ abstract class TilesAdapter(
     ): Boolean {
         if (!isEditMode) return false
         if (fromHolder == toHolder) return false
-        if(toHolder.itemViewType == TileViewTypes.TYPE_DEFAULT.type) return false
+        if (toHolder.itemViewType == TileViewTypes.TYPE_DEFAULT.type) return false
         val from = fromHolder.bindingAdapterPosition
         val to = toHolder.bindingAdapterPosition
         Collections.swap(data, fromHolder.bindingAdapterPosition, toHolder.bindingAdapterPosition)

@@ -17,9 +17,6 @@ import ru.queuejw.lumetro.model.TileEntity
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var _onlyAppsList: ArrayList<App>? = null
-    private val onlyAppsList get() = _onlyAppsList!!
-
     private var _appsList: MutableLiveData<List<App>>? = null
     private val appsList get() = _appsList!!
 
@@ -38,7 +35,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         db = createDatabase(application.applicationContext)
         _colorManager = ColorManager()
-        _onlyAppsList = ArrayList<App>()
         _appsList = MutableLiveData<List<App>>(ArrayList<App>())
         tilesList = MutableLiveData<MutableList<TileEntity>>()
     }
@@ -64,8 +60,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         iconLoader = null
         db = null
         _appsList = null
-        _onlyAppsList?.clear()
-        _onlyAppsList = null
         tilesList?.value?.clear()
         tilesList = null
         _colorManager = null
@@ -78,21 +72,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
     }
 
-    private fun getAppsWithoutHeaders(currentData: List<App>): List<App> {
-        return currentData.filter { it.viewType != -1 }
-    }
-
-    fun getOnlyApps(): List<App> {
-        return onlyAppsList
-    }
-
     fun updateAppsList(newValue: List<App>?) {
         if (newValue != null) {
             appsList.postValue(newValue)
-            onlyAppsList.let {
-                it.clear()
-                it.addAll(getAppsWithoutHeaders(newValue))
-            }
         }
     }
 

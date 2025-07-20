@@ -64,7 +64,12 @@ class TileManager {
         return true
     }
 
-    suspend fun pinNewTile(context: Context, tileList: List<TileEntity>, mPackage: String, dao: TileDao): MutableList<TileEntity>? {
+    suspend fun pinNewTile(
+        context: Context,
+        tileList: List<TileEntity>,
+        mPackage: String,
+        dao: TileDao
+    ): MutableList<TileEntity>? {
         var isAppPinned = false
         var position: Int? = null
         for (i in 0..tileList.size) {

@@ -51,7 +51,7 @@ class EarlyAccessFragment : BaseFragment<FleEarlyAccessBinding>() {
             animateBottomBar(true)
         }
         setUi()
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             binding.eaCheckbox.isChecked = savedInstanceState.getBoolean("checkbox", false)
         }
     }

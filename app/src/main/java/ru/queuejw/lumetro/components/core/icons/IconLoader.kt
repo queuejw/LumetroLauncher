@@ -113,7 +113,7 @@ class IconLoader(
         iconPackManager = null
         iconSize = null
         memoryCache.evictAll()
-        if(closeCache) {
+        if (closeCache) {
             CacheUtils.closeDiskCache(diskCache)
         }
         diskCache = null

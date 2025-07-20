@@ -92,7 +92,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
 
     private fun animateAllTiles(boolean: Boolean) {
         spannedGridLayoutManager ?: return
-        if(!prefs.allowEditModeAnimation) return
+        if (!prefs.allowEditModeAnimation) return
         for (i in 0..spannedGridLayoutManager!!.itemCount) {
             binding.recyclerView.findViewHolderForAdapterPosition(i)?.apply {
                 if (itemViewType == TileViewTypes.TYPE_PLACEHOLDER.type) continue
@@ -256,7 +256,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
     }
 
     private fun onNewAppInstalled(mPackage: String, context: Context) {
-        if(!prefs.autoPinEnabled) return
+        if (!prefs.autoPinEnabled) return
         tilesAdapter?.apply {
             lifecycleScope.launch(Dispatchers.IO) {
                 val l = TileManager().pinNewTile(
@@ -276,7 +276,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             val item = list.find { it.tilePackage == mPackage }
             if (item != null) {
                 list.forEachIndexed { i, tile ->
-                    if(tile.tilePackage == mPackage) {
+                    if (tile.tilePackage == mPackage) {
                         list[i].apply {
                             tileType = TileViewTypes.TYPE_PLACEHOLDER.type
                             tilePackage = null

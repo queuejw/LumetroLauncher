@@ -1,6 +1,5 @@
 package ru.queuejw.lumetro.main.fragments
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -20,10 +19,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
-import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
@@ -47,7 +43,7 @@ import ru.queuejw.lumetro.components.core.base.BaseMainFragment
 import ru.queuejw.lumetro.components.core.receivers.AppReceiver
 import ru.queuejw.lumetro.components.ui.dialog.MetroDialog
 import ru.queuejw.lumetro.components.ui.recyclerview.MetroRecyclerView
-import ru.queuejw.lumetro.databinding.AppsBottomSheetBinding
+import ru.queuejw.lumetro.components.ui.window.AppWindow
 import ru.queuejw.lumetro.databinding.AppsFragmentBinding
 import ru.queuejw.lumetro.main.MainActivity
 import ru.queuejw.lumetro.model.App
@@ -67,6 +63,8 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
 
     private var appReceiver: AppReceiver? = null
     private var appReceiverUpdatesBlocked = false
+
+    private var onlyAppList: List<App>? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -114,6 +112,10 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
         view?.setPadding(paddingStart, paddingTop, 0, 0)
     }
 
+    private fun getAppsWithoutHeaders(currentData: List<App>): List<App> {
+        return currentData.filter { it.viewType != -1 }
+    }
+
     private fun search() {
         isSearching = !isSearching
         mAdapter ?: return
@@ -131,7 +133,8 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
                     visibility = View.VISIBLE
                     animate().translationY(0f).setDuration(200).start()
                 }
-                mAdapter!!.updateData(viewModel.getOnlyApps())
+                onlyAppList = getAppsWithoutHeaders(mAdapter!!.data)
+                mAdapter!!.updateData(onlyAppList!!)
                 context?.let { context ->
                     setPadding(recyclerView, 0, 0)
                     setPadding(
@@ -163,15 +166,99 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
             }
             controlKeyboard(searchTextview, !isSearching)
             recyclerView.scrollToPosition(0)
+            onlyAppList = null
         }
     }
 
-    private fun onAppClick(position: Int, item: App) {
+    private fun launchAppWithAnimation(item: App) {
+        mAdapter ?: return
+        lifecycleScope.launch {
+            binding.apply {
+                headerDecorator?.let { decoration ->
+                    recyclerView.removeItemDecoration(decoration)
+                }
+                if (animateAppsFragmentAppLaunch(
+                        item.mPackage!!,
+                        recyclerView,
+                        buttonPanel,
+                        mAdapter!!.data
+                    )
+                ) {
+                    context?.let {
+                        launchAppWithFallback(item.mPackage, it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onAppClick(item: App) {
         launchAppWithAnimation(item)
     }
 
+    private fun showUninstallDialog(context: Context, app: App) {
+        val d = MetroDialog.newInstance(Gravity.TOP).apply {
+            setTitle(context.getString(R.string.uninstall_app_dialog_title))
+            setMessage(context.getString(R.string.uninstall_app_dialog_message))
+            setPositiveDialogListener(context.getString(R.string.yes)) {
+                context.startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.mPackage}".toUri()))
+                this.dismiss()
+            }
+            setNegativeDialogListener(context.getString(R.string.no)) {
+                this.dismiss()
+            }
+        }
+        d.show(childFragmentManager, "uninstall_app")
+    }
+
+    private fun configureFragmentForPopupWindow(position: Int, boolean: Boolean) {
+        binding.recyclerView.apply {
+            isScrollEnabled = boolean
+            headerDecorator?.let {
+                if (!boolean) {
+                    removeItemDecoration(it)
+                } else {
+                    addItemDecoration(it)
+                }
+            }
+            windowAnimateApps(position, boolean, this)
+        }
+        (activity as MainActivity?)?.setViewPagerUserInput(boolean)
+    }
+
     private fun onAppLongClick(position: Int, item: App, view: View) {
-        showPopupWindow(view, item, position)
+        configureFragmentForPopupWindow(position, false)
+        val window = object : AppWindow(item, viewModel.getTiles()?.value) {
+            override fun onAppWindowDismiss() {
+                isWindowVisible = false
+                configureFragmentForPopupWindow(position, true)
+            }
+
+            override fun onAppPinClick(app: App, view: View) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    context?.let {
+                        if (pinApp(app)) {
+                            withContext(Dispatchers.Main) {
+                                (activity as MainActivity?)?.changePage(0)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onAppInfoClick(app: App) {
+                activity?.startActivity(
+                    Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData("package:${app.mPackage}".toUri())
+                )
+            }
+
+            override fun onAppUninstallClick(app: App) {
+                context?.let { context -> showUninstallDialog(context, app) }
+            }
+        }
+        isWindowVisible = true
+        window.showAppWindow(view)
     }
 
     private fun applyViewModel(context: Context) {
@@ -185,7 +272,7 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
                     viewModel.getIconLoader()!!,
                     this.getColorManager().getAccentColor(context),
                     { int, item ->
-                        onAppClick(int, item)
+                        onAppClick(item)
                     },
                     { int, item, view ->
                         onAppLongClick(int, item, view)
@@ -199,7 +286,10 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
 
     private fun filterList(request: String, context: Context) {
         mAdapter ?: return
-        val filteredList: List<App> = viewModel.getOnlyApps().filter {
+        if (onlyAppList == null) {
+            onlyAppList = getAppsWithoutHeaders(mAdapter!!.data)
+        }
+        val filteredList: List<App> = onlyAppList!!.filter {
             it.mName.lowercase().contains(request.lowercase())
         }
         mAdapter!!.updateData(filteredList)
@@ -459,33 +549,15 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
         inputManager = null
     }
 
-    private fun isPopupInTop(anchorView: View, popupHeight: Int): Boolean {
-        val location = IntArray(2)
-        anchorView.getLocationOnScreen(location)
-        val anchorY = location[1]
-        val displayMetrics = anchorView.context.resources.displayMetrics
-        return (anchorY - popupHeight) < displayMetrics.heightPixels / 2
-    }
-
-    private fun getPopupHeight(popupWindow: PopupWindow): Int {
-        val contentView = popupWindow.contentView
-        contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        return contentView.measuredHeight
-    }
-
-    private fun getPopupWindow(root: View): PopupWindow {
-        return PopupWindow(
-            root,
-            LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
-            true
-        )
-    }
-
     private suspend fun pinApp(app: App): Boolean {
         mAdapter ?: return false
         context?.let {
-            val r = TileManager().pinNewTile(it, viewModel.getDatabase().getTilesDao().getTilesData(), app.mPackage!!, viewModel.getDatabase().getTilesDao())
+            val r = TileManager().pinNewTile(
+                it,
+                viewModel.getDatabase().getTilesDao().getTilesData(),
+                app.mPackage!!,
+                viewModel.getDatabase().getTilesDao()
+            )
             if (r != null) {
                 viewModel.updateTilesList(r)
             } else {
@@ -495,100 +567,6 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
             }
         }
         return true
-    }
-
-    private fun showUninstallDialog(context: Context, app: App) {
-        val d = MetroDialog.newInstance(Gravity.TOP).apply {
-            setTitle(context.getString(R.string.uninstall_app_dialog_title))
-            setMessage(context.getString(R.string.uninstall_app_dialog_message))
-            setPositiveDialogListener(context.getString(R.string.yes)) {
-                context.startActivity(Intent(Intent.ACTION_DELETE).setData("package:${app.mPackage}".toUri()))
-                this.dismiss()
-            }
-            setNegativeDialogListener(context.getString(R.string.no)) {
-                this.dismiss()
-            }
-        }
-        d.show(childFragmentManager, "uninstall_app")
-    }
-
-    private fun setPopupOnClick(b: AppsBottomSheetBinding, popupWindow: PopupWindow, app: App) {
-        b.pinApp.apply {
-            if (viewModel.getTiles()?.value?.any {
-                    it.tilePackage == app.mPackage
-                } == true) {
-                isEnabled = false
-                alpha = 0.5f
-            } else {
-                setOnClickListener {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        context?.let {
-                            if (pinApp(app)) {
-                                withContext(Dispatchers.Main) {
-                                    popupWindow.dismiss()
-                                    (activity as MainActivity?)?.changePage(0)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        b.appInfo.setOnClickListener {
-            popupWindow.dismiss()
-            startActivity(
-                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    .setData("package:${app.mPackage}".toUri())
-            )
-        }
-        b.uninstallApp.setOnClickListener {
-            context?.let { context -> showUninstallDialog(context, app) }
-            popupWindow.dismiss()
-        }
-    }
-
-    private fun closeWindow(position: Int) {
-        isWindowVisible = false
-        binding.recyclerView.apply {
-            windowAnimateApps(position, true, this)
-            headerDecorator?.let { addItemDecoration(it) }
-            isScrollEnabled = true
-        }
-        (activity as MainActivity?)?.setViewPagerUserInput(true)
-    }
-
-    private fun preparePopupWindow(position: Int) {
-        binding.recyclerView.apply {
-            isScrollEnabled = false
-            headerDecorator?.let { removeItemDecoration(it) }
-            windowAnimateApps(position, false, this)
-        }
-        (activity as MainActivity?)?.setViewPagerUserInput(false)
-    }
-
-    private fun showPopupWindow(itemView: View, app: App, position: Int) {
-        preparePopupWindow(position)
-        var windowBinding: AppsBottomSheetBinding? =
-            AppsBottomSheetBinding.inflate(LayoutInflater.from(itemView.context))
-        val popup = getPopupWindow(windowBinding!!.root).also {
-            it.setOnDismissListener {
-                windowBinding = null
-                closeWindow(position)
-            }
-        }
-        val popupHeight = getPopupHeight(popup)
-        val top = isPopupInTop(itemView, getPopupHeight(popup))
-        windowBinding!!.root.pivotY = if (top) 0f else popupHeight.toFloat()
-        setPopupOnClick(windowBinding!!, popup, app)
-        animateAppsPopupWindow(windowBinding!!.root)
-        isWindowVisible = true
-
-        popup.showAsDropDown(
-            itemView,
-            0,
-            if (top) 0 else (-popupHeight + -itemView.measuredHeight),
-            Gravity.CENTER
-        )
     }
 
     suspend fun animateAppsFragmentAppLaunch(
@@ -663,44 +641,6 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
             } else {
                 view.animate().alpha(1f).scaleY(1f).scaleX(1f).setDuration(400)
                     .setInterpolator(interpolator).start()
-            }
-        }
-    }
-
-    fun animateAppsPopupWindow(view: View) {
-        val anim =
-            ObjectAnimator.ofFloat(view, "scaleY", 0f, 0.01f).setDuration(1)
-        val anim2 =
-            ObjectAnimator.ofFloat(view, "scaleX", 0f, 1f).setDuration(200)
-        val anim3 =
-            ObjectAnimator.ofFloat(view, "scaleY", 0.01f, 1f).setDuration(400)
-        anim.doOnEnd {
-            anim2.doOnEnd {
-                anim3.start()
-            }
-            anim2.start()
-        }
-        anim.start()
-    }
-
-    private fun launchAppWithAnimation(item: App) {
-        mAdapter ?: return
-        lifecycleScope.launch {
-            binding.apply {
-                headerDecorator?.let { decoration ->
-                    recyclerView.removeItemDecoration(decoration)
-                }
-                if (animateAppsFragmentAppLaunch(
-                        item.mPackage!!,
-                        recyclerView,
-                        buttonPanel,
-                        mAdapter!!.data
-                    )
-                ) {
-                    context?.let {
-                        launchAppWithFallback(item.mPackage, it)
-                    }
-                }
             }
         }
     }
