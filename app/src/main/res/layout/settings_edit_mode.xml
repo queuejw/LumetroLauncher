@@ -9,6 +9,32 @@
         android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/more_tiles_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/block_edit_mode"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/more_tiles_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/block_edit_mode_sub"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:textSize="18sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/block_edit_mode_switch"
+            style="@style/Metro.Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -21,6 +47,7 @@
             style="@style/Metro.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

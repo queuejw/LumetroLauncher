@@ -24,7 +24,7 @@ class ItemTouchCallback(private val mAdapter: TilesAdapter) :
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        if (!mAdapter.isEditMode) return false
+        if (!mAdapter.isEditMode || !mAdapter.editModeEnabled) return false
         return if (viewHolder.itemViewType != -TileViewTypes.TYPE_PLACEHOLDER.type) {
             mAdapter.onItemMove(viewHolder, target)
         } else {
@@ -37,7 +37,7 @@ class ItemTouchCallback(private val mAdapter: TilesAdapter) :
     }
 
     override fun isLongPressDragEnabled(): Boolean {
-        return mAdapter.isEditMode
+        return mAdapter.isEditMode && mAdapter.editModeEnabled
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {

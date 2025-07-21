@@ -137,7 +137,8 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             isMoreTilesEnabled = isMoreTilesEnabled,
             accentColor = viewModel.getColorManager().getAccentColor(context),
             iconProvider = viewModel.getIconLoader()!!,
-            editModeAnimation = prefs.allowEditModeAnimation
+            editModeAnimation = prefs.allowEditModeAnimation,
+            editModeEnabled = prefs.editModeEnabled
         ) {
 
             override fun saveTilesFunction(list: MutableList<TileEntity>) {

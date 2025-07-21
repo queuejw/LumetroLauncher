@@ -200,6 +200,8 @@
     <string name="editmode">режим редактирования</string>
     <string name="editmode_sub">взаимодействие с плитками</string>
     <string name="edit_mode_anim">Включить анимацию в режиме редактирования</string>
+    <string name="block_edit_mode">Отключить режим редактирования</string>
+    <string name="block_edit_mode_sub">Вы можете отключить изменение плиток при помощи этой настройки</string>
 
     <!-- Icon packs -->
     <string name="icons">иконки</string>

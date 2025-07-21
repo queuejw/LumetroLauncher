@@ -26,6 +26,7 @@ abstract class TilesAdapter(
     private val isMoreTilesEnabled: Boolean,
     private val accentColor: Int,
     private val iconProvider: IconProvider,
+    val editModeEnabled: Boolean,
     private val editModeAnimation: Boolean
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperAdapter {
@@ -33,17 +34,12 @@ abstract class TilesAdapter(
 
     private var userTiles: List<TileEntity> = createUserTiles()
     private var lastUserTilePosition: Int = 0
-
     private val tileManager = TileManager()
 
     fun getTilesList(): MutableList<TileEntity> = data
-
     abstract fun saveTilesFunction(list: MutableList<TileEntity>)
-
     abstract fun editModeFunction(boolean: Boolean)
-
     abstract fun tileWindowFunction(boolean: Boolean)
-
     abstract fun onTileClick(entity: TileEntity)
 
     init {
@@ -214,7 +210,7 @@ abstract class TilesAdapter(
     }
 
     private fun animateTileTranslationInEditMode(itemView: View) {
-        if (!editModeAnimation) return
+        if (!editModeAnimation || !editModeEnabled) return
         if (!isEditMode) {
             itemView.animate().translationX(0f).translationY(0f).setDuration(200).start()
             return
@@ -229,7 +225,7 @@ abstract class TilesAdapter(
     }
 
     private fun animateTileInEditMode(itemView: View, boolean: Boolean = isEditMode) {
-        if (!editModeAnimation) return
+        if (!editModeAnimation || !editModeEnabled) return
         if (!boolean) {
             itemView.animate()?.cancel()
             itemView.clearAnimation()
@@ -249,7 +245,7 @@ abstract class TilesAdapter(
         holder.itemView.setOnClickListener {
             if (isEditMode) {
                 animateTileInEditMode(it, false)
-                tileOnClick(item, holder)
+                showTilePopup(item, holder)
             } else {
                 onTileClick(item)
             }
@@ -287,19 +283,21 @@ abstract class TilesAdapter(
             animateTileInEditMode(this)
             setTileOnClick(holder, item)
             setOnLongClickListener {
-                tileOnLongClick()
-                callOnClick()
+                if (tileOnLongClick()) {
+                    callOnClick()
+                }
+                true
             }
         }
     }
 
-    private fun tileOnClick(item: TileEntity, holder: TileHolder) {
+    private fun showTilePopup(item: TileEntity, holder: TileHolder) {
         val tileWindow = getTileWindow(item)
         tileWindow.showTilePopupWindow(holder.itemView)
     }
 
     private fun tileOnLongClick(): Boolean {
-        if (!isEditMode) {
+        if (!isEditMode && editModeEnabled) {
             setAdapterEditMode(true)
             return true
         }
@@ -337,7 +335,7 @@ abstract class TilesAdapter(
         fromHolder: RecyclerView.ViewHolder,
         toHolder: RecyclerView.ViewHolder
     ): Boolean {
-        if (!isEditMode) return false
+        if (!isEditMode || !editModeEnabled) return false
         if (fromHolder == toHolder) return false
         if (toHolder.itemViewType == TileViewTypes.TYPE_DEFAULT.type) return false
         val from = fromHolder.bindingAdapterPosition

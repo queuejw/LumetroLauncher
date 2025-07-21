@@ -32,9 +32,24 @@ class EditModeSettingsFragment : BaseFragment<SettingsEditModeBinding>() {
         }
     }
 
+    private fun setBlockSwitch(binding: SettingsEditModeBinding) {
+        binding.blockEditModeSwitch.apply {
+            isChecked = !prefs.editModeEnabled
+            updateText()
+            setOnCheckedChangeListener { _, isChecked ->
+                prefs.apply {
+                    isRestartRequired = true
+                    editModeEnabled = !isChecked
+                }
+                updateText()
+            }
+        }
+    }
+
     private fun setUi() {
         binding.apply {
             setAnimSwitch(this)
+            setBlockSwitch(this)
         }
     }
 
