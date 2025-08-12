@@ -97,7 +97,7 @@
     <string name="show_error_details">Show details on the error screen</string>
     <string name="save_errors">Automatically save error data</string>
     <string name="erase_feedback_data">Are you sure you want to delete all collected data?</string>
-    <string name="show_collected_data">show collected data</string>
+    <string name="show_collected_data">Show collected data</string>
     <string name="delete_collected_data">Delete all collected data</string>
     <string name="feedback_list_hint">Click the Share button to send data to the developers</string>
     <string name="feedback_empty_list">We haven\’t collected any data.</string>
@@ -168,7 +168,6 @@
         <item>Stack trace (error details)</item>
     </string-array>
     <string name="data_storage_info">All data is stored locally on your device in the app\'s storage. You can review the collected data at:\n\nLumetro Settings -> Feedback -> show collected data.\n\nYou can either send it to us (to help fix the issue) or delete it.\n\nNote: We do not automatically send your data but collect it locally after each error. You can change this in Lumetro settings. If disabled, we will stop collect any device or app data.</string>
-    <string name="update_check_info">The app may use an internet connection to check for updates.\n\nBy default, this feature is disabled, and we will ask for your permission before checking for updates. No other tasks require an internet connection. Please note: This is not currently working.</string>
     <string name="tou_disclaimer_text">THIS APPLICATION IS PROVIDED """AS IS""". THE DEVELOPER DOES NOT GUARANTEE STABLE APP WORK AND SHALL NOT BE HELD LIABLE FOR ANY CONSEQUENCES RESULTING FROM ITS USE.\n\nIF YOU HAVE QUESTIONS, CONTACT US VIA:\nTELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nOR EMAIL: dimon6018t@gmail.com\n\nBY CONTINUING TO USE THE APPLICATION, YOU ASSUME FULL RESPONSIBILITY FOR ITS USE.</string>
 
     <!-- TOU rejected -->
@@ -176,15 +175,12 @@
     <string name="tou_rejected_title">Thank you for your interest in Lumetro!</string>
     <string name="tou_rejected_message">You may now close the app</string>
 
-    <!-- FLE Updates -->
-    <string name="fle_updates_hint">Let\'s install the latest version of Lumetro</string>
-
     <!-- Updates -->
     <string name="updates">Updates</string>
-    <string name="update_checking">Checking for updates</string>
-    <string name="updates_req">Would you like to check for Lumetro updates?</string>
-    <string name="update_check_cancelled_by_user">Update check cancelled by user</string>
-    <string name="update_service_unavailable">Update service unavailable. You can check for updates manually in Lumetro settings after completing setup</string>
+    <string name="check_for_updates">check for updates</string>
+    <string name="check_for_updates_title">download the latest version of Lumetro</string>
+    <string name="launcher_update">launcher update</string>
+    <string name="launcher_update_sub">get software updates</string>
 
     <!-- Uninstall dialog -->
     <string name="uninstall_app_dialog_title">Uninstall this app?</string>
@@ -218,5 +214,6 @@
 
     <!-- App pinning -->
     <string name="pin_app_error">We were unable to pin the app %1$s</string>
+    <string name="use_accent_error_screen">Use accent color for error screen background</string>
 
 </resources>

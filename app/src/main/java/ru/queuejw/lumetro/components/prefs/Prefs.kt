@@ -99,4 +99,10 @@ class Prefs(context: Context) {
         set(value) = prefs.edit {
             putBoolean("auto_app_pin", value)
         }
+
+    var coloredErrorScreen: Boolean
+        get() = prefs.getBoolean("colored_error_screen", false)
+        set(value) = prefs.edit {
+            putBoolean("colored_error_screen", value)
+        }
 }

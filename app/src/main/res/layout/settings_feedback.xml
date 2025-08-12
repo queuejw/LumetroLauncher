@@ -44,6 +44,19 @@
             android:layout_height="wrap_content" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.8"
+            android:text="@string/use_accent_error_screen"
+            android:textSize="16sp" />
+
+        <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+            android:id="@+id/use_accent_error_screen_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
             style="@style/Lumetro.Settings.AdvancedOptions.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

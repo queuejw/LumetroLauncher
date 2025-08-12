@@ -97,8 +97,8 @@
     <string name="show_error_details">Показывать детали на экране ошибки</string>
     <string name="save_errors">Автоматически сохранять данные об ошибке</string>
     <string name="erase_feedback_data">Вы уверены, что хотите удалить все собранные данные?</string>
-    <string name="show_collected_data">показать собранные данные</string>
-    <string name="delete_collected_data">удалить все собранные данные</string>
+    <string name="show_collected_data">Показать собранные данные</string>
+    <string name="delete_collected_data">Удалить все собранные данные</string>
     <string name="feedback_list_hint">Нажмите на кнопку Подделиться, чтобы отправить данные разработчикам</string>
     <string name="feedback_empty_list">Мы не собрали никаких данных.</string>
     <string name="dialog_copy_success">Детали ошибки скопированы в буфер обмена</string>
@@ -167,8 +167,7 @@
         <item>Версия Android</item>
         <item>Трассировка стека (детали ошибки)</item>
     </string-array>
-    <string name="data_storage_info">Вся информация хранится локально на вашем устройстве в данных приложения Lumetro. Вы можете посмотреть всю собранную информацию по следующему пути:\n\nНастройки Lumetro -> отчеты об ошибках -> показать собранные данные.\n\nВы можете отправить данные нам (для исправления проблем) или удалить их.\n\Обратите внимание: Мы не отправляем данные автоматически, но собираем после каждой возникшей ошибки. Вы можете изменить это в настройках Lumetro. Если отключить, мы перестанем собирать любую информацию о Lumetro и Вашем устройстве..</string>
-    <string name="update_check_info">Иногда приложение может использовать доступ к сети Интернет для проверки обновлений.\n\nПо умолчанию, эта функция отключена и мы будем спрашивать у вас разрешение на проверку обновлений. Подключение к сети Интернет для других задач не требуется. Обратите внимание: в данный момент это не работает.</string>
+    <string name="data_storage_info">Вся информация хранится локально на вашем устройстве в данных приложения Lumetro. Вы можете посмотреть всю собранную информацию по следующему пути:\n\nНастройки Lumetro -> отчеты об ошибках -> показать собранные данные.\n\nВы можете отправить данные нам (для исправления проблем) или удалить их.\n\Обратите внимание: Мы не отправляем данные автоматически, но собираем после каждой возникшей ошибки. Вы можете изменить это в настройках Lumetro. Если отключить, мы перестанем собирать любую информацию о Lumetro и Вашем устройстве.</string>
     <string name="tou_disclaimer_text">ПРИЛОЖЕНИЕ ПОСТАВЛЯЕТСЯ """КАК ЕСТЬ""". РАЗРАБОТЧИК НЕ ГАРАНТИРУЕТ СТАБИЛЬНУЮ РАБОТУ ПРИЛОЖЕНИЯ И НЕ НЕСЁТ ОТВЕТСТВЕННОСТЬ ЗА ЛЮБЫЕ ПОСЛЕДСТВИЯ, ВЫЗВАННЫЕ ИСПОЛЬЗОВАНИЕМ ПРИЛОЖЕНИЯ. ЕСЛИ У ВАС ЕСТЬ ВОПРОСЫ, СВЯЖИТЕСЬ С НАМИ \nВ TELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nИЛИ ЭЛ. ПОЧТУ: dimon6018t@gmail.com .\n\nПРОДОЛЖАЯ ИСПОЛЬЗОВАТЬ ПРИЛОЖЕНИЕ, ВЫ БЕРЕТЕ ОТВЕТСТВЕННОСТЬ ЗА ЕГО ИСПОЛЬЗОВАНИЯ НА СЕБЯ.</string>
 
     <!-- TOU rejected -->
@@ -176,15 +175,12 @@
     <string name="tou_rejected_title">Спасибо за интерес к Lumetro!</string>
     <string name="tou_rejected_message">Теперь можно закрыть приложение</string>
 
-    <!-- FLE Updates -->
-    <string name="fle_updates_hint">Давайте установим последнюю версию Lumetro</string>
-
     <!-- Updates -->
     <string name="updates">Обновления</string>
-    <string name="update_checking">Проверка наличия обновлений</string>
-    <string name="updates_req">Хотите проверить наличие обновлений Lumetro?</string>
-    <string name="update_check_cancelled_by_user">Проверка обновлений отменена пользователем.</string>
-    <string name="update_service_unavailable">Сервис обновлений недоступен. Вы можете повторить попытку вручную в настройках Lumetro после завершения настройки.</string>
+    <string name="check_for_updates">проверить обновления</string>
+    <string name="check_for_updates_title">загрузите последнюю версию Lumetro</string>
+    <string name="launcher_update">обновления лаунчера</string>
+    <string name="launcher_update_sub">загрузить обновления</string>
 
     <!-- Uninstall dialog -->
     <string name="uninstall_app_dialog_title">Удалить приложение?</string>
@@ -218,5 +214,6 @@
 
     <!-- App pinning -->
     <string name="pin_app_error">Нам не удалось закрепить приложение %1$s</string>
+    <string name="use_accent_error_screen">Использовать цвет элементов для фона экрана ошибки</string>
 
 </resources>

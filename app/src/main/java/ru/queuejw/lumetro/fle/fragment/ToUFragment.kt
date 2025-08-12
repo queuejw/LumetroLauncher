@@ -25,7 +25,7 @@ class ToUFragment : BaseFragment<FleTouBinding>() {
         super.onViewCreated(view, savedInstanceState)
         (activity as FirstLaunchExperienceActivity?)?.apply {
             setAppBarText(getString(R.string.tou_fragment_title))
-            nextFragment = 3
+            nextFragment = 4
             previousFragment = -1
             enableAllButtons()
             updateNextButtonText(getString(R.string.accept))
@@ -44,10 +44,9 @@ ${
                 this.context.resources.getStringArray(R.array.collected_data_items)
                     .joinToString("\n• ", prefix = "• ")
             }
-    
+
 ${this.context.getString(R.string.data_storage_info)}
     
-${this.context.getString(R.string.update_check_info)}
 """.trimIndent()
 
             text = string

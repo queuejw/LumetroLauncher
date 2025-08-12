@@ -97,9 +97,8 @@ class ColorDialog(val mContext: Context) : DialogFragment() {
         }
 
         colorPicker?.apply {
-            setInitialColor(prefs.accentColorValue.toColorInt())
+            attachBrightnessSlider(brightnessSlider!!)
             setColorListener(object : ColorEnvelopeListener {
-
                 override fun onColorSelected(envelope: ColorEnvelope, fromUser: Boolean) {
                     mColor = "#${envelope.hexCode}"
                     envelope.color.apply {
@@ -108,7 +107,8 @@ class ColorDialog(val mContext: Context) : DialogFragment() {
                     }
                 }
             })
-            attachBrightnessSlider(brightnessSlider!!)
+        }.also {
+            it?.setInitialColor(prefs.accentColorValue.toColorInt())
         }
     }
 

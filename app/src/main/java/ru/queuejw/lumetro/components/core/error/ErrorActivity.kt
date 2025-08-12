@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import ru.queuejw.lumetro.BuildConfig
 import ru.queuejw.lumetro.R
 import ru.queuejw.lumetro.components.FeedbackManager
+import ru.queuejw.lumetro.components.core.ColorManager
 import ru.queuejw.lumetro.components.prefs.Prefs
 import ru.queuejw.lumetro.main.MainActivity
 import java.text.SimpleDateFormat
@@ -29,8 +31,12 @@ class CriticalErrorActivity : AppCompatActivity() {
     private var onBackPressedCallback: OnBackPressedCallback? = null
 
     private var textView: MaterialTextView? = null
+    private var rootView: FrameLayout? = null
+
     private var errorSavingAllowed = false
     private var showDetailsOptionEnabled = false
+
+    private var coloredScreen = false
 
     private fun printErrorData(result: String) {
         Log.e(tag, "===============")
@@ -55,6 +61,7 @@ class CriticalErrorActivity : AppCompatActivity() {
         prefs?.let {
             showDetailsOptionEnabled = it.showErrorDetailsWhenCrash
             errorSavingAllowed = it.allowSaveErrorData
+            coloredScreen = it.coloredErrorScreen
         }
     }
 
@@ -78,6 +85,13 @@ class CriticalErrorActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
         setContentView(R.layout.error_screen)
         initPrefs()
+
+        if(coloredScreen) {
+            val colorManager = ColorManager()
+            rootView = findViewById(R.id.root)
+            rootView?.setBackgroundColor(colorManager.getAccentColor(this))
+        }
+
         textView = findViewById(R.id.error_details)
 
         val result = returnResultText()
@@ -107,6 +121,8 @@ class CriticalErrorActivity : AppCompatActivity() {
         handler = null
         onBackPressedCallback?.remove()
         onBackPressedCallback = null
+        textView = null
+        rootView = null
         prefs = null
         super.onDestroy()
     }

@@ -16,6 +16,7 @@ import ru.queuejw.lumetro.settings.fragments.FeedbackSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.IconSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.MainSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.ThemeSettingsFragment
+import ru.queuejw.lumetro.settings.fragments.UpdatesFragment
 
 class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
@@ -30,6 +31,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
             5 -> FeedbackErrorListFragment()
             6 -> IconSettingsFragment()
             7 -> ThemeSettingsFragment()
+            8 -> UpdatesFragment()
             else -> MainSettingsFragment()
         }
     }
@@ -43,6 +45,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
             is FeedbackErrorListFragment -> 5
             is IconSettingsFragment -> 6
             is ThemeSettingsFragment -> 7
+            is UpdatesFragment -> 8
             else -> 0
         }
     }

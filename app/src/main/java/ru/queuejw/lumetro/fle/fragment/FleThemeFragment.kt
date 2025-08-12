@@ -31,7 +31,7 @@ class FleThemeFragment : BaseFragment<FleThemeBinding>() {
         (activity as FirstLaunchExperienceActivity?)?.apply {
             setAppBarText(getString(R.string.personalization))
             nextFragment = 5
-            previousFragment = 3
+            previousFragment = 2
             enableAllButtons()
             updateNextButtonText(this.getString(R.string.next))
             updatePreviousButtonText(this.getString(R.string.back))

@@ -20,7 +20,6 @@ import ru.queuejw.lumetro.fle.fragment.EarlyAccessFragment
 import ru.queuejw.lumetro.fle.fragment.FleAppsFragment
 import ru.queuejw.lumetro.fle.fragment.FleCompleteSetupFragment
 import ru.queuejw.lumetro.fle.fragment.FleThemeFragment
-import ru.queuejw.lumetro.fle.fragment.FleUpdatesFragment
 import ru.queuejw.lumetro.fle.fragment.ToUFragment
 import ru.queuejw.lumetro.fle.fragment.ToURejectedFragment
 import ru.queuejw.lumetro.fle.fragment.WelcomeFragment
@@ -128,7 +127,6 @@ open class BaseFLEActivity : BaseActivity<FleActivityBinding>() {
             -1 -> ToURejectedFragment()
             1 -> EarlyAccessFragment()
             2 -> ToUFragment()
-            3 -> FleUpdatesFragment()
             4 -> FleThemeFragment()
             5 -> FleAppsFragment()
             6 -> FleCompleteSetupFragment()

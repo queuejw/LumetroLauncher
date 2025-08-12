@@ -70,9 +70,21 @@ class FeedbackSettingsFragment : BaseFragment<SettingsFeedbackBinding>() {
         }
     }
 
+    private fun setAccentSwitch() {
+        binding.useAccentErrorScreenSwitch.apply {
+            isChecked = prefs.coloredErrorScreen
+            updateText()
+            setOnCheckedChangeListener { v, bool ->
+                prefs.coloredErrorScreen = bool
+                updateText()
+            }
+        }
+    }
+
     private fun setUi() {
         setSaveErrorsSwitch()
         setShowDetailsSwitch()
+        setAccentSwitch()
         binding.apply {
             showAllErrors.setOnClickListener {
                 (activity as SettingsActivity?)?.changeFragment(
