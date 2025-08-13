@@ -93,8 +93,9 @@ class AboutSettingsFragment : BaseFragment<SettingsAboutBinding>() {
                 val colorManager: ColorManager? = null
                 colorManager!!.getAccentColor(it.context)
             }
-            lumetroAboutIcon.setOnClickListener {
+            lumetroAboutIcon.setOnLongClickListener {
                 enableExperiments(it.context)
+                true
             }
         }
     }

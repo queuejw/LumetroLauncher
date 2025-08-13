@@ -60,7 +60,7 @@
     <string name="more_info">сведения</string>
     <string name="phone_more_info">Версия Lumetro: %s \nНомер сборки Lumetro: %d \nУстройство: %s \nБренд устройства: %s \nМодель устройства %s \nПродукт: %s \nАппаратное обеспечение: %s \nСборка: %s \nДата сборки: %d</string>
     <string name="help_contacts">поддержка</string>
-    <string name="get_help">Get help: github.com/queuejw/metrophonelauncher/issues</string>
+    <string name="get_help">Получить помощь: github.com/queuejw/lumetrolauncher/issues</string>
     <string name="online_content">контент в Интернете</string>
     <string name="support_devs_text">Поддержите разработчика: https://donationalerts.com/r/queuejw</string>
     <string name="reset_your_launcher">сброс лаунчера</string>

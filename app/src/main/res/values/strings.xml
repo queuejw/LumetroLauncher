@@ -60,7 +60,7 @@
     <string name="more_info">more info</string>
     <string name="phone_more_info">Lumetro Version: %s \nLumetro Version code: %d \nDevice: %s \nPhone brand: %s \nPhone model: %s \nProduct: %s \nHardware: %s \nBuild: %s \nBuild time: %d</string>
     <string name="help_contacts">help contacts</string>
-    <string name="get_help">Get help: github.com/queuejw/metrophonelauncher/issues</string>
+    <string name="get_help">Get help: github.com/queuejw/lumetrolauncher/issues</string>
     <string name="online_content">online content</string>
     <string name="support_devs_text">Support developers: https://donationalerts.com/r/queuejw</string>
     <string name="reset_your_launcher">reset your launcher</string>

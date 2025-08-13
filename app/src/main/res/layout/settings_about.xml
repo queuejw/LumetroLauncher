@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:fontFamily="@font/manrope_medium"
-            android:text="GitHub: github.com/queuejw/metrophonelauncher/"
+            android:text="GitHub: github.com/queuejw/lumetrolauncher/"
             android:textSize="17sp" />
 
         <com.google.android.material.textview.MaterialTextView
