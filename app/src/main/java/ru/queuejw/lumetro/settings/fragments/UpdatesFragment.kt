@@ -11,7 +11,7 @@ import ru.queuejw.lumetro.components.core.base.BaseFragment
 import ru.queuejw.lumetro.databinding.SettingsUpdatesBinding
 import ru.queuejw.lumetro.settings.SettingsActivity
 
-class UpdatesFragment: BaseFragment<SettingsUpdatesBinding>() {
+class UpdatesFragment : BaseFragment<SettingsUpdatesBinding>() {
 
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,

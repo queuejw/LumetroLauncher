@@ -51,6 +51,9 @@ class WelcomeFragment : BaseFragment<FleWelcomeBinding>() {
         binding.imageView.setOnClickListener {
             changeIconColor()
         }
+        binding.skipFleTextview.setOnClickListener {
+            showSkipFleDialog(it.context)
+        }
     }
 
     private fun changeIconColor() {
@@ -91,11 +94,6 @@ class WelcomeFragment : BaseFragment<FleWelcomeBinding>() {
         prepareScreen()
         changeIconColor()
         animateScreen()
-        binding.apply {
-            skipFleTextview.setOnClickListener {
-                showSkipFleDialog(skipFleTextview.context)
-            }
-        }
     }
 
     private fun skipFle() {

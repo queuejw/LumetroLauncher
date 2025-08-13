@@ -4,15 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.launch
 import ru.queuejw.lumetro.R
 import ru.queuejw.lumetro.components.ui.dialog.MetroDialog
 import ru.queuejw.lumetro.databinding.FleActivityBinding
@@ -66,6 +63,11 @@ open class BaseFLEActivity : BaseActivity<FleActivityBinding>() {
             resources.getDimensionPixelSize(R.dimen.fle_bottom_bar_translation_y).toFloat()
         handler = Handler(Looper.getMainLooper())
         onBackPressedDispatcher.addCallback(this, backCallback)
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        Log.d("tag", "post resume")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -138,16 +140,12 @@ open class BaseFLEActivity : BaseActivity<FleActivityBinding>() {
         currentFragment = value
         if (!animEnabled) {
             binding.apply {
-                lifecycleScope.launch {
-                    lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                        supportFragmentManager.commit {
-                            replace(
-                                fragmentContainerView.id,
-                                getFragment(value),
-                                "fle_$currentFragment"
-                            )
-                        }
-                    }
+                supportFragmentManager.commit(true) {
+                    replace(
+                        fragmentContainerView.id,
+                        getFragment(value),
+                        "fle_$currentFragment"
+                    )
                 }
             }
         } else {
@@ -161,28 +159,23 @@ open class BaseFLEActivity : BaseActivity<FleActivityBinding>() {
                     .start()
             }
             handler?.postDelayed({
-                lifecycleScope.launch {
-                    lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                        binding.apply {
-                            supportFragmentManager.commit {
-                                replace(
-                                    fragmentContainerView.id,
-                                    getFragment(value),
-                                    "fle_$currentFragment"
-                                )
-                            }
-                            fragmentContainerView.translationX = if (returnAnim) -500f else 500f
-                            oobeView.translationX = if (returnAnim) -500f else 500f
-                            fragmentContainerView.animate().translationX(0f).alpha(1f)
-                                .setDuration(animationDuration)
-                                .start()
-                            oobeView.animate().translationX(0f).alpha(1f)
-                                .setDuration(animationDuration + 50)
-                                .start()
-                        }
+                binding.apply {
+                    supportFragmentManager.commit(true) {
+                        replace(
+                            fragmentContainerView.id,
+                            getFragment(value),
+                            "fle_$currentFragment"
+                        )
                     }
+                    fragmentContainerView.translationX = if (returnAnim) -500f else 500f
+                    oobeView.translationX = if (returnAnim) -500f else 500f
+                    fragmentContainerView.animate().translationX(0f).alpha(1f)
+                        .setDuration(animationDuration)
+                        .start()
+                    oobeView.animate().translationX(0f).alpha(1f)
+                        .setDuration(animationDuration + 50)
+                        .start()
                 }
-
             }, 300)
         }
     }

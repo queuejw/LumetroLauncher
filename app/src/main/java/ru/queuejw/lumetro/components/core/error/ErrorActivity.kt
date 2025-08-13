@@ -86,7 +86,7 @@ class CriticalErrorActivity : AppCompatActivity() {
         setContentView(R.layout.error_screen)
         initPrefs()
 
-        if(coloredScreen) {
+        if (coloredScreen) {
             val colorManager = ColorManager()
             rootView = findViewById(R.id.root)
             rootView?.setBackgroundColor(colorManager.getAccentColor(this))
