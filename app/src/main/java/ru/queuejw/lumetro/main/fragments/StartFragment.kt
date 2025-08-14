@@ -45,7 +45,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
     private var iconDefaultSize: Int = 0
     private var iconSmallSize: Int = 0
     private var iconBigSize: Int = 0
-    private var isFirstUpdate = true
     val isMoreTilesEnabled get() = prefs.showMoreTilesEnabled
 
     private val backCallback by lazy {
@@ -83,9 +82,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             tilesAdapter?.apply {
                 updateData(it)
                 Log.d("update", it.toString())
-                if (isFirstUpdate) {
-                    isFirstUpdate = false
-                }
             }
         }
     }

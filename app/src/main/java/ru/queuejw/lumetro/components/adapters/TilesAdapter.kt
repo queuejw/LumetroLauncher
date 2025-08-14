@@ -251,18 +251,6 @@ abstract class TilesAdapter(
             }
         }
     }
-
-    private fun updateViewPivot(itemView: View, tileSize: Int) {
-        itemView.apply {
-            pivotX = when (tileSize) {
-                else -> 0f
-            }
-            pivotY = when (tileSize) {
-                else -> 0f
-            }
-        }
-    }
-
     private fun bindDefaultTile(
         position: Int,
         holder: TileHolder
@@ -279,7 +267,6 @@ abstract class TilesAdapter(
             }
         }
         holder.itemView.apply {
-            updateViewPivot(this, item.tileSize)
             animateTileInEditMode(this)
             setTileOnClick(holder, item)
             setOnLongClickListener {
