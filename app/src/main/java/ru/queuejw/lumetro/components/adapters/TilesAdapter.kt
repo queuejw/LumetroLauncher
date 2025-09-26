@@ -18,7 +18,6 @@ import ru.queuejw.lumetro.databinding.TileBinding
 import ru.queuejw.lumetro.databinding.TilePlaceholderBinding
 import ru.queuejw.lumetro.model.TileEntity
 import java.util.Collections
-import kotlin.random.Random
 
 abstract class TilesAdapter(
     private var data: MutableList<TileEntity>,
@@ -209,21 +208,6 @@ abstract class TilesAdapter(
         holder.label.text = str
     }
 
-    private fun animateTileTranslationInEditMode(itemView: View) {
-        if (!editModeAnimation || !editModeEnabled) return
-        if (!isEditMode) {
-            itemView.animate().translationX(0f).translationY(0f).setDuration(200).start()
-            return
-        }
-        val x = Random.nextFloat() * 2 * 5 - 5
-        val y = Random.nextFloat() * 2 * 5 - 5
-        itemView.animate().translationX(x).translationY(y).setDuration(Random.nextLong(800, 1200))
-            .withEndAction {
-                animateTileTranslationInEditMode(itemView)
-            }
-            .start()
-    }
-
     private fun animateTileInEditMode(itemView: View, boolean: Boolean = isEditMode) {
         if (!editModeAnimation || !editModeEnabled) return
         if (!boolean) {
@@ -232,12 +216,8 @@ abstract class TilesAdapter(
         }
         itemView.animate().scaleY(if (boolean) 0.9f else 1f)
             .scaleX(if (boolean) 0.9f else 1f)
-            .alpha(if (boolean) 0.7f else 1f).translationY(0f).translationX(0f)
-            .setDuration(200).withEndAction {
-                if (boolean) {
-                    animateTileTranslationInEditMode(itemView)
-                }
-            }
+            .alpha(if (boolean) 0.7f else 1f)
+            .setDuration(200)
             .start()
     }
 
@@ -251,6 +231,7 @@ abstract class TilesAdapter(
             }
         }
     }
+
     private fun bindDefaultTile(
         position: Int,
         holder: TileHolder

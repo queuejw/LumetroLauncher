@@ -86,25 +86,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
         }
     }
 
-    private fun animateAllTiles(boolean: Boolean) {
-        spannedGridLayoutManager ?: return
-        if (!prefs.allowEditModeAnimation) return
-        for (i in 0..spannedGridLayoutManager!!.itemCount) {
-            binding.recyclerView.findViewHolderForAdapterPosition(i)?.apply {
-                if (itemViewType == TileViewTypes.TYPE_PLACEHOLDER.type) continue
-                if (!boolean) {
-                    itemView.animate()?.cancel()
-                    itemView.clearAnimation()
-                    itemView.animate()?.translationX(0f)?.translationY(0f)?.setDuration(200)
-                        ?.start()
-                }
-                itemView.animate()?.scaleY(if (boolean) 0.9f else 1f)
-                    ?.scaleX(if (boolean) 0.9f else 1f)?.setDuration(200)
-                    ?.alpha(if (boolean) 0.7f else 1f)?.start()
-            }
-        }
-    }
-
     private fun setBackCallback(boolean: Boolean) {
         if (boolean) {
             activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backCallback)
@@ -114,7 +95,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
     }
 
     private fun adapterEditModeFunction(boolean: Boolean) {
-        animateAllTiles(boolean)
         (activity as MainActivity?)?.setViewPagerUserInput(!boolean)
         setBackCallback(boolean)
     }
@@ -154,44 +134,8 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             }
 
             override fun onTileClick(entity: TileEntity) {
-                launchAppWithAnimation(entity, context)
+                launchApp(entity.tilePackage, context)
             }
-        }
-    }
-
-    private fun launchAppWithAnimation(item: TileEntity, context: Context) {
-        tilesAdapter ?: {
-            launchApp(item.tilePackage, context)
-        }.also {
-            return
-        }
-        val duration = 400L
-        var appPos: Int? = null
-        var lastDelay = 0L
-        val inter = FastOutSlowInInterpolator()
-        for (i in 0..tilesAdapter!!.itemCount) {
-            if (tilesAdapter!!.getTilesList()[i] == item) {
-                appPos = i
-                continue
-            }
-            val holder = binding.recyclerView.findViewHolderForAdapterPosition(i) ?: continue
-            if (holder.itemViewType == TileViewTypes.TYPE_PLACEHOLDER.type) continue
-            lastDelay = i * 10L + 210L
-            holder.itemView.animate().setStartDelay(lastDelay).rotationY(-60f).translationX(-2000f)
-                .translationY(-30f).scaleX(0.25f).scaleY(0.25f)
-                .setDuration(duration).alpha(0f).setInterpolator(inter).start()
-        }
-        appPos?.let {
-            binding.recyclerView.findViewHolderForAdapterPosition(it)?.itemView?.animate()
-                ?.setStartDelay(lastDelay + 250L)?.rotationY(-60f)?.translationX(-1000f)
-                ?.scaleX(0.25f)?.scaleY(0.25f)
-                ?.setDuration(200L)?.alpha(0.1f)?.setInterpolator(inter)?.withEndAction {
-                    handler?.postDelayed({
-                        launchApp(item.tilePackage, context)
-                    }, 100)
-                }?.start()
-        } ?: {
-            launchApp(item.tilePackage, context)
         }
     }
 

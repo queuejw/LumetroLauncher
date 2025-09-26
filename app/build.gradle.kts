@@ -28,10 +28,10 @@ android {
 
     defaultConfig {
         applicationId = "ru.queuejw.lumetro"
-        minSdk = 22
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
-        versionName = "Developer Preview 1"
+        versionName = "Sunflower 1"
 
     }
 
