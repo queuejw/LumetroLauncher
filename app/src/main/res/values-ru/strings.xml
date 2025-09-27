@@ -85,12 +85,18 @@
     <string name="settings_theme_accent_title_part3">по вашему вкусу на день, неделю или месяц\u0020</string>
     <string name="theme_background">Фон</string>
     <string name="accent_color">Цвет элементов</string>
-    <string name="dynamicColor_setting">Вы можете использовать обои для выбор цвета элементов</string>
+    <string name="dynamicColor_setting">Вы можете использовать обои для выбора цвета элементов</string>
     <string name="dynamicColor_switch">Использовать динамичные цвета</string>
     <string name="dynamicColor_error">Этот параметр недоступен на этом устройстве</string>
     <string name="show_more_tiles_title">Показывать больше иконок</string>
     <string name="show_more_tiles_sub">Вы можете изменить размер и количество иконок, доступных на рабочем столе</string>
     <string name="auto_pin_apps">Автоматически закреплять приложения на рабочий стол</string>
+
+    <!-- Tiles Settings Fragment -->
+    <string name="tiles">плитки</string>
+    <string name="tiles_sub">внешний вид плиток</string>
+    <string name="appearance_of_tiles">Внешний вид плиток</string>
+    <string name="corner_radius">Размер закругления плитки</string>
 
     <!-- Feedback fragments -->
     <string name="feedback_title">Отправляйте отчеты об ошибках и свои отзывы, чтобы помочь улучшить Lumetro Launcher</string>
@@ -105,7 +111,7 @@
 
     <string name="send">Отправить</string>
     <string name="feedback_email_tip">Отправить EMAIL с помощью</string>
-    <string name="feedback_email_placeholder">Lumetro работает не так, как я ожидалось. (опишите что пошло не так, если это возможно)</string>
+    <string name="feedback_email_placeholder">Lumetro работает не так, как ожидалось. (опишите, что пошло не так, если это возможно)</string>
 
     <!-- Color dialog -->
     <string name="choose_color_title">Выберите цвет</string>
@@ -168,7 +174,7 @@
         <item>Трассировка стека (детали ошибки)</item>
     </string-array>
     <string name="data_storage_info">Вся информация хранится локально на вашем устройстве в данных приложения Lumetro. Вы можете посмотреть всю собранную информацию по следующему пути:\n\nНастройки Lumetro -> отчеты об ошибках -> показать собранные данные.\n\nВы можете отправить данные нам (для исправления проблем) или удалить их.\n\Обратите внимание: Мы не отправляем данные автоматически, но собираем после каждой возникшей ошибки. Вы можете изменить это в настройках Lumetro. Если отключить, мы перестанем собирать любую информацию о Lumetro и Вашем устройстве.</string>
-    <string name="tou_disclaimer_text">ПРИЛОЖЕНИЕ ПОСТАВЛЯЕТСЯ """КАК ЕСТЬ""". РАЗРАБОТЧИК НЕ ГАРАНТИРУЕТ СТАБИЛЬНУЮ РАБОТУ ПРИЛОЖЕНИЯ И НЕ НЕСЁТ ОТВЕТСТВЕННОСТЬ ЗА ЛЮБЫЕ ПОСЛЕДСТВИЯ, ВЫЗВАННЫЕ ИСПОЛЬЗОВАНИЕМ ПРИЛОЖЕНИЯ. ЕСЛИ У ВАС ЕСТЬ ВОПРОСЫ, СВЯЖИТЕСЬ С НАМИ \nВ TELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nИЛИ ЭЛ. ПОЧТУ: dimon6018t@gmail.com .\n\nПРОДОЛЖАЯ ИСПОЛЬЗОВАТЬ ПРИЛОЖЕНИЕ, ВЫ БЕРЕТЕ ОТВЕТСТВЕННОСТЬ ЗА ЕГО ИСПОЛЬЗОВАНИЯ НА СЕБЯ.</string>
+    <string name="tou_disclaimer_text">ПРИЛОЖЕНИЕ ПОСТАВЛЯЕТСЯ """КАК ЕСТЬ""". РАЗРАБОТЧИК НЕ ГАРАНТИРУЕТ СТАБИЛЬНУЮ РАБОТУ ПРИЛОЖЕНИЯ И НЕ НЕСЁТ ОТВЕТСТВЕННОСТЬ ЗА ЛЮБЫЕ ПОСЛЕДСТВИЯ, ВЫЗВАННЫЕ ИСПОЛЬЗОВАНИЕМ ПРИЛОЖЕНИЯ. ЕСЛИ У ВАС ЕСТЬ ВОПРОСЫ, СВЯЖИТЕСЬ С НАМИ \nВ TELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nИЛИ ЭЛ. ПОЧТУ: dimon6018t@gmail.com</string>
 
     <!-- TOU rejected -->
     <string name="exit">выход</string>

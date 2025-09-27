@@ -3,8 +3,6 @@ package ru.queuejw.lumetro.main.fragments
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +21,7 @@ import ru.queuejw.lumetro.components.adapters.viewtypes.TileViewTypes
 import ru.queuejw.lumetro.components.core.AppManager.Companion.launchApp
 import ru.queuejw.lumetro.components.core.Lumetro.Companion.viewPagerUserInputEnabled
 import ru.queuejw.lumetro.components.core.TileManager
+import ru.queuejw.lumetro.components.core.Utils
 import ru.queuejw.lumetro.components.core.base.BaseMainFragment
 import ru.queuejw.lumetro.components.core.receivers.AppReceiver
 import ru.queuejw.lumetro.components.itemtouch.ItemTouchCallback
@@ -38,10 +37,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
     private var spannedGridLayoutManager: SpannedGridLayoutManager? = null
     private var isPortraitOrientation = false
     private var itemTouchHelper: ItemTouchHelper? = null
-    private var handler: Handler? = null
-
     private var appReceiver: AppReceiver? = null
-
     private var iconDefaultSize: Int = 0
     private var iconSmallSize: Int = 0
     private var iconBigSize: Int = 0
@@ -114,7 +110,8 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             accentColor = viewModel.getColorManager().getAccentColor(context),
             iconProvider = viewModel.getIconLoader()!!,
             editModeAnimation = prefs.allowEditModeAnimation,
-            editModeEnabled = prefs.editModeEnabled
+            editModeEnabled = prefs.editModeEnabled,
+            tileCornerRadius = Utils.px2dp(context, prefs.tileCornerRadius).toFloat()
         ) {
 
             override fun saveTilesFunction(list: MutableList<TileEntity>) {
@@ -237,7 +234,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handler = Handler(Looper.getMainLooper())
         appReceiver = AppReceiver(
             onAppInstalled = {
                 context?.let { context ->
@@ -313,7 +309,6 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
         spannedGridLayoutManager = null
         itemTouchHelper = null
         setBackCallback(false)
-        handler = null
         super.onDestroyView()
     }
 }

@@ -3,7 +3,6 @@ package ru.queuejw.lumetro.settings.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -29,9 +28,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
     ): SettingsThemeBinding? {
         return SettingsThemeBinding.inflate(inflater, container, false)
     }
-
     private var colorManager: ColorManager? = null
-
     private var menuVisible = false
 
     private fun setThemeText(context: Context) {
@@ -150,13 +147,17 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
         binding.dynamicColorSwtich.apply {
             if (!DynamicColors.isDynamicColorAvailable()) {
                 isEnabled = false
+                isChecked = false
+                binding.dynamicColorSub.text = "${binding.dynamicColorSub.text}\n\n${context.getString(R.string.dynamicColor_error)}"
+                binding.dynamicColorSub.alpha = 0.5f
+            } else {
+                isChecked = prefs.dynamicColorEnabled
+                setOnCheckedChangeListener { _, isChecked ->
+                    updateText()
+                    updateDynamicColor(isChecked)
+                }
             }
-            isChecked = prefs.dynamicColorEnabled
             updateText()
-            setOnCheckedChangeListener { _, isChecked ->
-                updateText()
-                updateDynamicColor(isChecked)
-            }
         }
     }
 
@@ -204,17 +205,14 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
             it.visibility = View.GONE
             binding.backgroundMenu.visibility = View.VISIBLE
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.root.setOnScrollChangeListener { view, x, y, oldX, oldY ->
-                if (menuVisible) {
-                    menuVisible = false
-                    binding.backgroundButton.visibility = View.VISIBLE
-                    binding.backgroundMenu.visibility = View.GONE
-                }
+        binding.root.setOnScrollChangeListener { view, x, y, oldX, oldY ->
+            if (menuVisible) {
+                menuVisible = false
+                binding.backgroundButton.visibility = View.VISIBLE
+                binding.backgroundMenu.visibility = View.GONE
             }
         }
     }
-
     private fun setAutoPinSwitch(binding: SettingsThemeBinding) {
         binding.autoPinAppsSwitch.apply {
             isChecked = prefs.autoPinEnabled

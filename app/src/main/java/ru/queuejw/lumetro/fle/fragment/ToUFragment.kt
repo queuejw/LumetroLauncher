@@ -1,6 +1,5 @@
 package ru.queuejw.lumetro.fle.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,19 +51,15 @@ ${this.context.getString(R.string.data_storage_info)}
             text = string
 
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.root.apply {
-                setOnScrollChangeListener { view, x, y, oldX, oldY ->
-                    if (this.getChildAt(0).bottom == (this.height + this.scrollY)) {
-                        if (!bottomBarVisible) (activity as FirstLaunchExperienceActivity?)?.animateBottomBar(
-                            true
-                        )
-                        bottomBarVisible = true
-                    }
+        binding.root.apply {
+            setOnScrollChangeListener { view, x, y, oldX, oldY ->
+                if (this.getChildAt(0).bottom == (this.height + this.scrollY)) {
+                    if (!bottomBarVisible) (activity as FirstLaunchExperienceActivity?)?.animateBottomBar(
+                        true
+                    )
+                    bottomBarVisible = true
                 }
             }
-        } else {
-            (activity as FirstLaunchExperienceActivity?)?.animateBottomBar(true)
         }
     }
 }

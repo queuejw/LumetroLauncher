@@ -154,10 +154,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (checkIcons(this, context)) {
                 return false
             }
-            Log.d("viewmodel", "continue")
             val apps = appManager.getInstalledApps(context)
             getIconLoader()?.cacheAllIcons(apps, context)
-            Log.d("viewmodel", "icons cached")
             val tiles = getDatabase().getTilesDao().getTilesData()
             withContext(Dispatchers.Main) {
                 updateAppsList(apps)

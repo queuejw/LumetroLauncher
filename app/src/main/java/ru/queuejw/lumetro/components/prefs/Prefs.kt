@@ -105,4 +105,10 @@ class Prefs(context: Context) {
         set(value) = prefs.edit {
             putBoolean("colored_error_screen", value)
         }
+
+    var tileCornerRadius: Int
+        get() = prefs.getInt("corner_radius", 0)
+        set(value) = prefs.edit {
+            putInt("corner_radius", value)
+        }
 }

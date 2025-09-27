@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.ShapeAppearanceModel
 import ru.queuejw.lumetro.components.adapters.diff.TilesDIffUtilCallback
 import ru.queuejw.lumetro.components.adapters.holders.TileHolder
 import ru.queuejw.lumetro.components.adapters.holders.TilePlaceholder
@@ -22,6 +24,7 @@ import java.util.Collections
 abstract class TilesAdapter(
     private var data: MutableList<TileEntity>,
     private val iconSizes: Triple<Int, Int, Int>,
+    private val tileCornerRadius: Float,
     private val isMoreTilesEnabled: Boolean,
     private val accentColor: Int,
     private val iconProvider: IconProvider,
@@ -194,7 +197,13 @@ abstract class TilesAdapter(
 
     private fun setTileCardColor(holder: TileHolder) {
         accentColor.apply {
-            holder.card.setBackgroundColor(this)
+            holder.card.setCardBackgroundColor(this)
+        }
+    }
+
+    private fun setTileCardCornerRadius(holder: TileHolder) {
+        holder.card.apply {
+            shapeAppearanceModel = ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, tileCornerRadius).build()
         }
     }
 
@@ -208,23 +217,10 @@ abstract class TilesAdapter(
         holder.label.text = str
     }
 
-    private fun animateTileInEditMode(itemView: View, boolean: Boolean = isEditMode) {
-        if (!editModeAnimation || !editModeEnabled) return
-        if (!boolean) {
-            itemView.animate()?.cancel()
-            itemView.clearAnimation()
-        }
-        itemView.animate().scaleY(if (boolean) 0.9f else 1f)
-            .scaleX(if (boolean) 0.9f else 1f)
-            .alpha(if (boolean) 0.7f else 1f)
-            .setDuration(200)
-            .start()
-    }
 
     private fun setTileOnClick(holder: TileHolder, item: TileEntity) {
         holder.itemView.setOnClickListener {
             if (isEditMode) {
-                animateTileInEditMode(it, false)
                 showTilePopup(item, holder)
             } else {
                 onTileClick(item)
@@ -237,18 +233,20 @@ abstract class TilesAdapter(
         holder: TileHolder
     ) {
         val item = data[position]
-        setTileCardColor(holder)
-        setTileIconSize(holder.icon, item.tileSize)
-        item.tilePackage?.let {
-            loadTileIcon(holder, it)
-        }
-        if (setTileLabelVisibility(holder, item.tileSize)) {
-            item.tileLabel?.let {
-                setTileLabel(holder, it)
+        holder.let {
+            setTileCardCornerRadius(it)
+            setTileCardColor(it)
+            setTileIconSize(it.icon, item.tileSize)
+            item.tilePackage?.let { pkg ->
+                loadTileIcon(it, pkg)
+            }
+            if (setTileLabelVisibility(holder, item.tileSize)) {
+                item.tileLabel?.let { lbl ->
+                    setTileLabel(holder, lbl)
+                }
             }
         }
         holder.itemView.apply {
-            animateTileInEditMode(this)
             setTileOnClick(holder, item)
             setOnLongClickListener {
                 if (tileOnLongClick()) {

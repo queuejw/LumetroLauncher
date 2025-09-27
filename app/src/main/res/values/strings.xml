@@ -92,6 +92,12 @@
     <string name="show_more_tiles_sub">You can change the size and number of tiles available on your start screen</string>
     <string name="auto_pin_apps">Automatically pin apps to the start screen</string>
 
+    <!-- Tiles Settings Fragment -->
+    <string name="tiles">tiles</string>
+    <string name="tiles_sub">appearance of tiles</string>
+    <string name="appearance_of_tiles">Appearance of tiles</string>
+    <string name="corner_radius">Corner radius</string>
+
     <!-- Feedback fragments -->
     <string name="feedback_title">Send launcher usage feedback to help improve Lumetro Launcher</string>
     <string name="show_error_details">Show details on the error screen</string>
@@ -168,7 +174,7 @@
         <item>Stack trace (error details)</item>
     </string-array>
     <string name="data_storage_info">All data is stored locally on your device in the app\'s storage. You can review the collected data at:\n\nLumetro Settings -> Feedback -> show collected data.\n\nYou can either send it to us (to help fix the issue) or delete it.\n\nNote: We do not automatically send your data but collect it locally after each error. You can change this in Lumetro settings. If disabled, we will stop collect any device or app data.</string>
-    <string name="tou_disclaimer_text">THIS APPLICATION IS PROVIDED """AS IS""". THE DEVELOPER DOES NOT GUARANTEE STABLE APP WORK AND SHALL NOT BE HELD LIABLE FOR ANY CONSEQUENCES RESULTING FROM ITS USE.\n\nIF YOU HAVE QUESTIONS, CONTACT US VIA:\nTELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nOR EMAIL: dimon6018t@gmail.com\n\nBY CONTINUING TO USE THE APPLICATION, YOU ASSUME FULL RESPONSIBILITY FOR ITS USE.</string>
+    <string name="tou_disclaimer_text">THIS APPLICATION IS PROVIDED """AS IS""". THE DEVELOPER DOES NOT GUARANTEE STABLE APP WORK AND SHALL NOT BE HELD LIABLE FOR ANY CONSEQUENCES RESULTING FROM ITS USE.\n\nIF YOU HAVE QUESTIONS, CONTACT US VIA:\nTELEGRAM: @lumetro_launcher (https://t.me/lumetro_launcher)\nOR EMAIL: dimon6018t@gmail.com.</string>
 
     <!-- TOU rejected -->
     <string name="exit">exit</string>
