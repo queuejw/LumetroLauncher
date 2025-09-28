@@ -117,10 +117,8 @@ class FleThemeFragment : BaseFragment<FleThemeBinding>() {
             binding.fleBackgroundMenu.visibility = View.VISIBLE
         }
         binding.fleColorButton.setOnClickListener {
-            val dialog = context?.let { mContext ->
-                ColorDialog(mContext)
-            }
-            dialog?.show(childFragmentManager, "color")
+            val dialog = ColorDialog(it.context)
+            dialog.show(childFragmentManager, "color")
         }
     }
 }

@@ -50,7 +50,10 @@ class IconLoader(
         CacheUtils.saveIconToDiskCache(diskCache, key, bitmap)
     }
 
-    override fun getIconForPackage(context: Context, mPackage: String): Bitmap? {
+    override fun getIconForPackage(context: Context, mPackage: String?): Bitmap? {
+        if (mPackage == null) {
+            return null
+        }
         memoryCache[mPackage]?.let {
             return it
         }

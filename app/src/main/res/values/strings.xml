@@ -222,4 +222,7 @@
     <string name="pin_app_error">We were unable to pin the app %1$s</string>
     <string name="use_accent_error_screen">Use accent color for error screen background</string>
 
+    <!-- Tile customization dialog -->
+    <string name="change_label">change label</string>
+
 </resources>

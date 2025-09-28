@@ -152,8 +152,8 @@
             android:textSize="18sp" />
 
         <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
-            style="@style/Metro.Switch"
             android:id="@+id/dynamicColorSwtich"
+            style="@style/Metro.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="false" />
@@ -179,8 +179,8 @@
             android:textSize="18sp" />
 
         <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
-            style="@style/Metro.Switch"
             android:id="@+id/moreTilesSwitch"
+            style="@style/Metro.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -197,7 +197,7 @@
         <com.google.android.material.textview.MaterialTextView
             style="@style/Lumetro.Settings.AdvancedOptions.Text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/auto_pin_apps"
@@ -209,8 +209,8 @@
             android:textSize="18sp" />
 
         <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
-            style="@style/Metro.Switch"
             android:id="@+id/auto_pin_apps_switch"
+            style="@style/Metro.Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -12,21 +12,21 @@
             style="@style/Lumetro.Settings.AdvancedOptions.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/appearance_of_tiles"/>
+            android:text="@string/appearance_of_tiles" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/corner_radius"/>
+            android:layout_marginTop="12dp"
+            android:text="@string/corner_radius" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/corner_radius_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:valueFrom="0.0"
             android:stepSize="2.0"
-            android:valueTo="24.0"/>
+            android:valueFrom="0.0"
+            android:valueTo="24.0" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -3,6 +3,7 @@ package ru.queuejw.lumetro.components.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
@@ -21,7 +22,17 @@ import ru.queuejw.lumetro.databinding.TilePlaceholderBinding
 import ru.queuejw.lumetro.model.TileEntity
 import java.util.Collections
 
-abstract class TilesAdapter(
+interface TilesAdapterInterface {
+
+    fun saveTilesFunction(list: MutableList<TileEntity>)
+    fun editModeFunction(boolean: Boolean)
+    fun tileWindowFunction(boolean: Boolean)
+    fun onTileClick(entity: TileEntity)
+    fun showTileSettingsScreen(entity: TileEntity)
+}
+
+class TilesAdapter(
+    private var adapterInterface: TilesAdapterInterface,
     private var data: MutableList<TileEntity>,
     private val iconSizes: Triple<Int, Int, Int>,
     private val tileCornerRadius: Float,
@@ -39,10 +50,6 @@ abstract class TilesAdapter(
     private val tileManager = TileManager()
 
     fun getTilesList(): MutableList<TileEntity> = data
-    abstract fun saveTilesFunction(list: MutableList<TileEntity>)
-    abstract fun editModeFunction(boolean: Boolean)
-    abstract fun tileWindowFunction(boolean: Boolean)
-    abstract fun onTileClick(entity: TileEntity)
 
     init {
         setHasStableIds(true)
@@ -57,7 +64,7 @@ abstract class TilesAdapter(
         return list
     }
 
-    private fun getItemPositionById(item: TileEntity): Int {
+    fun getItemPositionById(item: TileEntity): Int {
         val currentIndex = data.indexOfFirst { it.id == item.id }
         return if (currentIndex == -1) 0
         else currentIndex
@@ -65,9 +72,9 @@ abstract class TilesAdapter(
 
     private fun getTileWindow(item: TileEntity): TileWindow {
         return object : TileWindow(item, isMoreTilesEnabled) {
+
             override fun onTileWindowDismiss() {
-                refreshTilesByViewType(TileViewTypes.TYPE_DEFAULT.type)
-                tileWindowFunction(true)
+                adapterInterface.tileWindowFunction(true)
             }
 
             override fun onTileResizeClick() {
@@ -78,7 +85,8 @@ abstract class TilesAdapter(
                     2 -> 0
                     else -> 0
                 }
-                saveTilesFunction(data)
+                adapterInterface.saveTilesFunction(data)
+                notifyItemChanged(position)
             }
 
             override fun onTileUnpinClick() {
@@ -88,15 +96,15 @@ abstract class TilesAdapter(
                 placeholder.id = currentId
                 data[position] = placeholder
                 notifyItemChanged(position)
-                saveTilesFunction(data)
+                adapterInterface.saveTilesFunction(data)
             }
 
             override fun onTileSettingsClick() {
-                refreshTilesByViewType(TileViewTypes.TYPE_DEFAULT.type)
+                adapterInterface.showTileSettingsScreen(item)
             }
 
             override fun onTileWindowEnter() {
-                tileWindowFunction(false)
+                adapterInterface.tileWindowFunction(false)
             }
         }
     }
@@ -117,7 +125,7 @@ abstract class TilesAdapter(
 
     fun setAdapterEditMode(boolean: Boolean) {
         isEditMode = boolean
-        editModeFunction(isEditMode)
+        adapterInterface.editModeFunction(isEditMode)
         refreshTilesByViewType(TileViewTypes.TYPE_PLACEHOLDER.type)
         if (boolean) {
             notifyItemRangeInserted(lastUserTilePosition + 3, data.size - userTiles.size)
@@ -195,25 +203,27 @@ abstract class TilesAdapter(
         }
     }
 
-    private fun setTileCardColor(holder: TileHolder) {
-        accentColor.apply {
-            holder.card.setCardBackgroundColor(this)
-        }
+    private fun setTileCardColor(holder: TileHolder, customColor: String?) {
+        holder.card.setCardBackgroundColor(customColor?.toColorInt() ?: accentColor)
     }
 
     private fun setTileCardCornerRadius(holder: TileHolder) {
         holder.card.apply {
-            shapeAppearanceModel = ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, tileCornerRadius).build()
+            shapeAppearanceModel =
+                ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, tileCornerRadius)
+                    .build()
         }
     }
 
-    private fun loadTileIcon(holder: TileHolder, mPackage: String) {
-        holder.icon.apply {
-            this.load(iconProvider.getIconForPackage(this.context, mPackage))
+    private fun loadTileIcon(holder: TileHolder, mPackage: String?) {
+        if (mPackage != null) {
+            holder.icon.apply {
+                this.load(iconProvider.getIconForPackage(this.context, mPackage))
+            }
         }
     }
 
-    private fun setTileLabel(holder: TileHolder, str: String) {
+    private fun setTileLabel(holder: TileHolder, str: String?) {
         holder.label.text = str
     }
 
@@ -223,7 +233,7 @@ abstract class TilesAdapter(
             if (isEditMode) {
                 showTilePopup(item, holder)
             } else {
-                onTileClick(item)
+                adapterInterface.onTileClick(item)
             }
         }
     }
@@ -235,15 +245,11 @@ abstract class TilesAdapter(
         val item = data[position]
         holder.let {
             setTileCardCornerRadius(it)
-            setTileCardColor(it)
+            setTileCardColor(it, item.tileColor)
             setTileIconSize(it.icon, item.tileSize)
-            item.tilePackage?.let { pkg ->
-                loadTileIcon(it, pkg)
-            }
+            loadTileIcon(it, item.tilePackage)
             if (setTileLabelVisibility(holder, item.tileSize)) {
-                item.tileLabel?.let { lbl ->
-                    setTileLabel(holder, lbl)
-                }
+                setTileLabel(holder, item.tileLabel)
             }
         }
         holder.itemView.apply {
@@ -316,7 +322,7 @@ abstract class TilesAdapter(
     }
 
     override fun onDragAndDropCompleted() {
-        saveTilesFunction(data)
+        adapterInterface.saveTilesFunction(data)
         updateData(data.toList().toMutableList())
     }
 }

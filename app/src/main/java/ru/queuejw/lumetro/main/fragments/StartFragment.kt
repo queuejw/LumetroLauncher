@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.queuejw.lumetro.R
 import ru.queuejw.lumetro.components.adapters.TilesAdapter
+import ru.queuejw.lumetro.components.adapters.TilesAdapterInterface
 import ru.queuejw.lumetro.components.adapters.decor.MarginItemDecoration
 import ru.queuejw.lumetro.components.adapters.viewtypes.TileViewTypes
 import ru.queuejw.lumetro.components.core.AppManager.Companion.launchApp
@@ -25,11 +27,14 @@ import ru.queuejw.lumetro.components.core.Utils
 import ru.queuejw.lumetro.components.core.base.BaseMainFragment
 import ru.queuejw.lumetro.components.core.receivers.AppReceiver
 import ru.queuejw.lumetro.components.itemtouch.ItemTouchCallback
+import ru.queuejw.lumetro.components.ui.dialog.TileCustomizationDialog
+import ru.queuejw.lumetro.components.ui.dialog.TileCustomizationDialogInterface
 import ru.queuejw.lumetro.components.ui.recyclerview.SpanSize
 import ru.queuejw.lumetro.components.ui.recyclerview.SpannedGridLayoutManager
 import ru.queuejw.lumetro.databinding.StartFragmentBinding
 import ru.queuejw.lumetro.main.MainActivity
 import ru.queuejw.lumetro.model.TileEntity
+
 
 class StartFragment : BaseMainFragment<StartFragmentBinding>() {
 
@@ -103,7 +108,55 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
         if (viewModel.getIconLoader() == null) {
             viewModel.createIconLoader(prefs.iconPackPackage != null, prefs.iconPackPackage)
         }
-        return object : TilesAdapter(
+        return TilesAdapter(
+            adapterInterface = object : TilesAdapterInterface {
+                override fun saveTilesFunction(list: MutableList<TileEntity>) {
+                    viewModel.updateTilePositions(list)
+                    if ((list.filter { it.tileType != TileViewTypes.TYPE_PLACEHOLDER.type }).isEmpty()) {
+                        (activity as MainActivity?)?.changePage(1)
+                        viewPagerUserInputEnabled = false
+                    }
+                }
+
+                override fun editModeFunction(boolean: Boolean) {
+                    adapterEditModeFunction(boolean)
+                }
+
+                override fun tileWindowFunction(boolean: Boolean) {
+                    adapterTileWindowControl(boolean)
+                }
+
+                override fun onTileClick(entity: TileEntity) {
+                    launchApp(entity.tilePackage, context)
+                }
+
+                override fun showTileSettingsScreen(entity: TileEntity) {
+                    val dialogInterface = object : TileCustomizationDialogInterface {
+                        override fun onTileChanged(newEntity: TileEntity) {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                viewModel.getDatabase().getTilesDao().updateTile(newEntity)
+                                val newList = viewModel.getDatabase().getTilesDao().getTilesData()
+                                viewModel.updateTilesList(newList)
+                                withContext(Dispatchers.Main) {
+                                    tilesAdapter?.let { adapter ->
+                                        adapter.notifyItemChanged(
+                                            adapter.getItemPositionById(
+                                                newEntity
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    val bottomSheetDialog = TileCustomizationDialog(
+                        entity,
+                        viewModel.getIconLoader()?.getIconForPackage(context, entity.tilePackage),
+                        dialogInterface
+                    )
+                    bottomSheetDialog.show(parentFragmentManager, "tile_customization")
+                }
+            },
             data = ArrayList(),
             iconSizes = Triple(iconSmallSize, iconDefaultSize, iconBigSize),
             isMoreTilesEnabled = isMoreTilesEnabled,
@@ -112,28 +165,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             editModeAnimation = prefs.allowEditModeAnimation,
             editModeEnabled = prefs.editModeEnabled,
             tileCornerRadius = Utils.px2dp(context, prefs.tileCornerRadius).toFloat()
-        ) {
-
-            override fun saveTilesFunction(list: MutableList<TileEntity>) {
-                viewModel.updateTilePositions(list)
-                if ((list.filter { it.tileType != TileViewTypes.TYPE_PLACEHOLDER.type }).isEmpty()) {
-                    (activity as MainActivity?)?.changePage(1)
-                    viewPagerUserInputEnabled = false
-                }
-            }
-
-            override fun editModeFunction(boolean: Boolean) {
-                adapterEditModeFunction(boolean)
-            }
-
-            override fun tileWindowFunction(boolean: Boolean) {
-                adapterTileWindowControl(boolean)
-            }
-
-            override fun onTileClick(entity: TileEntity) {
-                launchApp(entity.tilePackage, context)
-            }
-        }
+        )
     }
 
     private fun configure(context: Context) {

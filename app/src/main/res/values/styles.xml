@@ -40,10 +40,6 @@
         <item name="cornerSize">0dp</item>
     </style>
 
-    <style name="Lumetro.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="shapeAppearance">@style/ShapeAppearance</item>
-    </style>
-
     <style name="Metro.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="track">@drawable/switch_track</item>
         <item name="android:thumb">@drawable/switch_thumb</item>
@@ -53,15 +49,18 @@
         <item name="android:layout_marginEnd">16dp</item>
     </style>
 
-    <style name="Metro.Search.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
+    <style name="Metro.Input.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
         <item name="boxCornerRadiusBottomEnd">0dp</item>
         <item name="boxCornerRadiusBottomStart">0dp</item>
         <item name="boxCornerRadiusTopEnd">0dp</item>
         <item name="boxCornerRadiusTopStart">0dp</item>
         <item name="boxStrokeColor">?attr/colorPrimary</item>
         <item name="boxStrokeWidth">2dp</item>
+    </style>
+
+    <style name="Metro.Search.TextInputLayout" parent="Metro.Input.TextInputLayout">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="boxBackgroundColor">@android:color/white</item>
         <item name="endIconMode">none</item>
     </style>
@@ -128,5 +127,12 @@
         <item name="android:alpha">0.75</item>
         <item name="android:textSize">16sp</item>
         <item name="fontFamily">@font/manrope_light</item>
+    </style>
+
+    <style name="Metro.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:colorBackground">?attr/colorOnSurface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance</item>
+        <item name="materialButtonStyle">@style/Metro.Button</item>
+        <item name="materialSwitchStyle">@style/Metro.Switch</item>
     </style>
 </resources>

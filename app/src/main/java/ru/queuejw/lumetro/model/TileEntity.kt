@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
  * Tile object
  * @param tilePosition Tile position in the list
  * @param id Unique value for tile
- *
  * @param tileColor Tile color
  * @param tileType The type of tile, which will change its appearance
  * @param tileSize Tile size

@@ -7,8 +7,8 @@
         <item name="colorSurface">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
         <item name="colorOnBackground">@android:color/white</item>
-        <item name="bottomSheetDialogTheme">@style/Lumetro.BottomSheet</item>
-        <item name="bottomSheetStyle">@style/Lumetro.BottomSheet</item>
+        <item name="bottomSheetDialogTheme">@style/Metro.BottomSheet</item>
+        <item name="bottomSheetStyle">@style/Metro.BottomSheet</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="materialButtonStyle">@style/Metro.Button</item>
         <item name="materialSwitchStyle">@style/Metro.Switch</item>
@@ -23,8 +23,8 @@
         <item name="colorSurface">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
         <item name="colorOnBackground">@android:color/white</item>
-        <item name="bottomSheetDialogTheme">@style/Lumetro.BottomSheet</item>
-        <item name="bottomSheetStyle">@style/Lumetro.BottomSheet</item>
+        <item name="bottomSheetDialogTheme">@style/Metro.BottomSheet</item>
+        <item name="bottomSheetStyle">@style/Metro.BottomSheet</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="materialButtonStyle">@style/Metro.Button</item>
         <item name="materialSwitchStyle">@style/Metro.Switch</item>

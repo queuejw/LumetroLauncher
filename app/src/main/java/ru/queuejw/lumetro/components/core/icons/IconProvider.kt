@@ -5,5 +5,5 @@ import android.graphics.Bitmap
 
 interface IconProvider {
 
-    fun getIconForPackage(context: Context, mPackage: String): Bitmap?
+    fun getIconForPackage(context: Context, mPackage: String?): Bitmap?
 }

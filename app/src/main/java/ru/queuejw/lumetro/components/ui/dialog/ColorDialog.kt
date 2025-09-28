@@ -26,7 +26,7 @@ import ru.queuejw.lumetro.components.ui.metro.MetroButton
 /**
  * Dialog in which the user can select a color
  */
-class ColorDialog(val mContext: Context) : DialogFragment() {
+class ColorDialog(private val mContext: Context) : DialogFragment() {
 
     //available colors
     private val viewIds = arrayOf(

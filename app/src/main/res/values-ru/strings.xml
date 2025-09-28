@@ -222,4 +222,7 @@
     <string name="pin_app_error">Нам не удалось закрепить приложение %1$s</string>
     <string name="use_accent_error_screen">Использовать цвет элементов для фона экрана ошибки</string>
 
+    <!-- Tile customization dialog -->
+    <string name="change_label">изменить название</string>
+
 </resources>

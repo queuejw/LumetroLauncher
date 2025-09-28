@@ -28,6 +28,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
     ): SettingsThemeBinding? {
         return SettingsThemeBinding.inflate(inflater, container, false)
     }
+
     private var colorManager: ColorManager? = null
     private var menuVisible = false
 
@@ -63,7 +64,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
         colorManager = ColorManager()
         context?.apply {
             setThemeText(this)
-            setUi(this)
+            setUi()
         }
     }
 
@@ -148,7 +149,8 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
             if (!DynamicColors.isDynamicColorAvailable()) {
                 isEnabled = false
                 isChecked = false
-                binding.dynamicColorSub.text = "${binding.dynamicColorSub.text}\n\n${context.getString(R.string.dynamicColor_error)}"
+                binding.dynamicColorSub.text =
+                    "${binding.dynamicColorSub.text}\n\n${context.getString(R.string.dynamicColor_error)}"
                 binding.dynamicColorSub.alpha = 0.5f
             } else {
                 isChecked = prefs.dynamicColorEnabled
@@ -178,14 +180,14 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
         }
     }
 
-    private fun setChooseAccentColorButton(context: Context, binding: SettingsThemeBinding) {
+    private fun setChooseAccentColorButton(binding: SettingsThemeBinding) {
         binding.chooseAccent.apply {
             if (prefs.dynamicColorEnabled) {
                 isEnabled = false
                 alpha = 0.5f
             }
             setOnClickListener {
-                val dialog = ColorDialog(context)
+                val dialog = ColorDialog(it.context)
                 dialog.show(childFragmentManager, "color")
             }
         }
@@ -213,6 +215,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
             }
         }
     }
+
     private fun setAutoPinSwitch(binding: SettingsThemeBinding) {
         binding.autoPinAppsSwitch.apply {
             isChecked = prefs.autoPinEnabled
@@ -224,11 +227,11 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
         }
     }
 
-    private fun setUi(context: Context) {
+    private fun setUi() {
         binding.apply {
             setDynamicColorSwitch(this)
             setMoreTilesSwitch(this)
-            setChooseAccentColorButton(context, this)
+            setChooseAccentColorButton(this)
             setImg(this)
             setThemeDropdown(this)
             setBackgroundButton(this)

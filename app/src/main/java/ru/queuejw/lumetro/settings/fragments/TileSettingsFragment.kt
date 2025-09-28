@@ -11,7 +11,7 @@ import ru.queuejw.lumetro.components.core.base.BaseFragment
 import ru.queuejw.lumetro.databinding.SettingsTilesBinding
 import ru.queuejw.lumetro.settings.SettingsActivity
 
-class TileSettingsFragment: BaseFragment<SettingsTilesBinding>() {
+class TileSettingsFragment : BaseFragment<SettingsTilesBinding>() {
 
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
@@ -20,7 +20,7 @@ class TileSettingsFragment: BaseFragment<SettingsTilesBinding>() {
 
     private fun configureCornerSlider() {
         binding.cornerRadiusSlider.apply {
-            val accentColor =  ColorStateList.valueOf(ColorManager().getAccentColor(this.context))
+            val accentColor = ColorStateList.valueOf(ColorManager().getAccentColor(this.context))
             trackTintList = accentColor
             thumbTintList = accentColor
             value = prefs.tileCornerRadius.toFloat()
