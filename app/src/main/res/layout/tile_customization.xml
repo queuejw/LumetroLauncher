@@ -13,6 +13,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorSurface"
+            android:text="Tile customization" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/app_icon"
             android:layout_width="@dimen/icon_size_big"
@@ -125,6 +132,29 @@
             android:text="@string/select_color"
             android:textColor="?attr/colorSurface"
             app:strokeColor="?attr/colorSurface" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColor="?attr/colorSurface"
+            android:text="@string/corner_radius" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/corner_radius_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stepSize="2.0"
+            android:valueFrom="0.0"
+            android:valueTo="24.0" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:visibility="gone"
+            android:textColor="?attr/colorSurface"
+            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
         
         <Space
             android:layout_width="match_parent"

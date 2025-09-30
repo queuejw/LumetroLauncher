@@ -164,7 +164,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
             iconProvider = viewModel.getIconLoader()!!,
             editModeAnimation = prefs.allowEditModeAnimation,
             editModeEnabled = prefs.editModeEnabled,
-            tileCornerRadius = Utils.px2dp(context, prefs.tileCornerRadius).toFloat()
+            defaultTileCornerRadius = Utils.px2dp(context, prefs.tileCornerRadius).toFloat()
         )
     }
 

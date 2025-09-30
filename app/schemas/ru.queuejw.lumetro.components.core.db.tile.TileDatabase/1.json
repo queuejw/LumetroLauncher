@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f1b6283844c8c94550aee269ca9baaeb",
+    "identityHash": "fa4536d9afc021ac516fdaedf5e0e501",
     "entities": [
       {
         "tableName": "tiles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tilePosition` INTEGER NOT NULL, `tileColor` TEXT, `tileType` INTEGER NOT NULL, `tileSize` INTEGER NOT NULL, `tileLabel` TEXT, `tilePackage` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tilePosition` INTEGER NOT NULL, `tileColor` TEXT, `tileCornerRadius` INTEGER NOT NULL, `tileType` INTEGER NOT NULL, `tileSize` INTEGER NOT NULL, `tileLabel` TEXT, `tilePackage` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -24,6 +24,12 @@
             "fieldPath": "tileColor",
             "columnName": "tileColor",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "tileCornerRadius",
+            "columnName": "tileCornerRadius",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "tileType",
@@ -58,7 +64,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1b6283844c8c94550aee269ca9baaeb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fa4536d9afc021ac516fdaedf5e0e501')"
     ]
   }
 }

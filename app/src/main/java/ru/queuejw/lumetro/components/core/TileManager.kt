@@ -18,6 +18,7 @@ class TileManager {
             tilePosition = position,
             tileColor = null,
             tileType = TileViewTypes.TYPE_PLACEHOLDER.type,
+            tileCornerRadius = -1,
             tileSize = 0,
             tileLabel = null,
             tilePackage = null

@@ -35,7 +35,7 @@ class TilesAdapter(
     private var adapterInterface: TilesAdapterInterface,
     private var data: MutableList<TileEntity>,
     private val iconSizes: Triple<Int, Int, Int>,
-    private val tileCornerRadius: Float,
+    private val defaultTileCornerRadius: Float,
     private val isMoreTilesEnabled: Boolean,
     private val accentColor: Int,
     private val iconProvider: IconProvider,
@@ -207,10 +207,13 @@ class TilesAdapter(
         holder.card.setCardBackgroundColor(customColor?.toColorInt() ?: accentColor)
     }
 
-    private fun setTileCardCornerRadius(holder: TileHolder) {
+    private fun setTileCardCornerRadius(holder: TileHolder, item: TileEntity) {
         holder.card.apply {
             shapeAppearanceModel =
-                ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, tileCornerRadius)
+                ShapeAppearanceModel.builder().setAllCorners(
+                    CornerFamily.ROUNDED,
+                    if (item.tileCornerRadius != -1) item.tileCornerRadius.toFloat() else defaultTileCornerRadius
+                )
                     .build()
         }
     }
@@ -244,7 +247,7 @@ class TilesAdapter(
     ) {
         val item = data[position]
         holder.let {
-            setTileCardCornerRadius(it)
+            setTileCardCornerRadius(it, item)
             setTileCardColor(it, item.tileColor)
             setTileIconSize(it.icon, item.tileSize)
             loadTileIcon(it, item.tilePackage)

@@ -1,6 +1,7 @@
 package ru.queuejw.lumetro.components.ui.dialog
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import coil3.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.queuejw.lumetro.R
+import ru.queuejw.lumetro.components.core.ColorManager
 import ru.queuejw.lumetro.databinding.TileCustomizationBinding
 import ru.queuejw.lumetro.model.TileEntity
 
@@ -74,10 +76,22 @@ class TileCustomizationDialog(
         }
     }
 
+    private fun updateTileCornerValue(newValue: Int) {
+        entity.tileCornerRadius = newValue
+        dialogInterface.onTileChanged(entity)
+    }
+
     private fun setUi() {
         binding?.let { view ->
             view.appIcon.load(icon)
             view.appLabel.text = entity.tileLabel
+            view.cornerRadiusSlider.apply {
+                val accentColor =
+                    ColorStateList.valueOf(ColorManager().getAccentColor(this.context))
+                trackTintList = accentColor
+                thumbTintList = accentColor
+                value = if (entity.tileCornerRadius != -1) entity.tileCornerRadius.toFloat() else 0f
+            }
 
             view.changeLabelBtn.setOnClickListener {
                 controlEditLabelLayout()
@@ -88,6 +102,9 @@ class TileCustomizationDialog(
             view.saveNewLabel.setOnClickListener {
                 changeLabel(view.labelEditText.text.toString())
                 controlEditLabelLayout()
+            }
+            view.cornerRadiusSlider.addOnChangeListener { slider, value, bool ->
+                updateTileCornerValue(value.toInt())
             }
         }
     }
