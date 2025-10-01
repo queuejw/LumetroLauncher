@@ -225,4 +225,8 @@
     <!-- Tile customization dialog -->
     <string name="change_label">change label</string>
 
+    <!-- Launcher Reset -->
+    <string name="reset_msg">Resetting the launcher will remove all tile settings, themes, and the start menu. THIS DOES NOT APPLY TO PHONE APPLICATIONS AND PERSONAL DATA. Do you want to continue?</string>
+    <string name="reset_title">WARNING!</string>
+
 </resources>

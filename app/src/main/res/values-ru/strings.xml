@@ -225,4 +225,8 @@
     <!-- Tile customization dialog -->
     <string name="change_label">изменить название</string>
 
+    <!-- Launcher reset -->
+    <string name="reset_msg">Сброс лаунчера приведет к удалению всех настроек плиток, тем и стартового меню. ЭТО НЕ ОТНОСИТСЯ К ПРИЛОЖЕНИЯМ ТЕЛЕФОНА И ЛИЧНЫМ ДАННЫМ. Вы хотите продолжить?</string>
+    <string name="reset_title">ВНИМАНИЕ!</string>
+
 </resources>

@@ -11,7 +11,7 @@ class Prefs(context: Context) {
         context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
 
     fun reset(): Boolean {
-        prefs.edit { clear() }
+        prefs.edit(commit = true) { clear() }
         return true
     }
 

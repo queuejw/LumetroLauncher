@@ -116,6 +116,7 @@ class TilesAdapter(
     }
 
     fun updateData(newData: MutableList<TileEntity>) {
+        if (newData.isEmpty()) return
         DiffUtil.calculateDiff(TilesDIffUtilCallback(data, newData), false).apply {
             data = newData
             userTiles = createUserTiles(newData)

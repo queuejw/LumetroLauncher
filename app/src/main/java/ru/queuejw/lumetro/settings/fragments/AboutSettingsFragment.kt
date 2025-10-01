@@ -7,10 +7,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.queuejw.lumetro.BuildConfig
 import ru.queuejw.lumetro.R
 import ru.queuejw.lumetro.components.core.ColorManager
 import ru.queuejw.lumetro.components.core.base.BaseFragment
+import ru.queuejw.lumetro.components.core.db.error.ErrorDatabase
+import ru.queuejw.lumetro.components.core.db.tile.TileDatabase
 import ru.queuejw.lumetro.components.ui.dialog.MetroDialog
 import ru.queuejw.lumetro.databinding.SettingsAboutBinding
 import ru.queuejw.lumetro.settings.SettingsActivity
@@ -71,6 +77,19 @@ class AboutSettingsFragment : BaseFragment<SettingsAboutBinding>() {
         d.show(childFragmentManager, "exp")
     }
 
+    private suspend fun resetLauncher(context: Context): Boolean {
+        prefs.reset()
+        withContext(Dispatchers.IO) {
+            val errDb = ErrorDatabase.getErrorData(context)
+            val tileDb = TileDatabase.getTileData(context)
+            errDb.getErrorDao().deleteAllErrorData()
+            tileDb.getTilesDao().deleteAllTiles()
+            errDb.close()
+            tileDb.close()
+        }
+        return true
+    }
+
     private fun setupLayout() {
         binding.apply {
             phoneinfo.text =
@@ -83,7 +102,23 @@ class AboutSettingsFragment : BaseFragment<SettingsAboutBinding>() {
             moreInfobtn.setOnClickListener {
                 showMoreInfo()
             }
-            resetLauncher.setOnClickListener {
+            resetLauncher.setOnClickListener { view ->
+                MetroDialog.newInstance(Gravity.TOP).apply {
+                    setTitle(view.context.getString(R.string.reset_title))
+                    setMessage(view.context.getString(R.string.reset_msg))
+                    setPositiveDialogListener(view.context.getString(R.string.yes)) {
+                        lifecycleScope.launch {
+                            if (resetLauncher(view.context)) {
+                                activity?.finishAffinity()
+                                exitProcess(0)
+                            }
+                        }
+                    }
+                    setNeutralDialogListener(view.context.getString(R.string.no)) {
+                        dismiss()
+                    }
+                }.show(childFragmentManager, "reset_dialog")
+
             }
             restartLauncher.setOnClickListener {
                 activity?.finish()

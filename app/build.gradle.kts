@@ -31,7 +31,7 @@ android {
         minSdk = 23
         targetSdk = 36
         versionCode = 1
-        versionName = "Sunflower 1"
+        versionName = "Sunflower 1 Preview 1"
 
     }
 
