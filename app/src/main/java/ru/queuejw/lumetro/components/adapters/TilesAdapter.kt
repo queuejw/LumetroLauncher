@@ -23,7 +23,7 @@ import ru.queuejw.lumetro.model.TileEntity
 import java.util.Collections
 
 interface TilesAdapterInterface {
-
+    fun onListUpdate(newList: MutableList<TileEntity>)
     fun saveTilesFunction(list: MutableList<TileEntity>)
     fun editModeFunction(boolean: Boolean)
     fun tileWindowFunction(boolean: Boolean)
@@ -122,6 +122,7 @@ class TilesAdapter(
             userTiles = createUserTiles(newData)
             dispatchUpdatesTo(this@TilesAdapter)
         }
+        adapterInterface.onListUpdate(newData)
     }
 
     fun setAdapterEditMode(boolean: Boolean) {

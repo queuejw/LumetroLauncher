@@ -110,6 +110,9 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
         }
         return TilesAdapter(
             adapterInterface = object : TilesAdapterInterface {
+                override fun onListUpdate(newList: MutableList<TileEntity>) {
+                    (activity as MainActivity?)?.setViewPagerUserInput(newList.isNotEmpty())
+                }
                 override fun saveTilesFunction(list: MutableList<TileEntity>) {
                     viewModel.updateTilePositions(list)
                     if ((list.filter { it.tileType != TileViewTypes.TYPE_PLACEHOLDER.type }).isEmpty()) {
