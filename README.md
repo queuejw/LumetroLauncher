@@ -21,6 +21,10 @@ project.
 - Icon pack support
 - Move the tiles as you like and resize them
 
+<img src='/github/welcome.png' width='500' alt="Welcome screen">
+
+(Some screenshots use the following icon pack: https://play.google.com/store/apps/details?id=com.italiano.simplyminimal)
+
 # ☀️ Where to download?
 
 Follow the link below and download the APK file. After downloading, you can install the app on your
