@@ -21,24 +21,26 @@ project.
 - Icon pack support
 - Move the tiles as you like and resize them
 
-<img src='/github/welcome.png' width='500' alt="Welcome screen">
+# 📸 Screenshots
 
-(Some screenshots use the following icon pack: https://play.google.com/store/apps/details?id=com.italiano.simplyminimal)
+<img src='/github/welcome.png' width='300' alt="Welcome screen"> <img src='/github/start_1.png' width='300' alt="Start screen"> <img src='/github/start_icons.png' width='300' alt="Start screen with icons">
+
+<img src='/github/app_list.png' width='300' alt="App list with icons"> <img src='/github/settings.png' width='300' alt="Settings">
+
+(Some screenshots use the following [icon pack](https://play.google.com/store/apps/details?id=com.italiano.simplyminimal))
 
 # ☀️ Where to download?
 
-Follow the link below and download the APK file. After downloading, you can install the app on your
+[Follow the link](https://github.com/queuejw/LumetroLauncher/releases/latest) and download the APK file. After downloading, you can install the app on your
 device.
-
-https://github.com/queuejw/LumetroLauncher/releases/latest
 
 # 🦠 Viruses?
 
 There are no viruses. Below is a link to the VirusTotal scan results for the latest version of
-Lumetro. The link will also be attached to the release on this
-page:  https://github.com/queuejw/LumetroLauncher/releases/
+Lumetro. The link will also be attached to the release [on this
+page](https://github.com/queuejw/LumetroLauncher/releases/)
 
-🌡 VirusTotal: link
+🌡 VirusTotal: [link](https://www.virustotal.com/gui/file/f70b4fcd0c53aa3b34a422d100eea1b588a75aca1e9ccde8ae7612f89cf25879)
 
 If you have any doubts, compile Lumetro from the source code. Thank you for your
 understanding.
@@ -47,7 +49,7 @@ understanding.
 
 If you want to try something else, check this out:
 
-METROV - https://play.google.com/store/apps/details?id=com.tuzkituan.metrov
+[METROV](https://play.google.com/store/apps/details?id=com.tuzkituan.metrov)
 
-Groove Launcher - https://groovelauncher.org/
+[Groove Launcher](https://groovelauncher.org/)
 
