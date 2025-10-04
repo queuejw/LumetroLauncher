@@ -23,9 +23,7 @@ project.
 
 # 📸 Screenshots
 
-<img src='/github/welcome.png' width='300' alt="Welcome screen"> <img src='/github/start_1.png' width='300' alt="Start screen"> <img src='/github/start_icons.png' width='300' alt="Start screen with icons">
-
-<img src='/github/app_list.png' width='300' alt="App list with icons"> <img src='/github/settings.png' width='300' alt="Settings">
+<img src='/github/welcome.png' width='300' alt="Welcome screen"> <img src='/github/start_1.png' width='300' alt="Start screen"> <img src='/github/start_icons.png' width='300' alt="Start screen with icons"> <img src='/github/app_list.png' width='300' alt="App list with icons"> <img src='/github/settings.png' width='300' alt="Settings">
 
 (Some screenshots use the following [icon pack](https://play.google.com/store/apps/details?id=com.italiano.simplyminimal))
 
