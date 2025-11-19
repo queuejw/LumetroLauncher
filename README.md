@@ -2,8 +2,8 @@
 
 # 🌻 Lumetro Launcher
 
-Lumetro is an experimental project to create a Windows Phone-style launcher for Android. It is not
-an attempt to completely recreate Windows Phone, but it is based on its design and tries to make it
+Lumetro is an experimental project to create a launcher for Android™ . It is not
+an attempt to completely recreate Windows® Phone, but it is based on its design and tries to make it
 more user-friendly by adding new features and modifying existing ones.
 
 # ⚙️ Why experimental?
@@ -50,4 +50,10 @@ If you want to try something else, check this out:
 [METROV](https://play.google.com/store/apps/details?id=com.tuzkituan.metrov)
 
 [Groove Launcher](https://groovelauncher.org/)
+
+> Lumetro Launcher is not affiliated with Microsoft® Corporation and is not a Microsoft® Corporation product. 
+
+> Windows® is a registered trademark of Microsoft® Corporation. 
+
+> Android™ is a trademark of Google LLC
 
