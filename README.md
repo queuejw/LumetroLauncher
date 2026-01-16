@@ -6,6 +6,10 @@ Lumetro is an experimental project to create a launcher for Android™ . It is n
 an attempt to completely recreate Windows® Phone, but it is based on its design and tries to make it
 more user-friendly by adding new features and modifying existing ones.
 
+> Oops...
+>
+> Development is temporarily suspended, unfortunately.
+
 # ⚙️ Why experimental?
 
 In my free time, I am learning to create Android applications, so this project is the result of my
