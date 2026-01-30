@@ -53,6 +53,8 @@ If you want to try something else, check this out:
 
 [METROV](https://play.google.com/store/apps/details?id=com.tuzkituan.metrov)
 
+[DiscoLauncher](https://github.com/cherryhoax/DiscoLauncher)
+
 
 > Lumetro Launcher is not affiliated with Microsoft® Corporation and is not a Microsoft® Corporation product. 
 
