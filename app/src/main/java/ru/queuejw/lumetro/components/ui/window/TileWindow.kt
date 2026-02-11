@@ -74,7 +74,7 @@ abstract class TileWindow(
     private fun getPopupWindow(root: View, width: Int, height: Int): PopupWindow =
         PopupWindow(root, width, height, true)
 
-    private fun createPopupWindow(width: Int, height: Int, context: Context): PopupWindow? {
+    private fun createPopupWindow(width: Int, height: Int, context: Context): PopupWindow {
         var binding: TileWindowBinding? = getWindowBinding(context)
         binding!!
         setPopupWindowLayout(binding)

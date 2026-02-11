@@ -16,7 +16,7 @@ class MainSettingsFragment : BaseFragment<SettingsMainBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsMainBinding? {
+    ): SettingsMainBinding {
         return SettingsMainBinding.inflate(inflater, container, false)
     }
 

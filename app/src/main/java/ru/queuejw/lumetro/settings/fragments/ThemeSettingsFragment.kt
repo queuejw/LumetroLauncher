@@ -25,7 +25,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsThemeBinding? {
+    ): SettingsThemeBinding {
         return SettingsThemeBinding.inflate(inflater, container, false)
     }
 
@@ -77,7 +77,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
     }
 
     private fun setColorDialogFragmentResultListener() {
-        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { key, bundle ->
+        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { _, bundle ->
             bundle.getString("color_value")?.let {
                 prefs.accentColorValue = it
                 context?.let { mContext ->
@@ -207,7 +207,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
             it.visibility = View.GONE
             binding.backgroundMenu.visibility = View.VISIBLE
         }
-        binding.root.setOnScrollChangeListener { view, x, y, oldX, oldY ->
+        binding.root.setOnScrollChangeListener { _, _, _, _, _ ->
             if (menuVisible) {
                 menuVisible = false
                 binding.backgroundButton.visibility = View.VISIBLE

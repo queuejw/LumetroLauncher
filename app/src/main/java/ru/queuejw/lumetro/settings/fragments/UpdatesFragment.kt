@@ -16,7 +16,7 @@ class UpdatesFragment : BaseFragment<SettingsUpdatesBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsUpdatesBinding? = SettingsUpdatesBinding.inflate(inflater, container, false)
+    ): SettingsUpdatesBinding = SettingsUpdatesBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

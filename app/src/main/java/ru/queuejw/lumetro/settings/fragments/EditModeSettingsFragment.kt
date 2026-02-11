@@ -14,7 +14,7 @@ class EditModeSettingsFragment : BaseFragment<SettingsEditModeBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsEditModeBinding? {
+    ): SettingsEditModeBinding {
         return SettingsEditModeBinding.inflate(inflater, container, false)
     }
 

@@ -35,7 +35,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         db = createDatabase(application.applicationContext)
         _colorManager = ColorManager()
-        _appsList = MutableLiveData<List<App>>(ArrayList<App>())
+        _appsList = MutableLiveData<List<App>>(ArrayList())
         tilesList = MutableLiveData<MutableList<TileEntity>>()
     }
 

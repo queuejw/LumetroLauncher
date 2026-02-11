@@ -32,7 +32,7 @@ class FeedbackErrorListFragment : BaseFragment<SettingsFeedbackErrorListBinding>
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsFeedbackErrorListBinding? {
+    ): SettingsFeedbackErrorListBinding {
         return SettingsFeedbackErrorListBinding.inflate(inflater, container, false)
     }
 

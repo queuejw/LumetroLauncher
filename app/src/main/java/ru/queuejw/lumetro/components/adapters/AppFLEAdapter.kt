@@ -99,7 +99,7 @@ class AppFLEAdapter(
     }
 
     private fun setHolderAnim(itemView: View) {
-        AnimationUtils.Companion.setViewInteractAnimation(itemView, 5)
+        AnimationUtils.setViewInteractAnimation(itemView, 5)
     }
 
     override fun onBindViewHolder(

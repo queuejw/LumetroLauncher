@@ -11,7 +11,7 @@ import androidx.viewbinding.ViewBinding
 import ru.queuejw.lumetro.R
 import ru.queuejw.lumetro.components.prefs.Prefs
 
-abstract class BaseActivity<viewBinding : ViewBinding?>() : AppCompatActivity() {
+abstract class BaseActivity<viewBinding : ViewBinding?> : AppCompatActivity() {
 
     private var _prefs: Prefs? = null
     val prefs get() = _prefs!!

@@ -23,7 +23,7 @@ class FleThemeFragment : BaseFragment<FleThemeBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleThemeBinding? {
+    ): FleThemeBinding {
         return FleThemeBinding.inflate(inflater, container, false)
     }
 
@@ -90,7 +90,7 @@ class FleThemeFragment : BaseFragment<FleThemeBinding>() {
     }
 
     private fun setColorDialogFragmentResultListener() {
-        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { key, bundle ->
+        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { _, bundle ->
             bundle.getString("color_value")?.let {
                 prefs.accentColorValue = it
                 (activity as BaseFLEActivity?)?.updateColor(it.toColorInt())

@@ -16,12 +16,12 @@ class EarlyAccessFragment : BaseFragment<FleEarlyAccessBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleEarlyAccessBinding? {
+    ): FleEarlyAccessBinding {
         return FleEarlyAccessBinding.inflate(inflater, container, false)
     }
 
     private fun setUi() {
-        binding.eaCheckbox.setOnCheckedChangeListener { v, bool ->
+        binding.eaCheckbox.setOnCheckedChangeListener { _, bool ->
             (activity as FirstLaunchExperienceActivity?)?.setButtonState(1, !bool)
         }
         binding.eaFeedbackCheckbox.apply {

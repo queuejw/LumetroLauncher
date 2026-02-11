@@ -17,7 +17,7 @@ class FleCompleteSetupFragment : BaseFragment<FleCompleteSetupBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleCompleteSetupBinding? {
+    ): FleCompleteSetupBinding {
         return FleCompleteSetupBinding.inflate(inflater, container, false)
     }
 

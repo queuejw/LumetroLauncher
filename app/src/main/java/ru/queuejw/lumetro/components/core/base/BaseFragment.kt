@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import ru.queuejw.lumetro.components.prefs.Prefs
 
-abstract class BaseFragment<viewBinding : ViewBinding?>() : Fragment() {
+abstract class BaseFragment<viewBinding : ViewBinding?> : Fragment() {
 
     private var _prefs: Prefs? = null
     val prefs get() = _prefs!!

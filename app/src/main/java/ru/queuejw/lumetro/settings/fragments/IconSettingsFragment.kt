@@ -32,7 +32,7 @@ class IconSettingsFragment : BaseFragment<SettingsIconsBinding>() {
         ColorManager()
     }
 
-    private fun createIconPackManager(context: Context): IconPackManager? {
+    private fun createIconPackManager(context: Context): IconPackManager {
         return IconPackManager(context)
     }
 
@@ -56,7 +56,7 @@ class IconSettingsFragment : BaseFragment<SettingsIconsBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsIconsBinding? {
+    ): SettingsIconsBinding {
         return SettingsIconsBinding.inflate(layoutInflater)
     }
 

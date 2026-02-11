@@ -43,7 +43,7 @@ class FleAppsFragment : BaseFragment<FleAppsBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleAppsBinding? {
+    ): FleAppsBinding {
         return FleAppsBinding.inflate(inflater, container, false)
     }
 

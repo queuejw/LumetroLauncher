@@ -27,7 +27,7 @@ class AboutSettingsFragment : BaseFragment<SettingsAboutBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsAboutBinding? {
+    ): SettingsAboutBinding {
         return SettingsAboutBinding.inflate(inflater, container, false)
     }
 
@@ -126,6 +126,7 @@ class AboutSettingsFragment : BaseFragment<SettingsAboutBinding>() {
             }
             crashLauncher.setOnClickListener {
                 val colorManager: ColorManager? = null
+                // Ignore it
                 colorManager!!.getAccentColor(it.context)
             }
             lumetroAboutIcon.setOnLongClickListener {

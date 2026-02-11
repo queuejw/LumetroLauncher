@@ -18,7 +18,7 @@ class MetroButton @JvmOverloads constructor(
     private val colorManager = ColorManager()
     private var accentColor: Int? = getAccentColor()
 
-    private fun getAccentColor(): Int? {
+    private fun getAccentColor(): Int {
         return colorManager.getAccentColor(context)
     }
 

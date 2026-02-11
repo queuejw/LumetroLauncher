@@ -59,7 +59,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): StartFragmentBinding? {
+    ): StartFragmentBinding {
         return StartFragmentBinding.inflate(inflater, container, false)
     }
 

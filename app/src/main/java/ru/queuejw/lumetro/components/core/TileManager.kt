@@ -26,9 +26,8 @@ class TileManager {
     }
 
     suspend fun generatePlaceholders(size: Int, context: Context, force: Boolean): Boolean {
-        val db: TileDatabase? = TileDatabase.getTileData(context)
-        val dao: TileDao? = db!!.getTilesDao()
-        val list = dao!!.getTilesData()
+        val dao: TileDao = TileDatabase.getTileData(context).getTilesDao()
+        val list = dao.getTilesData()
         if (list.isNotEmpty() && !force) return false
         for (i in 0..size) {
             withContext(Dispatchers.IO) {
@@ -41,9 +40,8 @@ class TileManager {
     }
 
     suspend fun checkAllTiles(context: Context): Boolean {
-        val db: TileDatabase? = TileDatabase.getTileData(context)
-        val dao: TileDao? = db!!.getTilesDao()
-        val list = dao!!.getTilesData()
+        val dao: TileDao = TileDatabase.getTileData(context).getTilesDao()
+        val list = dao.getTilesData()
         val pm = context.packageManager
         if (dao.getUserTilesData().isEmpty()) return false
         var isDataOutdated = false
@@ -60,7 +58,7 @@ class TileManager {
             }
         }
         if (isDataOutdated) {
-            db.getTilesDao().updateAllTiles(list)
+            dao.updateAllTiles(list)
         }
         return true
     }
@@ -92,14 +90,14 @@ class TileManager {
                     0
                 )
             ).toString()
-            val entity: TileEntity? = tileList[position].apply {
+            val entity: TileEntity = tileList[position].apply {
                 tilePosition = position
                 tileType = 0
                 tileLabel = label
                 tilePackage = mPackage
                 tileSize = Random.nextInt(0, 3)
             }
-            dao.updateTile(entity!!)
+            dao.updateTile(entity)
             val list = dao.getUserTilesData()
             withContext(Dispatchers.Main) {
                 viewPagerUserInputEnabled = true

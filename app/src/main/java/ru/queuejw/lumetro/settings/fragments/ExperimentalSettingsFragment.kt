@@ -14,7 +14,7 @@ class ExperimentalSettingsFragment : BaseMainFragment<SettingsExperimentalBindin
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsExperimentalBinding? {
+    ): SettingsExperimentalBinding {
         return SettingsExperimentalBinding.inflate(inflater, container, false)
     }
 

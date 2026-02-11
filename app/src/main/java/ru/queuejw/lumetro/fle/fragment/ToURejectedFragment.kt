@@ -14,7 +14,7 @@ class ToURejectedFragment : BaseFragment<FleTouRejectedBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleTouRejectedBinding? = FleTouRejectedBinding.inflate(inflater, container, false)
+    ): FleTouRejectedBinding = FleTouRejectedBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

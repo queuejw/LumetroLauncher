@@ -733,42 +733,41 @@ class DiskLruCache private constructor(
 
         fun abortUnlessCommitted() {
             if (!committed) {
-                try {
+                runCatching {
                     abort()
-                } catch (_: IOException) {
                 }
             }
         }
 
         private inner class FaultHidingOutputStream(out: OutputStream) : FilterOutputStream(out) {
             override fun write(oneByte: Int) {
-                try {
+                runCatching {
                     out.write(oneByte)
-                } catch (_: IOException) {
+                }.onFailure {
                     hasErrors = true
                 }
             }
 
             override fun write(buffer: ByteArray, offset: Int, length: Int) {
-                try {
+                runCatching {
                     out.write(buffer, offset, length)
-                } catch (_: IOException) {
+                }.onFailure {
                     hasErrors = true
                 }
             }
 
             override fun close() {
-                try {
+                runCatching {
                     out.close()
-                } catch (_: IOException) {
+                }.onFailure {
                     hasErrors = true
                 }
             }
 
             override fun flush() {
-                try {
+                runCatching {
                     out.flush()
-                } catch (_: IOException) {
+                }.onFailure {
                     hasErrors = true
                 }
             }
@@ -1048,7 +1047,7 @@ internal class StrictLineReader(`in`: InputStream?, capacity: Int, charset: Char
             // throw again if that happens; thus we need to handle end == -1 as well as end == pos.
             if (pos >= end) fillBuf()
             // Try to find LF in the buffered data and return the line if successful.
-            for (i in pos until end) {
+            for (i in pos..end) {
                 if (buf!![i] == LF) {
                     val lineEnd = if ((i != pos && buf!![i - 1] == CR)) i - 1 else i
                     val res = String(buf!!, pos, lineEnd - pos, charset(charset.name()))
@@ -1074,7 +1073,7 @@ internal class StrictLineReader(`in`: InputStream?, capacity: Int, charset: Char
                 end = -1
                 fillBuf()
                 // Try to find LF in the buffered data and return the line if successful.
-                for (i in pos until end) {
+                for (i in pos..end) {
                     if (buf!![i] == LF) {
                         if (i != pos) {
                             out.write(buf!!, pos, i - pos)

@@ -16,7 +16,7 @@ class TileSettingsFragment : BaseFragment<SettingsTilesBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsTilesBinding? = SettingsTilesBinding.inflate(inflater, container, false)
+    ): SettingsTilesBinding = SettingsTilesBinding.inflate(inflater, container, false)
 
     private fun configureCornerSlider() {
         binding.cornerRadiusSlider.apply {
@@ -24,7 +24,7 @@ class TileSettingsFragment : BaseFragment<SettingsTilesBinding>() {
             trackTintList = accentColor
             thumbTintList = accentColor
             value = prefs.tileCornerRadius.toFloat()
-            addOnChangeListener { slider, value, bool ->
+            addOnChangeListener { _, value, _ ->
                 prefs.isRestartRequired = true
                 prefs.tileCornerRadius = value.toInt()
             }

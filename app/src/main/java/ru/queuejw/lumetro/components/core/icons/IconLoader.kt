@@ -37,7 +37,7 @@ class IconLoader(
         return context.resources.getDimensionPixelSize(R.dimen.icon_size)
     }
 
-    private fun getIconPackManager(context: Context): IconPackManager? {
+    private fun getIconPackManager(context: Context): IconPackManager {
         return IconPackManager(context)
     }
 

@@ -31,7 +31,7 @@ class WelcomeFragment : BaseFragment<FleWelcomeBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleWelcomeBinding? {
+    ): FleWelcomeBinding {
         return FleWelcomeBinding.inflate(inflater, container, false)
     }
 

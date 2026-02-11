@@ -22,7 +22,7 @@ class FeedbackSettingsFragment : BaseFragment<SettingsFeedbackBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): SettingsFeedbackBinding? {
+    ): SettingsFeedbackBinding {
         return SettingsFeedbackBinding.inflate(inflater, container, false)
     }
 
@@ -52,7 +52,7 @@ class FeedbackSettingsFragment : BaseFragment<SettingsFeedbackBinding>() {
         binding.showErrorDetailsSwitch.apply {
             isChecked = prefs.showErrorDetailsWhenCrash
             updateText()
-            setOnCheckedChangeListener { v, bool ->
+            setOnCheckedChangeListener { _, bool ->
                 prefs.showErrorDetailsWhenCrash = bool
                 updateText()
             }
@@ -63,7 +63,7 @@ class FeedbackSettingsFragment : BaseFragment<SettingsFeedbackBinding>() {
         binding.saveErrorSwitch.apply {
             isChecked = prefs.allowSaveErrorData
             updateText()
-            setOnCheckedChangeListener { v, bool ->
+            setOnCheckedChangeListener { _, bool ->
                 prefs.allowSaveErrorData = bool
                 updateText()
             }
@@ -74,7 +74,7 @@ class FeedbackSettingsFragment : BaseFragment<SettingsFeedbackBinding>() {
         binding.useAccentErrorScreenSwitch.apply {
             isChecked = prefs.coloredErrorScreen
             updateText()
-            setOnCheckedChangeListener { v, bool ->
+            setOnCheckedChangeListener { _, bool ->
                 prefs.coloredErrorScreen = bool
                 updateText()
             }

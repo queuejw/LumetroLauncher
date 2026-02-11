@@ -69,7 +69,7 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): AppsFragmentBinding? {
+    ): AppsFragmentBinding {
         return AppsFragmentBinding.inflate(inflater, container, false)
     }
 
@@ -271,7 +271,7 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
                     list,
                     viewModel.getIconLoader()!!,
                     this.getColorManager().getAccentColor(context),
-                    { int, item ->
+                    { _, item ->
                         onAppClick(item)
                     },
                     { int, item, view ->
@@ -322,7 +322,6 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
         mAdapter ?: return
         (binding.search.editText as? AutoCompleteTextView)?.let {
             it.setOnEditorActionListener { _, actionId, _ ->
-                if (!isSearching) false
                 if (actionId == EditorInfo.IME_ACTION_GO && mAdapter!!.data.isNotEmpty()) {
                     launchAppWithFallback(
                         mAdapter!!.data.first().mPackage,
@@ -330,10 +329,8 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
                     )
                     (binding.search.editText as? AutoCompleteTextView)?.text?.clear()
                     search()
-                    true
-                } else {
-                    false
                 }
+                true
             }
             if (textWatcher == null) {
                 textWatcher = object :
@@ -377,7 +374,7 @@ class AppsFragment : BaseMainFragment<AppsFragmentBinding>() {
     }
 
     private fun setSearchTextView() {
-        binding.searchTextview.setOnApplyWindowInsetsListener { v, insets ->
+        binding.searchTextview.setOnApplyWindowInsetsListener { _, insets ->
             isKeyboardVisible = WindowInsetsCompat.toWindowInsetsCompat(insets)
                 .isVisible(WindowInsetsCompat.Type.ime())
             if (!isKeyboardVisible && !isWindowVisible) {

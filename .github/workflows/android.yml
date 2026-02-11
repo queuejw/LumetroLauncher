@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4.2.2
+    - uses: actions/checkout@v6.0.2
     - name: set up JDK 21
-      uses: actions/setup-java@v4.7.1
+      uses: actions/setup-java@v5.2.0
       with:
         java-version: '21'
         distribution: 'temurin'
@@ -23,18 +23,18 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3.2.1
+      uses: android-actions/setup-android@v3.2.2
       with:
           cmdline-tools-version: 13114758
-    - name: Build Lumetro with Gradle
+    - name: Build Lumetro Debug with Gradle
       run: ./gradlew assembleDebug
     - name: Cache
-      uses: actions/cache@v4.2.3
+      uses: actions/cache@v5.0.3
       with:
         path: app/build/
         key: lumetro_cache
     - name: Upload artifact
-      uses: actions/upload-artifact@v4.6.2
+      uses: actions/upload-artifact@v6.0.0
       with:
          name: Lumetro-Dev
          compression-level: 9

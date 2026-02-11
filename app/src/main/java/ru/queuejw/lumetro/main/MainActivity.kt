@@ -87,7 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    override fun getActivityViewBinding(): ActivityMainBinding? {
+    override fun getActivityViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
 

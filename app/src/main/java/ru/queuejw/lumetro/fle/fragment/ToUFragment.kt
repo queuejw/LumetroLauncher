@@ -16,7 +16,7 @@ class ToUFragment : BaseFragment<FleTouBinding>() {
     override fun getFragmentViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FleTouBinding? {
+    ): FleTouBinding {
         return FleTouBinding.inflate(inflater, container, false)
     }
 
@@ -52,7 +52,7 @@ ${this.context.getString(R.string.data_storage_info)}
 
         }
         binding.root.apply {
-            setOnScrollChangeListener { view, x, y, oldX, oldY ->
+            setOnScrollChangeListener { _, _, _, _, _ ->
                 if (this.getChildAt(0).bottom == (this.height + this.scrollY)) {
                     if (!bottomBarVisible) (activity as FirstLaunchExperienceActivity?)?.animateBottomBar(
                         true
