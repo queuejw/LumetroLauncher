@@ -23,10 +23,10 @@ class TileSettingsFragment : BaseFragment<SettingsTilesBinding>() {
             val accentColor = ColorStateList.valueOf(ColorManager().getAccentColor(this.context))
             trackTintList = accentColor
             thumbTintList = accentColor
-            value = prefs.tileCornerRadius.toFloat()
+            value = prefs.tileCornerRadius.toFloat() / 2
             addOnChangeListener { _, value, _ ->
                 prefs.isRestartRequired = true
-                prefs.tileCornerRadius = value.toInt()
+                prefs.tileCornerRadius = value.toInt() * 2
             }
         }
     }
