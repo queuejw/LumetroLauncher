@@ -29,8 +29,8 @@ android {
         applicationId = "ru.queuejw.lumetro"
         minSdk = 23
         targetSdk = 36
-        versionCode = 1
-        versionName = "Sunflower 1 Preview 1"
+        versionCode = 2
+        versionName = "Sunflower 1 Preview 2"
 
     }
 
