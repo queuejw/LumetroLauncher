@@ -2,6 +2,7 @@ package ru.queuejw.lumetro.main.fragments
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -149,6 +150,19 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
                                         )
                                     }
                                 }
+                            }
+                        }
+
+                        override fun onTileIconChange(newIcon: Bitmap?, entity: TileEntity) {
+                            newIcon?.let {
+                                viewModel.getIconLoader()?.cacheBitmap(it, entity.tilePackage!!)
+                            }
+                            tilesAdapter?.let { adapter ->
+                                adapter.notifyItemChanged(
+                                    adapter.getItemPositionById(
+                                        entity
+                                    )
+                                )
                             }
                         }
                     }

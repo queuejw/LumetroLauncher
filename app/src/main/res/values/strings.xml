@@ -74,7 +74,7 @@
     <string name="start_theme">start+theme</string>
     <string name="start_theme_sub">customize your phone</string>
     <string name="feedback">feedback</string>
-    <string name="feedback_sub">help me improve MetroPhoneLauncher</string>
+    <string name="feedback_sub">help me improve Lumetro Launcher</string>
     <string name="about">about</string>
     <string name="about_sub">information about your phone</string>
     <string name="for_developers">For developers</string>
@@ -224,6 +224,7 @@
 
     <!-- Tile customization dialog -->
     <string name="change_label">change label</string>
+    <string name="click_to_choose_icon">Click to choose icon</string>
 
     <!-- Launcher Reset -->
     <string name="reset_msg">Resetting the launcher will remove all tile settings, themes, and the start menu. THIS DOES NOT APPLY TO PHONE APPLICATIONS AND PERSONAL DATA. Do you want to continue?</string>

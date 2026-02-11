@@ -45,7 +45,7 @@ class IconLoader(
         return CacheUtils.initDiskCache(context)
     }
 
-    private fun cacheBitmap(bitmap: Bitmap, key: String) {
+    fun cacheBitmap(bitmap: Bitmap, key: String) {
         memoryCache.put(key, bitmap)
         CacheUtils.saveIconToDiskCache(diskCache, key, bitmap)
     }

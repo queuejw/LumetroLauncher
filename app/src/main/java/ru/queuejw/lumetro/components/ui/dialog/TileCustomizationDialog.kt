@@ -3,10 +3,14 @@ package ru.queuejw.lumetro.components.ui.dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.drawable.toBitmap
 import coil3.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.queuejw.lumetro.R
@@ -18,6 +22,8 @@ interface TileCustomizationDialogInterface {
 
     fun onTileChanged(newEntity: TileEntity)
 
+    fun onTileIconChange(newIcon: Bitmap?, entity: TileEntity)
+
 }
 
 class TileCustomizationDialog(
@@ -25,6 +31,17 @@ class TileCustomizationDialog(
     private val icon: Bitmap?,
     private val dialogInterface: TileCustomizationDialogInterface
 ) : BottomSheetDialogFragment() {
+
+    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            context?.let {
+                val size = it.resources.getDimensionPixelSize(R.dimen.icon_size)
+                val userIcon = Icon.createWithContentUri(uri).loadDrawable(it)?.toBitmap(size, size)
+                updateIcon(userIcon)
+                dialogInterface.onTileIconChange(userIcon, entity)
+            }
+        }
+    }
 
     private var binding: TileCustomizationBinding? = null
     private var editLabelLayoutVisible = false
@@ -42,6 +59,12 @@ class TileCustomizationDialog(
     ): View? {
         binding = TileCustomizationBinding.inflate(inflater, container, false)
         return binding?.root
+    }
+
+    private fun updateIcon(newIcon: Bitmap?) {
+        newIcon?.let {
+            binding?.appIcon?.setImageBitmap(it)
+        }
     }
 
     private fun changeLabel(newLabel: String) {
@@ -68,7 +91,7 @@ class TileCustomizationDialog(
     private fun changeColor(context: Context) {
         val d = ColorDialog(context)
         d.show(childFragmentManager, "color")
-        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { key, bundle ->
+        childFragmentManager.setFragmentResultListener("color", viewLifecycleOwner) { _, bundle ->
             bundle.getString("color_value")?.let {
                 entity.tileColor = it
                 dialogInterface.onTileChanged(entity)
@@ -103,8 +126,13 @@ class TileCustomizationDialog(
                 changeLabel(view.labelEditText.text.toString())
                 controlEditLabelLayout()
             }
-            view.cornerRadiusSlider.addOnChangeListener { slider, value, bool ->
+            view.cornerRadiusSlider.addOnChangeListener { _, value, _ ->
                 updateTileCornerValue(value.toInt())
+            }
+            view.appIcon.setOnClickListener {
+                activity?.let {
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
             }
         }
     }

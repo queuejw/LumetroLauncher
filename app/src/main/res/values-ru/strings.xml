@@ -224,6 +224,7 @@
 
     <!-- Tile customization dialog -->
     <string name="change_label">изменить название</string>
+    <string name="click_to_choose_icon">Нажмите, чтобы выбрать иконку</string>
 
     <!-- Launcher reset -->
     <string name="reset_msg">Сброс лаунчера приведет к удалению всех настроек плиток, тем и стартового меню. ЭТО НЕ ОТНОСИТСЯ К ПРИЛОЖЕНИЯМ ТЕЛЕФОНА И ЛИЧНЫМ ДАННЫМ. Вы хотите продолжить?</string>

@@ -20,12 +20,21 @@
             android:textColor="?attr/colorSurface"
             android:text="Tile customization" />
 
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Lumetro.Settings.AdvancedOptions.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textColor="?attr/colorSurface"
+            android:text="@string/click_to_choose_icon" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/app_icon"
             android:layout_width="@dimen/icon_size_big"
             android:layout_height="@dimen/icon_size_big"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/app_label"
@@ -125,7 +134,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/change_color_btn"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
