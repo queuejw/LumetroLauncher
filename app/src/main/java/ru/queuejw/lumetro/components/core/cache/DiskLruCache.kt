@@ -1047,12 +1047,14 @@ internal class StrictLineReader(`in`: InputStream?, capacity: Int, charset: Char
             // throw again if that happens; thus we need to handle end == -1 as well as end == pos.
             if (pos >= end) fillBuf()
             // Try to find LF in the buffered data and return the line if successful.
-            for (i in pos..end) {
-                if (buf!![i] == LF) {
-                    val lineEnd = if ((i != pos && buf!![i - 1] == CR)) i - 1 else i
-                    val res = String(buf!!, pos, lineEnd - pos, charset(charset.name()))
-                    pos = i + 1
-                    return res
+            runCatching {
+                for (i in pos..end) {
+                    if (buf!![i] == LF) {
+                        val lineEnd = if ((i != pos && buf!![i - 1] == CR)) i - 1 else i
+                        val res = String(buf!!, pos, lineEnd - pos, charset(charset.name()))
+                        pos = i + 1
+                        return res
+                    }
                 }
             }
 
