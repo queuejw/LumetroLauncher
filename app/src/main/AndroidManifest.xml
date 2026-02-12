@@ -35,6 +35,7 @@
         </activity>
         <activity
             android:name=".fle.FirstLaunchExperienceActivity"
+            android:configChanges="screenSize|orientation"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
