@@ -42,7 +42,7 @@ There are no viruses. Below is a link to the VirusTotal scan results for the lat
 Lumetro. The link will also be attached to the release [on this
 page](https://github.com/queuejw/LumetroLauncher/releases/)
 
-🌡 VirusTotal: [link](https://www.virustotal.com/gui/file/58aa319c517b3e52cc120cd8ed0ae0cd369cf4335bfa77689c6b08409f9ce80f/detection)
+🌡 VirusTotal: [link](https://www.virustotal.com/gui/file/e22124644223317210dbd1b99e44b8cd83e30395811f679df41a7419fb10bf8d/detection)
 
 If you have any doubts, compile Lumetro from the source code. Thank you for your
 understanding.
