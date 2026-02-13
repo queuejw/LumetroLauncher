@@ -50,23 +50,7 @@ class IconLoader(
         CacheUtils.saveIconToDiskCache(diskCache, key, bitmap)
     }
 
-    override fun getIconForPackage(context: Context, mPackage: String?): Bitmap? {
-        if (mPackage == null) {
-            return null
-        }
-        memoryCache[mPackage]?.let {
-            return it
-        }
-        if (diskCache == null) {
-            diskCache = getDiskCache(context)
-        }
-        CacheUtils.loadIconFromDiskCache(diskCache, mPackage)?.let {
-            memoryCache.put(mPackage, it)
-            return it
-        }
-        if (iconPackManager == null && loadFromIconPack) {
-            iconPackManager = getIconPackManager(context)
-        }
+    fun getDefaultAppIcon(context: Context, mPackage: String): Bitmap? {
         return runCatching {
             iconSize ?: getIconSize(context).also { iconSize = it }
             if (!loadFromIconPack) {
@@ -85,6 +69,26 @@ class IconLoader(
         }.onFailure {
             Log.e("Icon loader", it.toString())
         }.getOrNull()
+    }
+
+    override fun getIconForPackage(context: Context, mPackage: String?): Bitmap? {
+        if (mPackage == null) {
+            return null
+        }
+        memoryCache[mPackage]?.let {
+            return it
+        }
+        if (diskCache == null) {
+            diskCache = getDiskCache(context)
+        }
+        CacheUtils.loadIconFromDiskCache(diskCache, mPackage)?.let {
+            memoryCache.put(mPackage, it)
+            return it
+        }
+        if (iconPackManager == null && loadFromIconPack) {
+            iconPackManager = getIconPackManager(context)
+        }
+        return getDefaultAppIcon(context, mPackage)
     }
 
     fun isIconPackAvailable(context: Context, mPackage: String?): Boolean {

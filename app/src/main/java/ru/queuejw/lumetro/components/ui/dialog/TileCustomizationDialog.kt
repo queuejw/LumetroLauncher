@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
 import coil3.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -22,7 +24,9 @@ interface TileCustomizationDialogInterface {
 
     fun onTileChanged(newEntity: TileEntity)
 
-    fun onTileIconChange(newIcon: Bitmap?, entity: TileEntity)
+    fun onTileIconUpdate(newIcon: Bitmap?, entity: TileEntity)
+
+    fun onTileIconReset(entity: TileEntity, imageView: AppCompatImageView)
 
 }
 
@@ -38,7 +42,7 @@ class TileCustomizationDialog(
                 val size = it.resources.getDimensionPixelSize(R.dimen.icon_size)
                 val userIcon = Icon.createWithContentUri(uri).loadDrawable(it)?.toBitmap(size, size)
                 updateIcon(userIcon)
-                dialogInterface.onTileIconChange(userIcon, entity)
+                dialogInterface.onTileIconUpdate(userIcon, entity)
             }
         }
     }
@@ -106,14 +110,31 @@ class TileCustomizationDialog(
 
     private fun setUi() {
         binding?.let { view ->
-            view.appIcon.load(icon)
+            view.appIcon.apply {
+                this.load(icon)
+                this.setOnClickListener {
+                    activity?.let {
+                        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
+                this.setOnLongClickListener {
+                    // Icon reset
+                    dialogInterface.onTileIconReset(entity, this)
+                    Toast.makeText(
+                        this.context, this.context.resources.getString(android.R.string.ok),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnLongClickListener true
+                }
+            }
             view.appLabel.text = entity.tileLabel
             view.cornerRadiusSlider.apply {
                 val accentColor =
                     ColorStateList.valueOf(ColorManager().getAccentColor(this.context))
                 trackTintList = accentColor
                 thumbTintList = accentColor
-                value = if (entity.tileCornerRadius != -1) entity.tileCornerRadius.toFloat() else 0f
+                value =
+                    if (entity.tileCornerRadius != -1) entity.tileCornerRadius.toFloat() / 4 else 0f
             }
 
             view.changeLabelBtn.setOnClickListener {
@@ -127,12 +148,7 @@ class TileCustomizationDialog(
                 controlEditLabelLayout()
             }
             view.cornerRadiusSlider.addOnChangeListener { _, value, _ ->
-                updateTileCornerValue(value.toInt())
-            }
-            view.appIcon.setOnClickListener {
-                activity?.let {
-                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                }
+                updateTileCornerValue(value.toInt() * 4)
             }
         }
     }

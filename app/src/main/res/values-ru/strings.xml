@@ -227,8 +227,9 @@
     <string name="use_accent_error_screen">Использовать цвет элементов для фона экрана ошибки</string>
 
     <!-- Tile customization dialog -->
+    <string name="tile_customization">Настройки плитки</string>
     <string name="change_label">изменить название</string>
-    <string name="click_to_choose_icon">Нажмите, чтобы выбрать иконку</string>
+    <string name="click_to_choose_icon">Нажмите, чтобы выбрать иконку\nЗажмите, чтобы сбросить</string>
 
     <!-- Launcher reset -->
     <string name="reset_msg">Сброс лаунчера приведет к удалению всех настроек плиток, тем и стартового меню. ЭТО НЕ ОТНОСИТСЯ К ПРИЛОЖЕНИЯМ ТЕЛЕФОНА И ЛИЧНЫМ ДАННЫМ. Вы хотите продолжить?</string>

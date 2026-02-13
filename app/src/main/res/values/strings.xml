@@ -227,8 +227,9 @@
     <string name="use_accent_error_screen">Use accent color for error screen background</string>
 
     <!-- Tile customization dialog -->
+    <string name="tile_customization">Tile customization</string>
     <string name="change_label">change label</string>
-    <string name="click_to_choose_icon">Click to choose icon</string>
+    <string name="click_to_choose_icon">Click to choose icon\nHold to reset the icon</string>
 
     <!-- Launcher Reset -->
     <string name="reset_msg">Resetting the launcher will remove all tile settings, themes, and the start menu. THIS DOES NOT APPLY TO PHONE APPLICATIONS AND PERSONAL DATA. Do you want to continue?</string>

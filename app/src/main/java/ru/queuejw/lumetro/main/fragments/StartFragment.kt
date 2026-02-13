@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -114,6 +115,7 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
                 override fun onListUpdate(newList: MutableList<TileEntity>) {
                     (activity as MainActivity?)?.setViewPagerUserInput(newList.isNotEmpty())
                 }
+
                 override fun saveTilesFunction(list: MutableList<TileEntity>) {
                     viewModel.updateTilePositions(list)
                     if ((list.filter { it.tileType != TileViewTypes.TYPE_PLACEHOLDER.type }).isEmpty()) {
@@ -153,7 +155,25 @@ class StartFragment : BaseMainFragment<StartFragmentBinding>() {
                             }
                         }
 
-                        override fun onTileIconChange(newIcon: Bitmap?, entity: TileEntity) {
+                        override fun onTileIconReset(entity: TileEntity, imageView: AppCompatImageView) {
+                            viewModel.getIconLoader()?.let { loader ->
+                                loader.getDefaultAppIcon(context, entity.tilePackage!!)?.let {
+                                    loader.cacheBitmap(
+                                        it, entity.tilePackage!!
+                                    )
+                                    imageView.setImageBitmap(it)
+                                }
+                            }
+                            tilesAdapter?.let { adapter ->
+                                adapter.notifyItemChanged(
+                                    adapter.getItemPositionById(
+                                        entity
+                                    )
+                                )
+                            }
+                        }
+
+                        override fun onTileIconUpdate(newIcon: Bitmap?, entity: TileEntity) {
                             newIcon?.let {
                                 viewModel.getIconLoader()?.cacheBitmap(it, entity.tilePackage!!)
                             }

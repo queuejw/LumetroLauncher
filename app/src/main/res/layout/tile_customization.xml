@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/colorSurface"
-            android:text="Tile customization" />
+            android:text="@string/tile_customization" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/Lumetro.Settings.AdvancedOptions.Text"
