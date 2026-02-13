@@ -15,6 +15,7 @@ import ru.queuejw.lumetro.settings.fragments.FeedbackErrorListFragment
 import ru.queuejw.lumetro.settings.fragments.FeedbackSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.IconSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.MainSettingsFragment
+import ru.queuejw.lumetro.settings.fragments.NavBarSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.ThemeSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.TileSettingsFragment
 import ru.queuejw.lumetro.settings.fragments.UpdatesFragment
@@ -34,6 +35,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
             7 -> ThemeSettingsFragment()
             8 -> UpdatesFragment()
             9 -> TileSettingsFragment()
+            10 -> NavBarSettingsFragment()
             else -> MainSettingsFragment()
         }
     }
@@ -49,6 +51,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
             is ThemeSettingsFragment -> 7
             is UpdatesFragment -> 8
             is TileSettingsFragment -> 9
+            is NavBarSettingsFragment -> 10
             else -> 0
         }
     }
@@ -135,7 +138,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
     private fun animateFragmentEnter(fragment: Fragment, name: String) {
         binding.root.apply {
-            animate().rotationY(-30f).alpha(0.5f).translationX(-100f).setDuration(125)
+            animate().rotationY(-20f).alpha(0.5f).translationX(-100f).setDuration(125)
                 .setInterpolator(
                     AccelerateInterpolator()
                 ).withEndAction {

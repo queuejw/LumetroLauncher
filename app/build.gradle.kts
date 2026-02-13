@@ -9,14 +9,12 @@ kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.fromTarget("21")
     }
-}
-
-android {
-
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
+}
 
+android {
     namespace = "ru.queuejw.lumetro"
     compileSdk = 36
 

@@ -205,6 +205,10 @@
     <string name="block_edit_mode">Отключить режим редактирования</string>
     <string name="block_edit_mode_sub">Вы можете отключить изменение плиток при помощи этой настройки</string>
 
+    <!-- Navigation bar settings -->
+    <string name="navbar_label">панель навигации</string>
+    <string name="navbar_disable">Отключить панель навигации</string>
+
     <!-- Icon packs -->
     <string name="icons">иконки</string>
     <string name="icons_sub">наборы иконок</string>
@@ -229,5 +233,4 @@
     <!-- Launcher reset -->
     <string name="reset_msg">Сброс лаунчера приведет к удалению всех настроек плиток, тем и стартового меню. ЭТО НЕ ОТНОСИТСЯ К ПРИЛОЖЕНИЯМ ТЕЛЕФОНА И ЛИЧНЫМ ДАННЫМ. Вы хотите продолжить?</string>
     <string name="reset_title">ВНИМАНИЕ!</string>
-
 </resources>

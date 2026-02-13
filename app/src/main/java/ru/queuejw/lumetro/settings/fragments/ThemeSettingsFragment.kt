@@ -32,7 +32,21 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
     private var colorManager: ColorManager? = null
     private var menuVisible = false
 
-    private fun setThemeText(context: Context) {
+    private fun updateThemeUi(context: Context, spannable: Spannable) {
+        binding.apply {
+            accentColorName.text =
+                colorManager?.getAccentColorName(prefs.accentColorValue, context)
+            colorView.setBackgroundColor(colorManager!!.getAccentColor(context))
+            accentTip.setText(spannable, TextView.BufferType.SPANNABLE)
+            phoneImg.imageTintList =
+                ColorStateList.valueOf(colorManager!!.getAccentColor(context))
+            autoPinAppsSwitch.updateDrawable()
+            moreTilesSwitch.updateDrawable()
+            dynamicColorSwtich.updateDrawable()
+        }
+    }
+
+    private fun createThemeSpannable(context: Context): Spannable {
         if (colorManager == null) {
             colorManager = ColorManager()
         }
@@ -47,23 +61,13 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
             textFinal.indexOf(getString(R.string.settings_theme_accent_title_part1)) + getString(R.string.settings_theme_accent_title_part1).length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        binding.apply {
-            accentColorName.text =
-                colorManager?.getAccentColorName(prefs.accentColorValue, context)
-            colorView.setBackgroundColor(colorManager!!.getAccentColor(context))
-            accentTip.setText(spannable, TextView.BufferType.SPANNABLE)
-            phoneImg.imageTintList =
-                ColorStateList.valueOf(colorManager!!.getAccentColor(context))
-            autoPinAppsSwitch.updateDrawable()
-            moreTilesSwitch.updateDrawable()
-            dynamicColorSwtich.updateDrawable()
-        }
+        return spannable
     }
 
     private fun initComponents() {
         colorManager = ColorManager()
         context?.apply {
-            setThemeText(this)
+            updateThemeUi(this, createThemeSpannable(this))
             setUi()
         }
     }
@@ -82,7 +86,7 @@ class ThemeSettingsFragment : BaseFragment<SettingsThemeBinding>() {
                 prefs.accentColorValue = it
                 context?.let { mContext ->
                     colorManager = null
-                    setThemeText(mContext)
+                    updateThemeUi(mContext, createThemeSpannable(mContext))
                 }
             }
         }

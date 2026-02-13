@@ -35,6 +35,7 @@ class MainSettingsFragment : BaseFragment<SettingsMainBinding>() {
             setClickListener(updatesSetting, UpdatesFragment(), "updates")
             setClickListener(aboutSetting, AboutSettingsFragment(), "about")
             setClickListener(tileSetting, TileSettingsFragment(), "tiles")
+            setClickListener(navbarSetting, NavBarSettingsFragment(), "navbar")
             if (prefs.experimentsEnabled) {
                 experimentSetting.visibility = View.VISIBLE
                 setClickListener(experimentSetting, ExperimentalSettingsFragment(), "experiments")

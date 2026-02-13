@@ -205,6 +205,10 @@
     <string name="block_edit_mode">Disable edit mode</string>
     <string name="block_edit_mode_sub">You can disable changing tiles using this setting</string>
 
+    <!-- Navigation bar settings -->
+    <string name="navbar_label">navigation</string>
+    <string name="navbar_disable">Disable navigation bar</string>
+
     <!-- Icon packs -->
     <string name="icons">icons</string>
     <string name="icons_sub">icon packs</string>
@@ -229,5 +233,4 @@
     <!-- Launcher Reset -->
     <string name="reset_msg">Resetting the launcher will remove all tile settings, themes, and the start menu. THIS DOES NOT APPLY TO PHONE APPLICATIONS AND PERSONAL DATA. Do you want to continue?</string>
     <string name="reset_title">WARNING!</string>
-
 </resources>

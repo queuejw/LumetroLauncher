@@ -111,4 +111,11 @@ class Prefs(context: Context) {
         set(value) = prefs.edit {
             putInt("corner_radius", value)
         }
+
+    var navBarStyle: Int
+        // -1 - Disabled, 0 - Default
+        get() = prefs.getInt("nav_bar_style", 0)
+        set(value) = prefs.edit {
+            putInt("nav_bar_style", value)
+        }
 }

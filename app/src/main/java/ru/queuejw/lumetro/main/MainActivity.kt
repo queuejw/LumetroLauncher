@@ -43,6 +43,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
 
             fun updateNavigationBarColors(position: Int) {
+                if (prefs.navBarStyle == -1) return
                 when {
                     position == 0 -> {
                         binding.bottomBarLayout.apply {
@@ -177,8 +178,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initUi() {
         binding.apply {
-            setNavigationViewButtonOnClick(bottomBarLayout.navigationSearch, 1)
-            setNavigationViewButtonOnClick(bottomBarLayout.navigationStart, 0)
+            if (prefs.navBarStyle != -1) {
+                setNavigationViewButtonOnClick(bottomBarLayout.navigationSearch, 1)
+                setNavigationViewButtonOnClick(bottomBarLayout.navigationStart, 0)
+            } else {
+                bottomBarLayout.root.visibility = View.GONE
+            }
             viewPager.apply {
                 alpha = 0f
                 adapter = viewPagerAdapter

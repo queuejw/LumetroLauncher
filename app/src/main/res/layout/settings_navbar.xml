@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/Lumetro.Settings.AdvancedOptions.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/disable_navbar_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
+        android:text="@string/navbar_disable"
+        android:textSize="18sp" />
+
+    <ru.queuejw.lumetro.components.ui.metro.MetroSwitch
+        android:id="@+id/navbar_switch"
+        style="@style/Metro.Switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
